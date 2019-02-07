@@ -18,7 +18,10 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.text.DecimalFormat;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -76,19 +79,65 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         setupMarkers();
 
+        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+
+                if(marker.equals(marker)){
+                    updateCurrentLocation();
+                    Pub thisPub = pubLookupByMarker(marker);
+                    LatLng curLatLng = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
+                    marker.setTitle(formatMarkerTitle(thisPub.name, CalculationByDistance(curLatLng, thisPub.coordinates)));
+                }
+
+                return false;
+            }
+        });
+
     }
+
+    private Pub pubLookupByMarker(Marker marker){
+
+        for(int i=0;i<pubSetup.pubs.size();i++) {
+
+            Pub thisPub = pubSetup.pubs.get(i);
+
+            if (marker.equals(thisPub.marker)) {
+                return thisPub;
+            }
+
+        }
+
+        return new Pub();
+    }
+
+
 
     private void setupMarkers() {
 
         for(int i=0;i<pubSetup.pubs.size();i++){
 
             Pub thisPub = pubSetup.pubs.get(i);
+            updateCurrentLocation();
+            LatLng curLatLng = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
 
-            mMap.addMarker(new MarkerOptions().position(thisPub.coordinates).title(thisPub.name));
+            String title = formatMarkerTitle(thisPub.name, CalculationByDistance(curLatLng, thisPub.coordinates));
+
+
+            thisPub.marker = mMap.addMarker(new MarkerOptions().position(thisPub.coordinates).title(title));
 
         }
 
     }
+
+    private String formatMarkerTitle(String name, double distance){
+
+        double rounded = Math.round(distance * 100.0) / 100.0;
+
+        String s = name + " " + String.valueOf(rounded) + "km";
+        return s;
+    }
+
 
     private LocationListener setupLocationListener() {
         return new LocationListener() {
@@ -158,7 +207,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
                 locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
-
             }
 
         }
@@ -170,5 +218,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         int res = this.checkCallingOrSelfPermission(permission);
         return (res == PackageManager.PERMISSION_GRANTED);
     }
+
+    public double CalculationByDistance(LatLng StartP, LatLng EndP) {
+        int Radius = 6371;// radius of earth in Km
+        double lat1 = StartP.latitude;
+        double lat2 = EndP.latitude;
+        double lon1 = StartP.longitude;
+        double lon2 = EndP.longitude;
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2)
+                + Math.cos(Math.toRadians(lat1))
+                * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
+                * Math.sin(dLon / 2);
+        double c = 2 * Math.asin(Math.sqrt(a));
+        double valueResult = Radius * c;
+        double km = valueResult / 1;
+        DecimalFormat newFormat = new DecimalFormat("####");
+        int kmInDec = Integer.valueOf(newFormat.format(km));
+        double meter = valueResult % 1000;
+        int meterInDec = Integer.valueOf(newFormat.format(meter));
+        Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec
+                + " Meter   " + meterInDec);
+
+        return Radius * c;
+    }
+
+
+
 
 }

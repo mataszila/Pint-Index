@@ -1,11 +1,13 @@
 package com.example.matasolutions.pintindex;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 
 public class Pub {
 
     public LatLng coordinates;
     public String name;
+    public Marker marker;
 
     //public OpeningHours openingHours;
 
