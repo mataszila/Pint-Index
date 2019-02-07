@@ -18,6 +18,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -25,6 +26,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationManager locationManager;
     private LocationListener locationListener;
     private Location currentLocation;
+    private PubSetup pubSetup;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +36,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
         locationListener = setupLocationListener();
+        pubSetup = new PubSetup();
+
 
         setupPermissions();
         updateCurrentLocation();
@@ -67,6 +72,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             mMap.setMyLocationEnabled(true);
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude()), 15.0f));
+        }
+
+        setupMarkers();
+
+    }
+
+    private void setupMarkers() {
+
+        for(int i=0;i<pubSetup.pubs.size();i++){
+
+            Pub thisPub = pubSetup.pubs.get(i);
+
+            mMap.addMarker(new MarkerOptions().position(thisPub.coordinates).title(thisPub.name));
+
         }
 
     }
