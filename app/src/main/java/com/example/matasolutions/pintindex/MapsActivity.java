@@ -66,7 +66,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(checkLocationPermission()){
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             mMap.setMyLocationEnabled(true);
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude()), 14.0f));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude()), 15.0f));
         }
 
     }
