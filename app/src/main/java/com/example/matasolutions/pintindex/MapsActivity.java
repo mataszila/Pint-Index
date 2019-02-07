@@ -29,6 +29,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Location currentLocation;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -37,6 +38,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
         locationListener = setupLocationListener();
         setupPermissions();
+
+        if(checkLocationPermission()){
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
+            currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        }
 
 
 
@@ -50,25 +56,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
 
-    private LatLng getCurrentLatLng() {
-
-
-        if(currentLocation != null){
-            return new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-        }
-
-        else{
-
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-            return new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-
-        }
-
-
-        }
-
-
-
 
     private void setupMap() {
 
@@ -76,18 +63,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             mMap.setMyLocationEnabled(true);
-            //mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude()), 14.0f));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude()), 14.0f));
+
 
         }
     }
 
 
     private void setupMarkers() {
-
-
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(getCurrentLatLng(), 14.0f));
-
-        //mMap.animateCamera(CameraUpdateFactory.zoomTo(12.0f));
 
     }
 
