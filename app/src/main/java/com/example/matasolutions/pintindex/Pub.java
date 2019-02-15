@@ -1,9 +1,14 @@
 package com.example.matasolutions.pintindex;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
-public class Pub {
+import java.io.Serializable;
+
+public class Pub  {
 
     public LatLng coordinates;
     public String name;
@@ -23,7 +28,6 @@ public class Pub {
     public Pub(){
 
     }
-
 
 
 }

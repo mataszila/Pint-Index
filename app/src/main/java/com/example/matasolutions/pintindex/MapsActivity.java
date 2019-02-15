@@ -6,11 +6,13 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -21,6 +23,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.Serializable;
 import java.text.DecimalFormat;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -93,6 +96,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return false;
             }
         });
+
+        mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                updateCurrentLocation();
+                Pub thisPub = pubLookupByMarker(marker);
+
+                Intent intent = new Intent(getApplicationContext(),PubActivity.class);
+                intent.putExtra("name", thisPub.name);
+                Bundle args = new Bundle();
+                args.putParcelable("coordinates", thisPub.coordinates);
+
+                intent.putExtra("bundle", args);
+
+                startActivity(intent);
+
+
+            }
+        });
+
 
     }
 
