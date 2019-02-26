@@ -1,28 +1,72 @@
 package com.example.matasolutions.pintindex;
 
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
-public class Pub {
+
+public class Pub  {
 
     public LatLng coordinates;
     public String name;
     public Marker marker;
 
-    //public OpeningHours openingHours;
 
-    //public Facilities facilities;
+    public WeekOpeningHours weekOpeningHours;
+    public Prices prices;
+    public Facilities facilities;
+    public Ratings ratings;
 
-    //public Products products;
+    public WeekOpeningHours getWeekOpeningHours() {
+        return weekOpeningHours;
+    }
+
+    public void setWeekOpeningHours(WeekOpeningHours weekOpeningHours) {
+        this.weekOpeningHours = weekOpeningHours;
+    }
+
+    public Prices getPrices() {
+        return prices;
+    }
+
+    public void setPrices(Prices prices) {
+        this.prices = prices;
+    }
+
+    public Facilities getFacilities() {
+        return facilities;
+    }
+
+    public void setFacilities(Facilities facilities) {
+        this.facilities = facilities;
+    }
+
+    public Ratings getRatings() {
+        return ratings;
+    }
+
+    public void setRatings(Ratings ratings) {
+        this.ratings = ratings;
+    }
+
 
     public Pub(String name,double lat,double lng){
         this.coordinates = new LatLng(lat, lng);
         this.name = name;
+
+        weekOpeningHours = new WeekOpeningHours(null);
+        prices = new Prices();
+        facilities = new Facilities();
+        ratings = new Ratings();
     }
 
     public Pub(){
 
     }
+
+
+
+
 
 
 
