@@ -2,7 +2,7 @@ package com.example.matasolutions.pintindex;
 
 import java.util.ArrayList;
 
-public class WeekOpeningHours {
+public class WeekOpeningHours implements PubPageContentInterface {
 
     ArrayList<SingleOpeningHours> openingHours;
 
@@ -13,21 +13,32 @@ public class WeekOpeningHours {
 
     }
 
-    public String WeekOpeningHoursToString(ArrayList<SingleOpeningHours> openingHours){
 
-        StringBuilder sb = new StringBuilder();
+    @Override
+    public String ContentToString() {
 
-        for(int i=0;i<openingHours.size();i++){
+        if(openingHours != null){
+            StringBuilder sb = new StringBuilder();
 
-            SingleOpeningHours thisInstance = openingHours.get(i);
+            for(int i=0;i<openingHours.size();i++){
 
-            sb.append(thisInstance.SingleOpeningHoursToString() + "\n");
+                SingleOpeningHours thisInstance = openingHours.get(i);
 
+                sb.append(thisInstance.SingleOpeningHoursToString() + "\n");
+
+            }
+
+            return sb.toString();
         }
 
-        return sb.toString();
+        else{
+            return "Opening Hours not available";
+        }
+
+
+
+
+
     }
-
-
 
 }

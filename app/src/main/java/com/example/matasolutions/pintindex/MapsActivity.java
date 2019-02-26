@@ -108,10 +108,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Bundle args = new Bundle();
                 args.putParcelable("coordinates", thisPub.coordinates);
 
+                // Will have to be fixed
+
+                intent.putExtra("workingHours",thisPub.weekOpeningHours.ContentToString());
+                intent.putExtra("prices", thisPub.prices.ContentToString());
+                intent.putExtra("facilities", thisPub.facilities.ContentToString());
+                intent.putExtra("ratings", thisPub.ratings.ContentToString());
+
                 intent.putExtra("bundle", args);
 
                 startActivity(intent);
-
 
             }
         });

@@ -5,12 +5,12 @@ import android.widget.TextView;
 
 import com.thoughtbot.expandablerecyclerview.viewholders.ChildViewHolder;
 
-public class PubPageContentChildViewHolder extends ChildViewHolder {
+public class PageChildViewHolder extends ChildViewHolder {
 
     private TextView mTextView;
 
 
-    public PubPageContentChildViewHolder(View itemView) {
+    public PageChildViewHolder(View itemView) {
 
         super(itemView);
         mTextView = itemView.findViewById(R.id.childTextView);

@@ -23,9 +23,10 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     Pub pub;
 
-    private ArrayList<String> mNames = new ArrayList<String>();
-    private ArrayList<String> mImageUrls = new ArrayList<String>();
-
+    String workingHours;
+    String prices;
+    String facilities;
+    String ratings;
 
 
     @Override
@@ -34,16 +35,14 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_pub);
 
         setupPub();
-        initImageBitmaps();
 
+        AddPubPageContent();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
-
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -59,7 +58,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         // Add a marker in Sydney and move the camera
         LatLng sydney = pub.coordinates;
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+        mMap.addMarker(new MarkerOptions().position(sydney).title(pub.name));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(pub.coordinates.latitude,pub.coordinates.longitude), 15.0f));
 
@@ -71,64 +70,63 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         Bundle bundle = getIntent().getParcelableExtra("bundle");
         pub.coordinates = bundle.getParcelable("coordinates");
-
         pub.name = (String) getIntent().getSerializableExtra("name");
+        workingHours =  (String) getIntent().getSerializableExtra("workingHours");
+        prices = (String) getIntent().getSerializableExtra("prices");
+        facilities = (String) getIntent().getSerializableExtra("facilities");
+        ratings = (String) getIntent().getSerializableExtra("ratings");
 
         setTitle(pub.name);
 
     }
 
-    private String getCoordinatesAsText(){
-        StringBuilder sb = new StringBuilder();
-        sb.append(String.valueOf(pub.coordinates.latitude));
-        sb.append(" ");
-        sb.append(String.valueOf(pub.coordinates.longitude));
-
-        return sb.toString();
-
-    }
-
-    private void initImageBitmaps(){
-
-        mImageUrls.add("https://c1.staticflickr.com/5/4636/25316407448_de5fbf183d_o.jpg");
-        mNames.add("Opening Hours");
-
-        mImageUrls.add("https://i.redd.it/tpsnoz5bzo501.jpg");
-        mNames.add("Menu & Prices");
-
-        mImageUrls.add("https://i.redd.it/qn7f9oqu7o501.jpg");
-        mNames.add("Facilities");
-
-        mImageUrls.add("https://i.redd.it/j6myfqglup501.jpg");
-        mNames.add("Ratings");
 
 
-        mImageUrls.add("https://i.redd.it/0h2gm1ix6p501.jpg");
-        mNames.add("Mahahual");
+    private void AddPubPageContent() {
 
-        mImageUrls.add("https://i.redd.it/k98uzl68eh501.jpg");
-        mNames.add("Frozen Lake");
-
-
-        mImageUrls.add("https://i.redd.it/glin0nwndo501.jpg");
-        mNames.add("White Sands Desert");
-
-        mImageUrls.add("https://i.redd.it/obx4zydshg601.jpg");
-        mNames.add("Austrailia");
-
-        mImageUrls.add("https://i.imgur.com/ZcLLrkY.jpg");
-        mNames.add("Washington");
-
-        initRecycleView();
-
-    }
-
-
-    private void initRecycleView(){
-        RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(mNames, mImageUrls, this);
-        recyclerView.setAdapter(adapter);
+        RecyclerView recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+
+        ArrayList<PubPageContentParent> parentList = new ArrayList<PubPageContentParent>();
+
+        //WeekOpeningHours
+
+        ArrayList<PubPageContentChild> openingHoursChild = new ArrayList<PubPageContentChild>();
+
+        openingHoursChild.add(new PubPageContentChild(workingHours));
+
+        parentList.add(new PubPageContentParent("Opening Hours", openingHoursChild));
+
+        //Prices
+
+        ArrayList<PubPageContentChild> pricesChild = new ArrayList<PubPageContentChild>();
+
+        pricesChild.add(new PubPageContentChild(prices));
+
+        parentList.add(new PubPageContentParent("Prices", pricesChild));
+
+        //Facilities
+
+        ArrayList<PubPageContentChild> facilitiesChild = new ArrayList<PubPageContentChild>();
+
+        facilitiesChild.add(new PubPageContentChild(facilities));
+
+        parentList.add(new PubPageContentParent("Facilities", facilitiesChild));
+
+        //Rating
+
+        ArrayList<PubPageContentChild> ratingsChild = new ArrayList<PubPageContentChild>();
+
+        ratingsChild.add(new PubPageContentChild(ratings));
+
+        parentList.add(new PubPageContentParent("Ratings", ratingsChild));
+
+        //Adapter
+
+        ChildAdapter adapter = new ChildAdapter(parentList);
+        recyclerView.setAdapter(adapter);
+
     }
 
 
