@@ -1,8 +1,5 @@
 package com.example.matasolutions.pintindex;
 
-import android.util.Pair;
-
-import java.util.ArrayList;
 
 public class SingleOpeningHours {
 

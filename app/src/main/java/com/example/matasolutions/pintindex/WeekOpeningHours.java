@@ -13,7 +13,6 @@ public class WeekOpeningHours implements PubPageContentInterface {
 
     }
 
-
     @Override
     public String ContentToString() {
 
@@ -34,10 +33,6 @@ public class WeekOpeningHours implements PubPageContentInterface {
         else{
             return "Opening Hours not available";
         }
-
-
-
-
 
     }
 

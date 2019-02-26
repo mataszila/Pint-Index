@@ -28,6 +28,10 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
     String facilities;
     String ratings;
 
+    RecyclerView recyclerView;
+    ChildAdapter childAdapter;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,12 +85,10 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
 
-
     private void AddPubPageContent() {
 
-        RecyclerView recyclerView = findViewById(R.id.recyclerview);
+        recyclerView = findViewById(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
 
         ArrayList<PubPageContentParent> parentList = new ArrayList<PubPageContentParent>();
 
@@ -124,8 +126,8 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         //Adapter
 
-        ChildAdapter adapter = new ChildAdapter(parentList);
-        recyclerView.setAdapter(adapter);
+        childAdapter = new ChildAdapter(parentList);
+        recyclerView.setAdapter(childAdapter);
 
     }
 
