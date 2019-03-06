@@ -12,7 +12,7 @@ class Facility implements Serializable {
 
     public String name;
     public FacilityType type;
-    public ImageView logo;
+    public Drawable logo;
 
     public Facility(FacilityType type,String name){
 

@@ -1,6 +1,11 @@
 package com.example.matasolutions.pintindex;
 
+import android.graphics.drawable.Drawable;
+import android.widget.ImageView;
+
 import java.util.ArrayList;
+
+import androidx.core.content.res.ResourcesCompat;
 
 public class PubSetup {
 
@@ -70,6 +75,36 @@ public class PubSetup {
         pubs.add(new Pub("The Strawberry",54.9748055,-1.6217146));
         pubs.add(new Pub("Trent House",54.977095,-1.6205557));
         pubs.add(new Pub("Luther's",54.9789707,-1.6172808));
+
+    }
+
+
+    public static int ReturnResourceID(Facility current){
+
+        int answer = 0;
+
+                switch(current.type){
+
+                    case CAR_PARKING:
+                        answer = R.drawable.ic_baseline_local_parking_24px;
+                        break;
+                    case LIVE_SPORTS:
+                        answer = R.drawable.ic_baseline_directions_run_24px;
+                        break;
+                    case FOOD_SNACKS:
+                        answer = R.drawable.ic_baseline_fastfood_24px;
+                        break;
+                    case FREE_WIFI:
+                        answer = R.drawable.ic_baseline_network_wifi_24px;
+                        break;
+                    case LIVE_MUSIC:
+                        answer = R.drawable.ic_baseline_music_note_24px;
+                        break;
+                    default:
+                        answer = 0;
+                }
+
+        return answer;
 
     }
 

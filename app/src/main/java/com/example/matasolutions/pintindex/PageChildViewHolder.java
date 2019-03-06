@@ -21,8 +21,10 @@ public class PageChildViewHolder extends ChildViewHolder {
 
     public void bind(PubPageContentChild child){
         mTextView.setText(child.name);
-        mImageView.setImageResource(R.drawable.ic_baseline_directions_run_24px);
+        mImageView.setImageResource(PubSetup.ReturnResourceID(child.facility));
 
     }
+
+
 
 }

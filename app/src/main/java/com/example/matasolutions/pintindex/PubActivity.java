@@ -1,6 +1,7 @@
 package com.example.matasolutions.pintindex;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -79,45 +80,12 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         prices = (String) getIntent().getSerializableExtra("prices");
         //facilities = (String) getIntent().getSerializableExtra("facilities");
         facilityArrayList = (ArrayList<Facility>) getIntent().getSerializableExtra("facilitiesList");
-        FacilitySetup(pub);
 
         ratings = (String) getIntent().getSerializableExtra("ratings");
 
         setTitle(pub.name);
 
     }
-
-    public void FacilitySetup(Pub pub){
-
-        for(int i=0;i<facilityArrayList.size();i++){
-
-            Facility current = facilityArrayList.get(i);
-
-            switch(current.type){
-
-                case CAR_PARKING:
-                    current.logo = findViewById(R.id.icon_car_parking);
-                    break;
-                case LIVE_SPORTS:
-                    current.logo = findViewById(R.id.icon_live_sports);
-                    break;
-                case FOOD_SNACKS:
-                    current.logo = findViewById(R.id.icon_food_snacks);
-                    break;
-                case FREE_WIFI:
-                    current.logo = findViewById(R.id.icon_free_wifi);
-                    break;
-                case LIVE_MUSIC:
-                    current.logo = findViewById(R.id.icon_live_music);
-                    break;
-                default:
-                    current.logo = null;
-            }
-
-        }
-
-    }
-
 
 
     private void AddPubPageContent() {
