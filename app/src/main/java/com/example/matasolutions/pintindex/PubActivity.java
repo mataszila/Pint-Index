@@ -5,7 +5,9 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -27,6 +29,8 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
     String prices;
     String facilities;
     String ratings;
+
+    ArrayList<Facility> facilityArrayList;
 
 
     @Override
@@ -73,10 +77,44 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         pub.name = (String) getIntent().getSerializableExtra("name");
         workingHours =  (String) getIntent().getSerializableExtra("workingHours");
         prices = (String) getIntent().getSerializableExtra("prices");
-        facilities = (String) getIntent().getSerializableExtra("facilities");
+        //facilities = (String) getIntent().getSerializableExtra("facilities");
+        facilityArrayList = (ArrayList<Facility>) getIntent().getSerializableExtra("facilitiesList");
+        FacilitySetup(pub);
+
         ratings = (String) getIntent().getSerializableExtra("ratings");
 
         setTitle(pub.name);
+
+    }
+
+    public void FacilitySetup(Pub pub){
+
+        for(int i=0;i<facilityArrayList.size();i++){
+
+            Facility current = facilityArrayList.get(i);
+
+            switch(current.type){
+
+                case CAR_PARKING:
+                    current.logo = findViewById(R.id.icon_car_parking);
+                    break;
+                case LIVE_SPORTS:
+                    current.logo = findViewById(R.id.icon_live_sports);
+                    break;
+                case FOOD_SNACKS:
+                    current.logo = findViewById(R.id.icon_food_snacks);
+                    break;
+                case FREE_WIFI:
+                    current.logo = findViewById(R.id.icon_free_wifi);
+                    break;
+                case LIVE_MUSIC:
+                    current.logo = findViewById(R.id.icon_live_music);
+                    break;
+                default:
+                    current.logo = null;
+            }
+
+        }
 
     }
 
@@ -110,7 +148,13 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         ArrayList<PubPageContentChild> facilitiesChild = new ArrayList<PubPageContentChild>();
 
-        facilitiesChild.add(new PubPageContentChild(facilities));
+        for(int i=0;i<facilityArrayList.size();i++){
+
+            Facility current = facilityArrayList.get(i);
+
+            facilitiesChild.add(new PubPageContentChild(current.name,current));
+
+        }
 
         parentList.add(new PubPageContentParent("Facilities", facilitiesChild));
 

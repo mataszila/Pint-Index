@@ -56,7 +56,7 @@ public class Pub  {
 
         weekOpeningHours = new WeekOpeningHours(null);
         prices = new Prices();
-        facilities = new Facilities();
+        facilities = new Facilities(null);
         ratings = new Ratings();
     }
 

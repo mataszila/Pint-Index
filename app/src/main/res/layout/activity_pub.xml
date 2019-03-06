@@ -33,5 +33,41 @@
 
     </RelativeLayout>
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_fastfood_24px"
+        android:id="@+id/icon_food_snacks"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_directions_run_24px"
+        android:id="@+id/icon_live_sports"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_local_parking_24px"
+        android:id="@+id/icon_car_parking"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_music_note_24px"
+        android:id="@+id/icon_live_music"
+        />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_baseline_network_wifi_24px"
+        android:id="@+id/icon_free_wifi"
+        />
+
+
 
 </LinearLayout>

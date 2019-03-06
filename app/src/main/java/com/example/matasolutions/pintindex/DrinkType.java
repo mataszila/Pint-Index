@@ -1,4 +1,5 @@
 package com.example.matasolutions.pintindex;
 
-public class DrinkType {
+public enum DrinkType {
+    BEER,WINE,GIN,VODKA,COCKTAIL
 }

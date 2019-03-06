@@ -113,6 +113,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 intent.putExtra("workingHours",thisPub.weekOpeningHours.ContentToString());
                 intent.putExtra("prices", thisPub.prices.ContentToString());
                 intent.putExtra("facilities", thisPub.facilities.ContentToString());
+                intent.putExtra("facilitiesList", thisPub.facilities.facilities);
                 intent.putExtra("ratings", thisPub.ratings.ContentToString());
 
                 intent.putExtra("bundle", args);

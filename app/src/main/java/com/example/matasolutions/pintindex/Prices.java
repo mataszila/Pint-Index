@@ -6,15 +6,43 @@ class Prices implements PubPageContentInterface{
 
     ArrayList<Price> priceList;
 
-    public Prices(){
+    public Prices(ArrayList<Price> priceList){
 
-        priceList  = new ArrayList<Price>();
+        this.priceList  =  priceList;
+    }
 
+    public Prices() {
+        priceList = new ArrayList<Price>();
     }
 
     @Override
     public String ContentToString() {
-        return "Prices not available";
+
+        StringBuilder sb = new StringBuilder();
+
+        for(int i = 0;i<priceList.size();i++){
+
+            Price current = priceList.get(i);
+
+
+            sb.append(current.product.name + " " + current.price + "\n" );
+
+
+
+
+
+
+
+        }
+
+
+
+        //sb.append(thisInstance.SingleOpeningHoursToString() + "\n");
+
+
+        return sb.toString();
+
+
     }
 
 }
