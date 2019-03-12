@@ -110,6 +110,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 // Will have to be fixed
 
+                intent.putExtra("workingHoursList", thisPub.weekOpeningHours.openingHours);
+                intent.putExtra("pricesList", )
+
+
                 intent.putExtra("workingHours",thisPub.weekOpeningHours.ContentToString());
                 intent.putExtra("prices", thisPub.prices.ContentToString());
                 intent.putExtra("facilities", thisPub.facilities.ContentToString());
