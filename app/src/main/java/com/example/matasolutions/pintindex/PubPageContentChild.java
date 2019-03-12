@@ -7,8 +7,7 @@ import android.widget.ImageView;
 public class PubPageContentChild implements Parcelable {
 
     public final String name;
-    //Optional
-
+    public PubPageCategory type;
 
     public Facility facility;
 
@@ -17,9 +16,10 @@ public class PubPageContentChild implements Parcelable {
         this.name = name;
     }
 
-    public PubPageContentChild(String name,Facility facility){
+    public PubPageContentChild(String name,PubPageCategory type, Facility facility){
 
         this.facility = facility;
+        this.type = type;
         this.name = name;
     }
 

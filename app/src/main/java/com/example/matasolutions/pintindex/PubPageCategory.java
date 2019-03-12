@@ -1,4 +1,8 @@
 package com.example.matasolutions.pintindex;
 
-public class PubPageCategory {
+public enum PubPageCategory {
+    OPENING_HOURS,
+    PRICES,
+    FACILITIES,
+    RATINGS
 }

@@ -2,16 +2,17 @@ package com.example.matasolutions.pintindex;
 
 import android.util.Pair;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class SingleOpeningHours {
+public class SingleOpeningHours implements Serializable {
 
-    public String dayOfTheWeek;
+    public Day dayOfTheWeek;
     public String openingTime;
     public String closingTime;
 
 
-    public SingleOpeningHours(String dayOfTheWeek,String openingTime, String closingTime){
+    public SingleOpeningHours(Day dayOfTheWeek,String openingTime, String closingTime){
 
         this.dayOfTheWeek = dayOfTheWeek;
         this.openingTime = openingTime;

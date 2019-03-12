@@ -5,6 +5,9 @@ import java.util.ArrayList;
 class Prices implements PubPageContentInterface{
 
     ArrayList<Price> priceList;
+    public final PubPageCategory category = PubPageCategory.PRICES;
+
+
 
     public Prices(ArrayList<Price> priceList){
 

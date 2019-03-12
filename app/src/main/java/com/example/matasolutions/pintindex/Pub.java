@@ -54,10 +54,6 @@ public class Pub  {
         this.coordinates = new LatLng(lat, lng);
         this.name = name;
 
-        weekOpeningHours = new WeekOpeningHours(null);
-        prices = new Prices();
-        facilities = new Facilities(null);
-        ratings = new Ratings();
     }
 
     public Pub(){

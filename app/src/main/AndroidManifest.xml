@@ -45,6 +45,7 @@
         <activity
             android:name=".PubActivity"
             android:label="@string/title_activity_pub" />
+        <activity android:name=".PubCompareActivity"></activity>
     </application>
 
 </manifest>

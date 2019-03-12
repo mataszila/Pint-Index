@@ -23,6 +23,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import net.danlew.android.joda.JodaTimeAndroid;
+
 import java.io.Serializable;
 import java.text.DecimalFormat;
 
@@ -39,6 +41,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        JodaTimeAndroid.init(this);
+
 
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
         locationListener = setupLocationListener();
@@ -110,11 +115,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 // Will have to be fixed
 
+                intent.putExtra("workingHoursList", thisPub.weekOpeningHours.openingHours);
                 intent.putExtra("workingHours",thisPub.weekOpeningHours.ContentToString());
                 intent.putExtra("prices", thisPub.prices.ContentToString());
-                intent.putExtra("facilities", thisPub.facilities.ContentToString());
                 intent.putExtra("facilitiesList", thisPub.facilities.facilities);
                 intent.putExtra("ratings", thisPub.ratings.ContentToString());
+                intent.putExtra("ratingsList", thisPub.ratings.ratings);
+                intent.putExtra("averageRating", thisPub.ratings.averageRating);
 
                 intent.putExtra("bundle", args);
 
@@ -122,7 +129,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
-
 
     }
 

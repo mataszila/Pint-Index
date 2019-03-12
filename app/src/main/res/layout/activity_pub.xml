@@ -13,25 +13,69 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="2"
+        android:layout_weight="20"
         tools:context=".MapsActivity" />
 
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="fill_vertical">
 
-    <RelativeLayout
+
+    <GridLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:rowCount="2"
+        android:columnCount="2">
+
+        <Button
+            android:id="@+id/grid_rating_button1"
+            android:background="@drawable/buttonshape"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+        <Button
+            android:id="@+id/grid_rating_button2"
+            android:background="@drawable/buttonshape"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/ic_twotone_star_rate_18px"
+            />
+        <Button
+            android:id="@+id/grid_rating_button3"
+            android:background="@drawable/buttonshape"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+        <Button
+            android:id="@+id/grid_rating_button4"
+            android:background="@drawable/buttonshape"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            />
+
+        </GridLayout>
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_weight="1">
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerview"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/recyclerview">
+            android:background="@android:color/white"
+            >
         </androidx.recyclerview.widget.RecyclerView>
 
 
-
-
-    </RelativeLayout>
+    </LinearLayout>
 
 
 
