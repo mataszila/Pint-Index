@@ -76,21 +76,16 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         Bundle bundle = getIntent().getParcelableExtra("bundle");
         pub.coordinates = bundle.getParcelable("coordinates");
         pub.name = (String) getIntent().getSerializableExtra("name");
-        workingHours =  (String) getIntent().getSerializableExtra("workingHours");
-        prices = (String) getIntent().getSerializableExtra("prices");
-        //facilities = (String) getIntent().getSerializableExtra("facilities");
-        facilityArrayList = (ArrayList<Facility>) getIntent().getSerializableExtra("facilitiesList");
 
         ratings = (String) getIntent().getSerializableExtra("ratings");
 
         pub.coordinates = bundle.getParcelable("coordinates");
-        pub.name = (String) getIntent().getSerializableExtra("name");
-        marker;
-        pub.weekOpeningHours = new WeekOpeningHours((ArrayList<SingleOpeningHours>) getIntent().getSerializableExtra("workingHoursList"));
-        prices;
-        facilities;
-        ratings;
+        //marker;
 
+        pub.weekOpeningHours = new WeekOpeningHours((ArrayList<SingleOpeningHours>) getIntent().getSerializableExtra("workingHoursList"));
+        pub.prices = new Prices((ArrayList<Price>) getIntent().getSerializableExtra("pricesList"));
+        pub.facilities = new Facilities((ArrayList<Facility>) getIntent().getSerializableExtra("facilitiesList"));
+        pub.ratings = new Ratings();
 
 
 
