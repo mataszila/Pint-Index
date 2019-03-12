@@ -1,6 +1,11 @@
 package com.example.matasolutions.pintindex;
 
+import android.graphics.drawable.Drawable;
+import android.widget.ImageView;
+
 import java.util.ArrayList;
+
+import androidx.core.content.res.ResourcesCompat;
 
 public class PubSetup {
 
@@ -15,7 +20,15 @@ public class PubSetup {
 
     private void AddPubs(){
 
+
+        //Example setup for one pub:
+
+
         Pub pub1 = new Pub("Bar Loco",54.9755819,-1.6202004);
+
+        //Opening hours
+
+
         ArrayList<SingleOpeningHours> singleOpeningHours = new ArrayList<SingleOpeningHours>();
 
         singleOpeningHours.add(new SingleOpeningHours("Monday", "09:00AM", "01:00AM"));
@@ -26,23 +39,77 @@ public class PubSetup {
         singleOpeningHours.add(new SingleOpeningHours("Saturday", "09:00AM", "01:00AM"));
         singleOpeningHours.add(new SingleOpeningHours("Sunday", "09:00AM", "01:00AM"));
 
+        ProductSetup productSetup = new ProductSetup();
+
+        //Prices
+
+        ArrayList<Price> singlePrices = new ArrayList<Price>();
+
+        singlePrices.add(new Price(productSetup.products.get(0),3.50));
+        singlePrices.add(new Price(productSetup.products.get(1),3.75));
+        singlePrices.add(new Price(productSetup.products.get(2),3.25));
+        singlePrices.add(new Price(productSetup.products.get(3),4.00));
 
         WeekOpeningHours weekOpeningHours = new WeekOpeningHours(singleOpeningHours);
 
         pub1.setWeekOpeningHours(weekOpeningHours);
-        pub1.setPrices(new Prices());
-        pub1.setFacilities(new Facilities());
+        pub1.setPrices(new Prices(singlePrices));
+
+        //Facilities;
+
+        ArrayList<Facility>  facilityInitList = new ArrayList<Facility>();
+
+        facilityInitList.add(new Facility(FacilityType.CAR_PARKING,"Car Parking"));
+        facilityInitList.add(new Facility(FacilityType.LIVE_SPORTS,"Live Sports"));
+
+
+
+        pub1.setFacilities(new Facilities(facilityInitList));
         pub1.setRatings(new Ratings());
 
         pubs.add(pub1);
+
+        // End of setup for one pub.
+
         pubs.add(new Pub("Hancock",54.979915,-1.6136037));
         pubs.add(new Pub("The Strawberry",54.9748055,-1.6217146));
         pubs.add(new Pub("Trent House",54.977095,-1.6205557));
         pubs.add(new Pub("Luther's",54.9789707,-1.6172808));
 
+    }
 
+
+    public static int ReturnResourceID(Facility current){
+
+        int answer = 0;
+
+                switch(current.type){
+
+                    case CAR_PARKING:
+                        answer = R.drawable.ic_baseline_local_parking_24px;
+                        break;
+                    case LIVE_SPORTS:
+                        answer = R.drawable.ic_baseline_directions_run_24px;
+                        break;
+                    case FOOD_SNACKS:
+                        answer = R.drawable.ic_baseline_fastfood_24px;
+                        break;
+                    case FREE_WIFI:
+                        answer = R.drawable.ic_baseline_network_wifi_24px;
+                        break;
+                    case LIVE_MUSIC:
+                        answer = R.drawable.ic_baseline_music_note_24px;
+                        break;
+                    default:
+                        answer = 0;
+                }
+
+        return answer;
 
     }
+
+
+
 
 
 

@@ -1,11 +1,14 @@
 package com.example.matasolutions.pintindex;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -27,6 +30,8 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
     String prices;
     String facilities;
     String ratings;
+
+    ArrayList<Facility> facilityArrayList;
 
 
     @Override
@@ -73,13 +78,14 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         pub.name = (String) getIntent().getSerializableExtra("name");
         workingHours =  (String) getIntent().getSerializableExtra("workingHours");
         prices = (String) getIntent().getSerializableExtra("prices");
-        facilities = (String) getIntent().getSerializableExtra("facilities");
+        //facilities = (String) getIntent().getSerializableExtra("facilities");
+        facilityArrayList = (ArrayList<Facility>) getIntent().getSerializableExtra("facilitiesList");
+
         ratings = (String) getIntent().getSerializableExtra("ratings");
 
         setTitle(pub.name);
 
     }
-
 
 
     private void AddPubPageContent() {
@@ -110,7 +116,13 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         ArrayList<PubPageContentChild> facilitiesChild = new ArrayList<PubPageContentChild>();
 
-        facilitiesChild.add(new PubPageContentChild(facilities));
+        for(int i=0;i<facilityArrayList.size();i++){
+
+            Facility current = facilityArrayList.get(i);
+
+            facilitiesChild.add(new PubPageContentChild(current.name,current));
+
+        }
 
         parentList.add(new PubPageContentParent("Facilities", facilitiesChild));
 

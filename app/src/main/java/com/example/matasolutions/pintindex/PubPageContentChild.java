@@ -2,15 +2,27 @@ package com.example.matasolutions.pintindex;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.widget.ImageView;
 
 public class PubPageContentChild implements Parcelable {
 
     public final String name;
+    //Optional
+
+
+    public Facility facility;
 
 
     public PubPageContentChild(String name) {
         this.name = name;
     }
+
+    public PubPageContentChild(String name,Facility facility){
+
+        this.facility = facility;
+        this.name = name;
+    }
+
 
 
     protected PubPageContentChild(Parcel in) {
@@ -37,5 +49,6 @@ public class PubPageContentChild implements Parcelable {
     @Override
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(name);
+        parcel.writeValue(facility);
     }
 }
