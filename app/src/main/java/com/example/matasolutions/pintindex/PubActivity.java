@@ -202,6 +202,11 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         SingleOpeningHours openingHoursToday = openingHoursArrayList.get(currentDay - 2);
 
+        Log.i("TAG",FormatHours(openingHoursToday.openingTime));
+        Log.i("TAG",FormatHours(openingHoursToday.closingTime));
+        Log.i("TAG",getCurrentHHmm(calendar));
+
+
 
         if (isThePubOpen(FormatHours(openingHoursToday.openingTime), FormatHours(openingHoursToday.closingTime), getCurrentHHmm(calendar))) {
             return "OPEN NOW";
@@ -212,8 +217,31 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
+    // 23:3:00
+
     private String FormatHours(String hhmm){
-        return hhmm + ":00";
+
+        StringBuilder sb = new StringBuilder();
+
+        boolean didCheck = false;
+
+        for (char c : hhmm.toCharArray())
+        {
+
+            if(c == ':' && !didCheck){
+                Calendar calendar = Calendar.getInstance();
+                int currentMinutes = calendar.get(Calendar.MINUTE);
+
+                if(currentMinutes < 10){
+                    sb.append("0");
+                    didCheck = true;
+                }
+            }
+            sb.append(c);
+        }
+        sb.append(":00");
+
+        return sb.toString();
 
     }
 
