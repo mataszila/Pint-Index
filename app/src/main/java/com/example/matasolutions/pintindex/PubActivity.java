@@ -6,12 +6,8 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,15 +19,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.LocalTime;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-
-import org.joda.time.DateTime;
-import org.joda.time.Interval;
 
 public class PubActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -40,18 +28,10 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
     String workingHours;
     String prices;
+    String facilities;
     String ratings;
 
     ArrayList<Facility> facilityArrayList;
-    ArrayList<Rating> ratingArrayList;
-    ArrayList<SingleOpeningHours> openingHoursArrayList;
-    Button mGridButton1;
-    Button mGridButton2;
-    Button mGridButton3;
-    Button mGridButton4;
-
-
-    double averageRating;
 
 
     @Override
@@ -59,12 +39,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pub);
 
-        try {
-            setupPub();
-            SetupToolbar();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        setupPub();
 
         AddPubPageContent();
 
@@ -73,7 +48,6 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
     }
-
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
@@ -91,54 +65,31 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         LatLng sydney = pub.coordinates;
         mMap.addMarker(new MarkerOptions().position(sydney).title(pub.name));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(pub.coordinates.latitude, pub.coordinates.longitude), 15.0f));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(pub.coordinates.latitude,pub.coordinates.longitude), 15.0f));
 
     }
 
-    private void setupPub() throws ParseException {
+    private void setupPub(){
 
         pub = new Pub();
 
         Bundle bundle = getIntent().getParcelableExtra("bundle");
         pub.coordinates = bundle.getParcelable("coordinates");
         pub.name = (String) getIntent().getSerializableExtra("name");
-        workingHours = (String) getIntent().getSerializableExtra("workingHours");
-        prices = (String) getIntent().getSerializableExtra("prices");
-        averageRating = (Double) getIntent().getSerializableExtra("averageRating");
-
-        facilityArrayList = (ArrayList<Facility>) getIntent().getSerializableExtra("facilitiesList");
-        ratingArrayList = (ArrayList<Rating>) getIntent().getSerializableExtra("ratingsList");
-        openingHoursArrayList = (ArrayList<SingleOpeningHours>) getIntent().getSerializableExtra("workingHoursList");
 
         ratings = (String) getIntent().getSerializableExtra("ratings");
 
+        pub.coordinates = bundle.getParcelable("coordinates");
+        //marker;
+
+        pub.weekOpeningHours = new WeekOpeningHours((ArrayList<SingleOpeningHours>) getIntent().getSerializableExtra("workingHoursList"));
+        pub.prices = new Prices((ArrayList<Price>) getIntent().getSerializableExtra("pricesList"));
+        pub.facilities = new Facilities((ArrayList<Facility>) getIntent().getSerializableExtra("facilitiesList"));
+        pub.ratings = new Ratings();
+
+
+
         setTitle(pub.name);
-
-    }
-
-    private void SetupToolbar() throws ParseException {
-
-        mGridButton1 = findViewById(R.id.grid_rating_button1);
-        mGridButton2 = findViewById(R.id.grid_rating_button2);
-        mGridButton3 = findViewById(R.id.grid_rating_button3);
-        mGridButton4 = findViewById(R.id.grid_rating_button4);
-
-        mGridButton1.setText(CheckIfOpen());
-
-
-        mGridButton2.setText(String.valueOf(averageRating) + "/5");
-        mGridButton4.setText("COMPARE WITH...");
-
-        mGridButton4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(getApplicationContext(),PubCompareActivity.class);
-                intent.putExtra("pubName", pub.name);
-                startActivity(intent);
-
-            }
-        });
 
     }
 
@@ -151,8 +102,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         ArrayList<PubPageContentParent> parentList = new ArrayList<PubPageContentParent>();
 
-        //OpeningHours
-
+        //WeekOpeningHours
 
         ArrayList<PubPageContentChild> openingHoursChild = new ArrayList<PubPageContentChild>();
 
@@ -160,9 +110,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         parentList.add(new PubPageContentParent("Opening Hours", openingHoursChild));
 
-
         //Prices
-
 
         ArrayList<PubPageContentChild> pricesChild = new ArrayList<PubPageContentChild>();
 
@@ -170,14 +118,19 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         parentList.add(new PubPageContentParent("Prices", pricesChild));
 
-
         //Facilities
 
+        ArrayList<PubPageContentChild> facilitiesChild = new ArrayList<PubPageContentChild>();
 
-        ArrayList<PubPageContentChild> facilitiesChild = PubSetup.AddToChildList(facilityArrayList);
+        for(int i=0;i<facilityArrayList.size();i++){
+
+            Facility current = facilityArrayList.get(i);
+
+            facilitiesChild.add(new PubPageContentChild(current.name,current));
+
+        }
 
         parentList.add(new PubPageContentParent("Facilities", facilitiesChild));
-
 
         //Rating
 
@@ -194,114 +147,6 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
-    private String CheckIfOpen() throws ParseException {
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.setFirstDayOfWeek(Calendar.MONDAY);
-        int currentDay = calendar.get(Calendar.DAY_OF_WEEK);
-
-        SingleOpeningHours openingHoursToday = openingHoursArrayList.get(currentDay - 2);
-
-        Log.i("TAG",FormatHours(openingHoursToday.openingTime));
-        Log.i("TAG",FormatHours(openingHoursToday.closingTime));
-        Log.i("TAG",getCurrentHHmm(calendar));
-
-
-
-        if (isThePubOpen(FormatHours(openingHoursToday.openingTime), FormatHours(openingHoursToday.closingTime), getCurrentHHmm(calendar))) {
-            return "OPEN NOW";
-        }
-        else{
-            return "CLOSED";
-        }
-
-    }
-
-    // 23:3:00
-
-    private String FormatHours(String hhmm){
-
-        StringBuilder sb = new StringBuilder();
-
-        boolean didCheck = false;
-
-        for (char c : hhmm.toCharArray())
-        {
-
-            if(c == ':' && !didCheck){
-                Calendar calendar = Calendar.getInstance();
-                int currentMinutes = calendar.get(Calendar.MINUTE);
-
-                if(currentMinutes < 10){
-                    sb.append("0");
-                    didCheck = true;
-                }
-            }
-            sb.append(c);
-        }
-        sb.append(":00");
-
-        return sb.toString();
-
-    }
-
-    private String getCurrentHHmm(Calendar calendar){
-        int hours = calendar.get(Calendar.HOUR_OF_DAY);
-        int minutes = calendar.get(Calendar.MINUTE);
-        StringBuilder sb = new StringBuilder();
-        sb.append(hours);
-        sb.append(":");
-        sb.append(minutes);
-
-        return FormatHours(sb.toString());
-    }
-
-    public static boolean isThePubOpen(String initialTime, String finalTime,
-                                       String currentTime) throws ParseException {
-
-            String reg = "^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$";
-            if (initialTime.matches(reg) && finalTime.matches(reg) &&
-                    currentTime.matches(reg))
-            {
-                boolean valid = false;
-                //Start Time
-                //all times are from java.util.Date
-                Date inTime = new SimpleDateFormat("HH:mm:ss").parse(initialTime);
-                Calendar calendar1 = Calendar.getInstance();
-                calendar1.setTime(inTime);
-
-                //Current Time
-                Date checkTime = new SimpleDateFormat("HH:mm:ss").parse(currentTime);
-                Calendar calendar3 = Calendar.getInstance();
-                calendar3.setTime(checkTime);
-
-                //End Time
-                Date finTime = new SimpleDateFormat("HH:mm:ss").parse(finalTime);
-                Calendar calendar2 = Calendar.getInstance();
-                calendar2.setTime(finTime);
-
-                if (finalTime.compareTo(initialTime) < 0)
-                {
-                    calendar2.add(Calendar.DATE, 1);
-                    //calendar3.add(Calendar.DATE, 1);
-                }
-
-                java.util.Date actualTime = calendar3.getTime();
-                if ((actualTime.after(calendar1.getTime()) ||
-                        actualTime.compareTo(calendar1.getTime()) == 0) &&
-                        actualTime.before(calendar2.getTime()))
-                {
-                    valid = true;
-                    return valid;
-                }
-                else{
-                    return false;
-                }
-            }
-            else {
-                throw new IllegalArgumentException("Not a valid time, expecting HH:MM:SS format");
-            }
-    }
 
 }
 
