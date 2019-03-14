@@ -84,6 +84,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         mMap = googleMap;
         setupMap();
+        setupMarkers();
+        setupListeners();
 
     }
 
@@ -95,7 +97,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude()), 15.0f));
         }
 
-        setupMarkers();
+    }
+
+    private void setupListeners(){
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -111,6 +115,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 return false;
             }
         });
+
 
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
@@ -140,7 +145,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+
+
     }
+
 
     private Pub pubLookupByMarker(Marker marker){
 
@@ -151,9 +159,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (marker.equals(thisPub.marker)) {
                 return thisPub;
             }
-
         }
-
         return new Pub();
     }
 
@@ -163,9 +169,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         for(int i=0;i<pubSetup.pubs.size();i++){
 
-
-            if(currentLocation!= null){
-
                 Pub thisPub = pubSetup.pubs.get(i);
                 updateCurrentLocation();
                 LatLng curLatLng = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
@@ -174,7 +177,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
                 thisPub.marker = mMap.addMarker(new MarkerOptions().position(thisPub.coordinates).title(title));
-            }
+
 
 
         }

@@ -52,13 +52,13 @@ public class StartActivity extends AppCompatActivity {
     public  boolean statusCheck() {
         final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        if (!manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 
-            return false;
+            return true;
 
         }
 
-        return true;
+        return false;
     }
 
     private void buildAlertMessageNoGps() {
