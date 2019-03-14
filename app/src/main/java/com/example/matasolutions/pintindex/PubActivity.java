@@ -85,9 +85,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         pub.weekOpeningHours = new WeekOpeningHours((ArrayList<SingleOpeningHours>) getIntent().getSerializableExtra("workingHoursList"));
         pub.prices = new Prices((ArrayList<Price>) getIntent().getSerializableExtra("pricesList"));
         pub.facilities = new Facilities((ArrayList<Facility>) getIntent().getSerializableExtra("facilitiesList"));
-        pub.ratings = new Ratings();
-
-
+        pub.ratings = new Ratings((ArrayList<Rating>) getIntent().getSerializableExtra("ratingsList"));
 
         setTitle(pub.name);
 
@@ -122,11 +120,11 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         ArrayList<PubPageContentChild> facilitiesChild = new ArrayList<PubPageContentChild>();
 
-        for(int i=0;i<facilityArrayList.size();i++){
+        for(int i=0;i<pub.facilities.facilities.size();i++){
 
-            Facility current = facilityArrayList.get(i);
+            Facility current = pub.facilities.facilities.get(i);
 
-            facilitiesChild.add(new PubPageContentChild(current.name,current));
+            facilitiesChild.add(new PubPageContentChild(current.name,current.category,current));
 
         }
 
