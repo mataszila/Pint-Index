@@ -7,8 +7,11 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -114,11 +117,12 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         toolbar_text_1.setText(SetPubOpeningStatus());
 
+
     }
 
-    
 
-    private String SetPubOpeningStatus(){
+
+    private SpannableString SetPubOpeningStatus(){
 
         SingleOpeningHours hoursForToday  = pub.weekOpeningHours.openingHours.get(GetCorrectDayOfWeek()-1);
 
@@ -127,10 +131,10 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
             if(isPubOpen(hoursForToday.openingTime,hoursForToday.closingTime ,getHoursMinutesNow() )){
 
 
-                return FormatStatusText("OPEN", "CLOSES", hoursForToday.closingTime);
+                return FormatStatusText("OPEN NOW", "UNTIL ", hoursForToday.closingTime);
             }
             else{
-                return FormatStatusText("CLOSED", "OPENS", hoursForToday.openingTime);
+                return FormatStatusText("CLOSED", "OPENS ", hoursForToday.openingTime);
             }
 
 
@@ -138,13 +142,30 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
             e.printStackTrace();
         }
 
-        return "STATUS N/A";
+        return new SpannableString("N/A");
 
     }
 
-    private String FormatStatusText(String status, String action, String actionTime) {
+    private SpannableString FormatStatusText(String status, String action, String actionTime) {
 
-        String ans = status + " (" + action + actionTime + ")";
+
+        StringBuilder sb = new StringBuilder();
+
+        for(char c : actionTime.toCharArray()){
+
+            if(c != ':'){
+                sb.append(c);
+            }
+
+
+        }
+
+        String prep = status + " (" + action + actionTime + ")";
+
+        SpannableString ans = new SpannableString(prep);
+
+        ans.setSpan(new ForegroundColorSpan(Color.GREEN), status.length(), ans.length(), 0);
+
 
         return ans;
 
