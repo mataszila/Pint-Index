@@ -171,14 +171,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 Pub thisPub = pubSetup.pubs.get(i);
                 updateCurrentLocation();
-                LatLng curLatLng = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
+                LatLng curLatLng = currentLocation  == null ? null : new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
 
                 String title = formatMarkerTitle(thisPub.name, CalculationByDistance(curLatLng, thisPub.coordinates));
 
-
                 thisPub.marker = mMap.addMarker(new MarkerOptions().position(thisPub.coordinates).title(title));
-
-
 
         }
 
@@ -188,7 +185,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         double rounded = Math.round(distance * 100.0) / 100.0;
 
-        String s = name + " " + String.valueOf(rounded) + "km";
+        String s = currentLocation == null ? name : name + " " + String.valueOf(rounded) + "km";
         return s;
     }
 
@@ -358,8 +355,5 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         }
     }
-
-
-
 
 }

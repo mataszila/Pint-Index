@@ -2,4 +2,7 @@
     <string name="app_name">Pint Index</string>
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_pub">Map</string>
+    <string name="open_now_un">OPEN NOW (UNTIL 1 AM)\n
+</string>
+
 </resources>

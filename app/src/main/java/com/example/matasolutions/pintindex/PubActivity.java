@@ -91,6 +91,10 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
+    private void SetupToolbar(){
+
+    }
+
 
     private void AddPubPageContent() {
 
