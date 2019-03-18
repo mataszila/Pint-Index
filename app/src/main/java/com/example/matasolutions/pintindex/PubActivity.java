@@ -7,11 +7,13 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -42,9 +44,12 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
     ArrayList<Facility> facilityArrayList;
 
-    CardView toolbar_card_1;
     TextView toolbar_text_1;
+    TextView toolbar_text_2;
+    TextView toolbar_text_3;
+    TextView toolbar_text_4;
 
+    CardView toolbar_card_1;
     CardView toolbar_card_2;
     CardView toolbar_card_3;
     CardView toolbar_card_4;
@@ -96,8 +101,6 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         pub.coordinates = bundle.getParcelable("coordinates");
         pub.name = (String) getIntent().getSerializableExtra("name");
 
-        ratings = (String) getIntent().getSerializableExtra("ratings");
-
         pub.coordinates = bundle.getParcelable("coordinates");
         //marker;
 
@@ -112,14 +115,30 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void SetupToolbar(){
 
-        toolbar_card_1 = findViewById(R.id.toolbar_card_1);
         toolbar_text_1 = findViewById(R.id.toolbar_text_1);
+        toolbar_text_2 = findViewById(R.id.toolbar_text_2);
+        toolbar_text_4 = findViewById(R.id.toolbar_text_4);
+
+        toolbar_card_1 = findViewById(R.id.toolbar_card_1);
+        toolbar_card_4 = findViewById(R.id.toolbar_card_4);
 
         toolbar_text_1.setText(SetPubOpeningStatus());
+        toolbar_text_2.setText(ShowRatingText());
+        toolbar_text_4.setText("COMPARE WITH...");
 
+        toolbar_card_4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(),PubCompareActivity.class);
+                    startActivity(intent);
+            }
+        });
 
     }
 
+    private String ShowRatingText(){
+        return pub.ratings.averageRating + "/5";
+    }
 
 
     private SpannableString SetPubOpeningStatus(){
@@ -163,8 +182,8 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         String prep = status + " (" + action + actionTime + ")";
 
         SpannableString ans = new SpannableString(prep);
-
-        ans.setSpan(new ForegroundColorSpan(Color.GREEN), status.length(), ans.length(), 0);
+        //#008B00
+        ans.setSpan(new ForegroundColorSpan(Color.rgb(0,139,0)), status.length(), ans.length(), 0);
 
 
         return ans;
