@@ -1,6 +1,7 @@
 package com.example.matasolutions.pintindex;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -33,6 +34,15 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
     ArrayList<Facility> facilityArrayList;
 
+    CardView toolbar_card_1;
+    TextView toolbar_text_1;
+
+    CardView toolbar_card_2;
+    CardView toolbar_card_3;
+    CardView toolbar_card_4;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +50,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_pub);
 
         setupPub();
+        SetupToolbar();
 
         AddPubPageContent();
 
@@ -93,7 +104,25 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void SetupToolbar(){
 
+        toolbar_card_1 = findViewById(R.id.toolbar_card_1);
+        toolbar_text_1 = findViewById(R.id.toolbar_text_1);
+        toolbar_text_1.setText("OPEN NOW");
+
     }
+
+    private boolean CheckPubOpen(){
+
+        for(int i=0;i<pub.weekOpeningHours.openingHours.size();i++){
+            
+
+        }
+
+
+
+
+
+    }
+
 
 
     private void AddPubPageContent() {
