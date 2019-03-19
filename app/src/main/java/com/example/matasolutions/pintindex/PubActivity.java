@@ -8,8 +8,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
@@ -54,6 +56,11 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
     CardView toolbar_card_3;
     CardView toolbar_card_4;
 
+    ArrayList<ImageView> facilityLogos;
+
+    RecyclerView toolbar_recyclerview;
+    LinearLayoutManager layoutManager;
+
 
 
 
@@ -64,6 +71,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         setupPub();
         SetupToolbar();
+
 
         AddPubPageContent();
 
@@ -134,7 +142,46 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
 
+        SetupFacilityLogos();
+
+        SetupRecyclerView();
+
     }
+
+    private void SetupRecyclerView(){
+
+        layoutManager= new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false);
+
+        toolbar_recyclerview = findViewById(R.id.toolbar_recyclerview);
+
+        toolbar_recyclerview.setLayoutManager(layoutManager);
+        RecyclerView.Adapter mAdapter = new MyAdapter(facilityLogos);
+        toolbar_recyclerview.setAdapter(mAdapter);
+
+
+    }
+
+
+    private void SetupFacilityLogos(){
+
+        facilityLogos = new ArrayList<ImageView>();
+        for(int i=0;i<pub.facilities.facilities.size();i++){
+
+            Facility thisFacility = pub.facilities.facilities.get(i);
+
+            ImageView imageView = new ImageView(this);
+
+            imageView.setImageResource(PubSetup.ReturnResourceID(thisFacility));
+
+            //Drawable drawable = ResourcesCompat.getDrawable(res,PubSetup.ReturnResourceID(thisFacility) , null);
+
+            facilityLogos.add(imageView);
+        }
+
+    }
+
+
+
 
     private String ShowRatingText(){
         return pub.ratings.averageRating + "/5";

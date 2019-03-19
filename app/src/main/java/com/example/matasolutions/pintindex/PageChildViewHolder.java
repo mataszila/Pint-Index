@@ -34,8 +34,6 @@ public class PageChildViewHolder extends ChildViewHolder {
                 @Override
                 public void onClick(View view) {
 
-
-
                     mTextView.setVisibility(View.VISIBLE);
                 }
             });
