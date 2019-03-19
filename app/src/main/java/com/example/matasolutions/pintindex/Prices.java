@@ -23,28 +23,22 @@ class Prices implements PubPageContentInterface{
 
         StringBuilder sb = new StringBuilder();
 
-        for(int i = 0;i<priceList.size();i++){
+        if(priceList!= null) {
 
-            Price current = priceList.get(i);
+            for(int i = 0;i<priceList.size();i++){
 
+                Price current = priceList.get(i);
 
-            sb.append(current.product.name + " " + current.price + "\n" );
+                sb.append(current.product.name + " " + current.price + "\n" );
 
+            }
 
-
-
-
+            return sb.toString();
 
 
         }
 
-
-
-        //sb.append(thisInstance.SingleOpeningHoursToString() + "\n");
-
-
-        return sb.toString();
-
+            return "Prices not available";
 
     }
 

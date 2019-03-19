@@ -235,8 +235,6 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         return ans;
 
-
-
     }
 
 
@@ -359,7 +357,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         ArrayList<PubPageContentChild> openingHoursChild = new ArrayList<PubPageContentChild>();
 
-        openingHoursChild.add(new PubPageContentChild(workingHours));
+        openingHoursChild.add(new PubPageContentChild(pub.weekOpeningHours.ContentToString()));
 
         parentList.add(new PubPageContentParent("Opening Hours", openingHoursChild));
 
@@ -367,7 +365,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         ArrayList<PubPageContentChild> pricesChild = new ArrayList<PubPageContentChild>();
 
-        pricesChild.add(new PubPageContentChild(prices));
+        pricesChild.add(new PubPageContentChild(pub.prices.ContentToString()));
 
         parentList.add(new PubPageContentParent("Prices", pricesChild));
 
@@ -389,7 +387,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         ArrayList<PubPageContentChild> ratingsChild = new ArrayList<PubPageContentChild>();
 
-        ratingsChild.add(new PubPageContentChild(ratings));
+        ratingsChild.add(new PubPageContentChild(pub.ratings.ContentToString()));
 
         parentList.add(new PubPageContentParent("Ratings", ratingsChild));
 
