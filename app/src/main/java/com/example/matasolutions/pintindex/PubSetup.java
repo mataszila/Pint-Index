@@ -10,7 +10,7 @@ import androidx.core.content.res.ResourcesCompat;
 
 public class PubSetup {
 
-    ArrayList<Pub> pubs;
+    public ArrayList<Pub> pubs;
 
     public PubSetup(){
 
