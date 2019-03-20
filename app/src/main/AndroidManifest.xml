@@ -45,7 +45,7 @@
         <activity
             android:name=".PubActivity"
             android:label="@string/title_activity_pub" />
-        <activity android:name=".Pub_Comparison.PubCompareActivity" />
+        <activity android:name=".PubCompareActivity" />
         <activity android:name=".MapsActivity"></activity>
     </application>
 

@@ -1,4 +1,4 @@
-package com.example.matasolutions.pintindex.Pub_Comparison;
+package com.example.matasolutions.pintindex;
 
 public class PubCompareData {
 

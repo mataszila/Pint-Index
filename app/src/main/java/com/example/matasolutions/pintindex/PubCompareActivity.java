@@ -1,4 +1,4 @@
-package com.example.matasolutions.pintindex.Pub_Comparison;
+package com.example.matasolutions.pintindex;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -6,19 +6,25 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.app.AlertDialog;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.matasolutions.pintindex.MyAdapter;
-import com.example.matasolutions.pintindex.Pub;
-import com.example.matasolutions.pintindex.PubSetup;
-import com.example.matasolutions.pintindex.R;
+import com.squareup.picasso.Picasso;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.ArrayList;
 
 
@@ -35,6 +41,12 @@ public class PubCompareActivity extends AppCompatActivity {
 
     private ArrayList<PubCompareData> data;
 
+    ImageView pub1_image;
+    ImageView pub2_image;
+
+    TextView pub1_name_textview;
+    TextView pub2_name_textview;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,12 +55,63 @@ public class PubCompareActivity extends AppCompatActivity {
 
         SetupAlertDialog();
 
-        data = SetupCompareData();
-
 
         // Pub 1
 
+
+    }
+
+    private void SetupImages(){
+
+        pub1_image = findViewById(R.id.pub1_image);
+        pub2_image = findViewById(R.id.pub2_image);
+
+        Picasso.get()
+                .load(pub1.url)
+                .resize(500, 500)
+                .centerCrop()
+                .into(pub1_image);
+
+        Picasso.get()
+                .load(pub2.url)
+                .resize(500, 500)
+                .centerCrop()
+                .into(pub2_image);
+
+
+    }
+
+    private ArrayList<PubCompareData> SetupCompareData(){
+
+        ArrayList<PubCompareData> data = new ArrayList<PubCompareData>();
+        //String.valueOf(pub2.ratings.averageRating)
+        //String.valueOf(pub1.ratings.averageRating)
+        data.add(new PubCompareData("Rating", String.valueOf(pub1.ratings.averageRating), String.valueOf(pub2.ratings.averageRating)));
+        data.add(new PubCompareData("Distance from user", "0.2mi", "0.4mi"));
+        data.add(new PubCompareData("Price of Stella Artois (1 pint)", "3.60","4.2"));
+        data.add(new PubCompareData("Price of Heineken (1 pint)", "3.5", "3.8"));
+
+        return data;
+
+    }
+
+    private void SetupViews(String name) throws IOException {
+
+        PubSetup setup = new PubSetup();
+
+        pub2 = setup.returnPubByName(name);
         pub1_name = getIntent().getStringExtra("pubName");
+        pub1 = setup.returnPubByName(pub1_name);
+
+        SetupImages();
+        data = SetupCompareData();
+
+
+        pub1_name_textview = findViewById(R.id.pub1_name_textview);
+        pub2_name_textview = findViewById(R.id.pub2_name_textview);
+
+        pub1_name_textview.setText(pub1_name);
+        pub2_name_textview.setText(pub2.name);
 
         recyclerView =  findViewById(R.id.my_recycler_view);
 
@@ -63,23 +126,7 @@ public class PubCompareActivity extends AppCompatActivity {
         // specify an adapter (see also next example)
         mAdapter = new MyAdapter(data);
         recyclerView.setAdapter(mAdapter);
-
-
     }
-
-    private ArrayList<PubCompareData> SetupCompareData(){
-
-        ArrayList<PubCompareData> data = new ArrayList<PubCompareData>();
-
-        data.add(new PubCompareData("Rating", "4.5", "4.2"));
-        data.add(new PubCompareData("Distance from user", "0.2mi", "0.4mi"));
-        data.add(new PubCompareData("Price of Stella Artois (1 pint)", "3.60","4.2"));
-        data.add(new PubCompareData("Price of Heineken (1 pint)", "3.5", "3.8"));
-
-        return data;
-
-    }
-
 
 
 
@@ -121,8 +168,14 @@ public class PubCompareActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String strName = arrayAdapter.getItem(which);
-                //SetupSecondPub(strName);
+                try {
+                    SetupViews(strName);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
+
+                SetupImages();
 
                 AlertDialog.Builder builderInner = new AlertDialog.Builder(PubCompareActivity.this);
                 builderInner.setMessage(strName);
