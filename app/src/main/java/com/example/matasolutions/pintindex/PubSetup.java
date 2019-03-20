@@ -71,7 +71,6 @@ public class PubSetup {
         ratings.add(new Rating(RatingType.SERVICE,3.5));
         ratings.add(new Rating(RatingType.VALUE_FOR_PRICE,3.8));
 
-
         pub1.setRatings(new Ratings(ratings));
 
         pubs.add(pub1);
@@ -136,6 +135,21 @@ public class PubSetup {
         }
 
         return null;
+
+
+    }
+
+    public Pub returnPubByName(String name){
+
+        for(Pub p : pubs){
+            if(name.equals(p.name)){
+                return p;
+            }
+        }
+
+        return new Pub();
+
+
 
 
     }

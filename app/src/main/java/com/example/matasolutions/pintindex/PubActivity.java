@@ -124,20 +124,26 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
     private void SetupToolbar(){
 
         toolbar_text_1 = findViewById(R.id.toolbar_text_1);
+        toolbar_text_1.setText(SetPubOpeningStatus());
+
         toolbar_text_2 = findViewById(R.id.toolbar_text_2);
+        toolbar_text_2.setText(ShowRatingText());
+
+
         toolbar_text_4 = findViewById(R.id.toolbar_text_4);
 
         toolbar_card_1 = findViewById(R.id.toolbar_card_1);
         toolbar_card_4 = findViewById(R.id.toolbar_card_4);
 
-        toolbar_text_1.setText(SetPubOpeningStatus());
-        toolbar_text_2.setText(ShowRatingText());
+
+
         toolbar_text_4.setText("COMPARE WITH...");
 
         toolbar_card_4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                     Intent intent = new Intent(getApplicationContext(),PubCompareActivity.class);
+                    intent.putExtra("pubName", pub.name);
                     startActivity(intent);
             }
         });
@@ -158,7 +164,6 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         RecyclerView.Adapter mAdapter = new MyAdapter(facilityLogos);
         toolbar_recyclerview.setAdapter(mAdapter);
 
-
     }
 
 
@@ -172,8 +177,6 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
             ImageView imageView = new ImageView(this);
 
             imageView.setImageResource(PubSetup.ReturnResourceID(thisFacility));
-
-            //Drawable drawable = ResourcesCompat.getDrawable(res,PubSetup.ReturnResourceID(thisFacility) , null);
 
             facilityLogos.add(imageView);
         }
@@ -229,7 +232,6 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         String prep = status + " (" + action + actionTime + ")";
 
         SpannableString ans = new SpannableString(prep);
-        //#008B00
         ans.setSpan(new ForegroundColorSpan(Color.rgb(0,139,0)), status.length(), ans.length(), 0);
 
 
@@ -339,9 +341,6 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         }
 
     }
-
-
-
 
 
 
