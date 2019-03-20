@@ -6,6 +6,9 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -15,6 +18,8 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -22,6 +27,8 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import net.danlew.android.joda.JodaTimeAndroid;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
@@ -33,6 +40,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationListener locationListener;
     private Location currentLocation;
     private PubSetup pubSetup;
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
 
     @Override
@@ -42,11 +50,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
         locationListener = setupLocationListener();
+
+
+        boolean isLocation = askForLocationPermission();
+        updateCurrentLocation();
+
+
         pubSetup = new PubSetup();
 
-
         setupPermissions();
-        updateCurrentLocation();
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -68,19 +80,26 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public void onMapReady(GoogleMap googleMap) {
+        updateCurrentLocation();
+
         mMap = googleMap;
         setupMap();
+        setupMarkers();
+        setupListeners();
+
     }
 
     private void setupMap() {
 
-        if(checkLocationPermission()){
+        if(checkLocationPermission() && currentLocation != null){
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
             mMap.setMyLocationEnabled(true);
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude()), 15.0f));
         }
 
-        setupMarkers();
+    }
+
+    private void setupListeners(){
 
         mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -97,6 +116,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         });
 
+
         mMap.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
@@ -111,13 +131,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Will have to be fixed
 
                 intent.putExtra("workingHoursList", thisPub.weekOpeningHours.openingHours);
-                intent.putExtra("pricesList", thisPub.prices.priceList);
-                intent.putExtra("facilitiesList", thisPub.facilities.facilities);
-
                 intent.putExtra("workingHours",thisPub.weekOpeningHours.ContentToString());
                 intent.putExtra("prices", thisPub.prices.ContentToString());
-                intent.putExtra("facilities", thisPub.facilities.ContentToString());
+                intent.putExtra("facilitiesList", thisPub.facilities.facilities);
                 intent.putExtra("ratings", thisPub.ratings.ContentToString());
+                intent.putExtra("ratingsList", thisPub.ratings.ratings);
+                intent.putExtra("averageRating", thisPub.ratings.averageRating);
 
                 intent.putExtra("bundle", args);
 
@@ -127,7 +146,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         });
 
 
+
     }
+
 
     private Pub pubLookupByMarker(Marker marker){
 
@@ -138,9 +159,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (marker.equals(thisPub.marker)) {
                 return thisPub;
             }
-
         }
-
         return new Pub();
     }
 
@@ -150,14 +169,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         for(int i=0;i<pubSetup.pubs.size();i++){
 
-            Pub thisPub = pubSetup.pubs.get(i);
-            updateCurrentLocation();
-            LatLng curLatLng = new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
+                Pub thisPub = pubSetup.pubs.get(i);
+                updateCurrentLocation();
+                LatLng curLatLng = currentLocation  == null ? null : new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
 
-            String title = formatMarkerTitle(thisPub.name, CalculationByDistance(curLatLng, thisPub.coordinates));
+                String title = formatMarkerTitle(thisPub.name, CalculationByDistance(curLatLng, thisPub.coordinates));
 
-
-            thisPub.marker = mMap.addMarker(new MarkerOptions().position(thisPub.coordinates).title(title));
+                thisPub.marker = mMap.addMarker(new MarkerOptions().position(thisPub.coordinates).title(title));
 
         }
 
@@ -167,7 +185,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         double rounded = Math.round(distance * 100.0) / 100.0;
 
-        String s = name + " " + String.valueOf(rounded) + "km";
+        String s = currentLocation == null ? name : name + " " + String.valueOf(rounded) + "km";
         return s;
     }
 
@@ -230,20 +248,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-
-        if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
-
-            if(ContextCompat.checkSelfPermission(this,Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED){
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
-
-            }
-
-        }
-    }
 
     public boolean checkLocationPermission()
     {
@@ -277,7 +281,79 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return Radius * c;
     }
 
+    //nupistas kodas
+
+    public boolean askForLocationPermission() {
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                new AlertDialog.Builder(this)
+                        .setTitle("Loc")
+                        .setMessage("Loc")
+                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(MapsActivity.this,
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
+                            }
+                        })
+                        .create()
+                        .show();
 
 
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+            }
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+
+                        //Request location updates:
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 400, 1, locationListener);
+                    }
+
+                } else {
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+
+                }
+                return;
+            }
+
+        }
+    }
 
 }

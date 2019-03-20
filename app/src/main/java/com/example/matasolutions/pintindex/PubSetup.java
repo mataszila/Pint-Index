@@ -3,6 +3,7 @@ package com.example.matasolutions.pintindex;
 import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import androidx.core.content.res.ResourcesCompat;
@@ -20,9 +21,7 @@ public class PubSetup {
 
     private void AddPubs(){
 
-
         //Example setup for one pub:
-
 
         Pub pub1 = new Pub("Bar Loco",54.9755819,-1.6202004);
 
@@ -31,13 +30,13 @@ public class PubSetup {
 
         ArrayList<SingleOpeningHours> singleOpeningHours = new ArrayList<SingleOpeningHours>();
 
-        singleOpeningHours.add(new SingleOpeningHours("Monday", "09:00AM", "01:00AM"));
-        singleOpeningHours.add(new SingleOpeningHours("Tuesday", "09:00AM", "01:00AM"));
-        singleOpeningHours.add(new SingleOpeningHours("Wednesday", "09:00AM", "01:00AM"));
-        singleOpeningHours.add(new SingleOpeningHours("Thursday", "09:00AM", "01:00AM"));
-        singleOpeningHours.add(new SingleOpeningHours("Friday", "09:00AM", "01:00AM"));
-        singleOpeningHours.add(new SingleOpeningHours("Saturday", "09:00AM", "01:00AM"));
-        singleOpeningHours.add(new SingleOpeningHours("Sunday", "09:00AM", "01:00AM"));
+        singleOpeningHours.add(new SingleOpeningHours(Day.MONDAY, "09:00", "00:00"));
+        singleOpeningHours.add(new SingleOpeningHours(Day.TUESDAY, "09:00", "01:00"));
+        singleOpeningHours.add(new SingleOpeningHours(Day.WEDNESDAY, "09:00", "01:00"));
+        singleOpeningHours.add(new SingleOpeningHours(Day.THURSDAY, "09:00","01:00"));
+        singleOpeningHours.add(new SingleOpeningHours(Day.FRIDAY, "09:00", "01:00"));
+        singleOpeningHours.add(new SingleOpeningHours(Day.SATURDAY, "09:00", "01:00"));
+        singleOpeningHours.add(new SingleOpeningHours(Day.SUNDAY, "09:00", "01:00"));
 
         ProductSetup productSetup = new ProductSetup();
 
@@ -62,10 +61,18 @@ public class PubSetup {
         facilityInitList.add(new Facility(FacilityType.CAR_PARKING,"Car Parking"));
         facilityInitList.add(new Facility(FacilityType.LIVE_SPORTS,"Live Sports"));
 
-
-
         pub1.setFacilities(new Facilities(facilityInitList));
-        pub1.setRatings(new Ratings());
+
+        // Ratings;
+
+        ArrayList<Rating> ratings = new ArrayList<>();
+        ratings.add(new Rating(RatingType.ATMOSPHERE,4.5));
+        ratings.add(new Rating(RatingType.HYGIENE,4.0));
+        ratings.add(new Rating(RatingType.SERVICE,3.5));
+        ratings.add(new Rating(RatingType.VALUE_FOR_PRICE,3.8));
+
+
+        pub1.setRatings(new Ratings(ratings));
 
         pubs.add(pub1);
 
@@ -107,6 +114,32 @@ public class PubSetup {
         return answer;
 
     }
+
+
+    public static ArrayList<PubPageContentChild> AddToChildList (ArrayList<Facility> facilities){
+
+        if(facilities != null) {
+
+
+            ArrayList<PubPageContentChild> childList = new ArrayList<>();
+
+            for (int i = 0; i < facilities.size(); i++) {
+
+                Facility current = facilities.get(i);
+
+                childList.add(new PubPageContentChild(current.name, PubPageCategory.FACILITIES, current));
+
+            }
+
+            return childList;
+
+        }
+
+        return null;
+
+
+    }
+
 
 
 

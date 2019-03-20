@@ -13,12 +13,11 @@ class Facility implements Serializable {
     public String name;
     public FacilityType type;
     public Drawable logo;
+    public final PubPageCategory category = PubPageCategory.FACILITIES;
+
 
     public Facility(FacilityType type,String name){
-
         this.type = type;
         this.name = name;
-
-
     }
 }

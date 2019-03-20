@@ -1,13 +1,21 @@
 package com.example.matasolutions.pintindex;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.cardview.widget.CardView;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
+import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,7 +27,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Set;
 
 public class PubActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -33,6 +46,23 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
     ArrayList<Facility> facilityArrayList;
 
+    TextView toolbar_text_1;
+    TextView toolbar_text_2;
+    TextView toolbar_text_3;
+    TextView toolbar_text_4;
+
+    CardView toolbar_card_1;
+    CardView toolbar_card_2;
+    CardView toolbar_card_3;
+    CardView toolbar_card_4;
+
+    ArrayList<ImageView> facilityLogos;
+
+    RecyclerView toolbar_recyclerview;
+    LinearLayoutManager layoutManager;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +70,8 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         setContentView(R.layout.activity_pub);
 
         setupPub();
+        SetupToolbar();
+
 
         AddPubPageContent();
 
@@ -77,21 +109,240 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         pub.coordinates = bundle.getParcelable("coordinates");
         pub.name = (String) getIntent().getSerializableExtra("name");
 
-        ratings = (String) getIntent().getSerializableExtra("ratings");
-
         pub.coordinates = bundle.getParcelable("coordinates");
         //marker;
 
         pub.weekOpeningHours = new WeekOpeningHours((ArrayList<SingleOpeningHours>) getIntent().getSerializableExtra("workingHoursList"));
         pub.prices = new Prices((ArrayList<Price>) getIntent().getSerializableExtra("pricesList"));
         pub.facilities = new Facilities((ArrayList<Facility>) getIntent().getSerializableExtra("facilitiesList"));
-        pub.ratings = new Ratings();
-
-
+        pub.ratings = new Ratings((ArrayList<Rating>) getIntent().getSerializableExtra("ratingsList"));
 
         setTitle(pub.name);
 
     }
+
+    private void SetupToolbar(){
+
+        toolbar_text_1 = findViewById(R.id.toolbar_text_1);
+        toolbar_text_2 = findViewById(R.id.toolbar_text_2);
+        toolbar_text_4 = findViewById(R.id.toolbar_text_4);
+
+        toolbar_card_1 = findViewById(R.id.toolbar_card_1);
+        toolbar_card_4 = findViewById(R.id.toolbar_card_4);
+
+        toolbar_text_1.setText(SetPubOpeningStatus());
+        toolbar_text_2.setText(ShowRatingText());
+        toolbar_text_4.setText("COMPARE WITH...");
+
+        toolbar_card_4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                    Intent intent = new Intent(getApplicationContext(),PubCompareActivity.class);
+                    startActivity(intent);
+            }
+        });
+
+        SetupFacilityLogos();
+
+        SetupRecyclerView();
+
+    }
+
+    private void SetupRecyclerView(){
+
+        layoutManager= new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false);
+
+        toolbar_recyclerview = findViewById(R.id.toolbar_recyclerview);
+
+        toolbar_recyclerview.setLayoutManager(layoutManager);
+        RecyclerView.Adapter mAdapter = new MyAdapter(facilityLogos);
+        toolbar_recyclerview.setAdapter(mAdapter);
+
+
+    }
+
+
+    private void SetupFacilityLogos(){
+
+        facilityLogos = new ArrayList<ImageView>();
+        for(int i=0;i<pub.facilities.facilities.size();i++){
+
+            Facility thisFacility = pub.facilities.facilities.get(i);
+
+            ImageView imageView = new ImageView(this);
+
+            imageView.setImageResource(PubSetup.ReturnResourceID(thisFacility));
+
+            //Drawable drawable = ResourcesCompat.getDrawable(res,PubSetup.ReturnResourceID(thisFacility) , null);
+
+            facilityLogos.add(imageView);
+        }
+
+    }
+
+
+
+
+    private String ShowRatingText(){
+        return pub.ratings.averageRating + "/5";
+    }
+
+
+    private SpannableString SetPubOpeningStatus(){
+
+        SingleOpeningHours hoursForToday  = pub.weekOpeningHours.openingHours.get(GetCorrectDayOfWeek()-1);
+
+
+        try {
+            if(isPubOpen(hoursForToday.openingTime,hoursForToday.closingTime ,getHoursMinutesNow() )){
+
+
+                return FormatStatusText("OPEN NOW", "UNTIL ", hoursForToday.closingTime);
+            }
+            else{
+                return FormatStatusText("CLOSED", "OPENS ", hoursForToday.openingTime);
+            }
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return new SpannableString("N/A");
+
+    }
+
+    private SpannableString FormatStatusText(String status, String action, String actionTime) {
+
+
+        StringBuilder sb = new StringBuilder();
+
+        for(char c : actionTime.toCharArray()){
+
+            if(c != ':'){
+                sb.append(c);
+            }
+
+
+        }
+
+        String prep = status + " (" + action + actionTime + ")";
+
+        SpannableString ans = new SpannableString(prep);
+        //#008B00
+        ans.setSpan(new ForegroundColorSpan(Color.rgb(0,139,0)), status.length(), ans.length(), 0);
+
+
+        return ans;
+
+    }
+
+
+    private int GetCorrectDayOfWeek(){
+
+        Calendar calendar  = Calendar.getInstance();
+        int incorrect = calendar.get(Calendar.DAY_OF_WEEK);
+
+        int ans  = incorrect == 1 ? 7 : incorrect - 1;
+        return ans;
+
+    }
+
+
+    private String getHoursMinutesNow(){
+
+        Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
+
+        int numHours = calendar.get(Calendar.HOUR_OF_DAY);
+        int numMinutes = calendar.get(Calendar.MINUTE);
+
+        String hours = String.valueOf(numHours);
+        String minutes = numMinutes < 10 ? "0" + String.valueOf(numMinutes) : String.valueOf(numMinutes);  // gets hour in 24h format
+
+        return hours + ":" + minutes;
+
+    }
+
+
+    public static boolean isPubOpen(String argStartTime,
+                                               String argEndTime, String argCurrentTime) throws ParseException, ParseException {
+        String reg = "^([0-1][0-9]|2[0-3]):([0-5][0-9])$";
+        //
+        if (argStartTime.matches(reg) && argEndTime.matches(reg)
+                && argCurrentTime.matches(reg)) {
+            boolean valid = false;
+            // Start Time
+            java.util.Date startTime = new SimpleDateFormat("HH:mm")
+                    .parse(argStartTime);
+            Calendar startCalendar = Calendar.getInstance();
+            startCalendar.setTime(startTime);
+
+            // Current Time
+            java.util.Date currentTime = new SimpleDateFormat("HH:mm")
+                    .parse(argCurrentTime);
+            Calendar currentCalendar = Calendar.getInstance();
+            currentCalendar.setTime(currentTime);
+
+            // End Time
+            java.util.Date endTime = new SimpleDateFormat("HH:mm")
+                    .parse(argEndTime);
+            Calendar endCalendar = Calendar.getInstance();
+            endCalendar.setTime(endTime);
+
+            //
+            if (currentTime.compareTo(endTime) < 0) {
+
+                currentCalendar.add(Calendar.DATE, 1);
+                currentTime = currentCalendar.getTime();
+
+            }
+
+            if (startTime.compareTo(endTime) < 0) {
+
+                startCalendar.add(Calendar.DATE, 1);
+                startTime = startCalendar.getTime();
+
+            }
+            //
+            if (currentTime.before(startTime)) {
+
+                System.out.println(" Time is Lesser ");
+
+                valid = false;
+            } else {
+
+                if (currentTime.after(endTime)) {
+                    endCalendar.add(Calendar.DATE, 1);
+                    endTime = endCalendar.getTime();
+
+                }
+
+                System.out.println("Comparing , Start Time /n " + startTime);
+                System.out.println("Comparing , End Time /n " + endTime);
+                System.out
+                        .println("Comparing , Current Time /n " + currentTime);
+
+                if (currentTime.before(endTime)) {
+                    System.out.println("RESULT, Time lies b/w");
+                    valid = true;
+                } else {
+                    valid = false;
+                    System.out.println("RESULT, Time does not lies b/w");
+                }
+
+            }
+            return valid;
+
+        } else {
+            throw new IllegalArgumentException(
+                    "Not a valid time, expecting HH:MM:SS format");
+        }
+
+    }
+
+
+
+
 
 
     private void AddPubPageContent() {
@@ -106,7 +357,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         ArrayList<PubPageContentChild> openingHoursChild = new ArrayList<PubPageContentChild>();
 
-        openingHoursChild.add(new PubPageContentChild(workingHours));
+        openingHoursChild.add(new PubPageContentChild(pub.weekOpeningHours.ContentToString()));
 
         parentList.add(new PubPageContentParent("Opening Hours", openingHoursChild));
 
@@ -114,7 +365,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         ArrayList<PubPageContentChild> pricesChild = new ArrayList<PubPageContentChild>();
 
-        pricesChild.add(new PubPageContentChild(prices));
+        pricesChild.add(new PubPageContentChild(pub.prices.ContentToString()));
 
         parentList.add(new PubPageContentParent("Prices", pricesChild));
 
@@ -122,11 +373,11 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         ArrayList<PubPageContentChild> facilitiesChild = new ArrayList<PubPageContentChild>();
 
-        for(int i=0;i<facilityArrayList.size();i++){
+        for(int i=0;i<pub.facilities.facilities.size();i++){
 
-            Facility current = facilityArrayList.get(i);
+            Facility current = pub.facilities.facilities.get(i);
 
-            facilitiesChild.add(new PubPageContentChild(current.name,current));
+            facilitiesChild.add(new PubPageContentChild(current.name,current.category,current));
 
         }
 
@@ -136,7 +387,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         ArrayList<PubPageContentChild> ratingsChild = new ArrayList<PubPageContentChild>();
 
-        ratingsChild.add(new PubPageContentChild(ratings));
+        ratingsChild.add(new PubPageContentChild(pub.ratings.ContentToString()));
 
         parentList.add(new PubPageContentParent("Ratings", ratingsChild));
 
