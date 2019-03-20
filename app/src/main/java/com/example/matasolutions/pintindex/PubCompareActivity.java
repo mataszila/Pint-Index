@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -18,7 +19,11 @@ public class PubCompareActivity extends AppCompatActivity {
 
     String pub1_name;
     TextView pub1_name_textview;
+    TextView pub1_avg_rating;
+
+
     TextView pub2_name_textview;
+    TextView pub2_avg_rating;
 
     Pub pub1;
     Pub pub2;
@@ -28,16 +33,41 @@ public class PubCompareActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pub_compare);
 
+        SetupAlertDialog();
+
+        // Pub 1
+
         pub1_name = getIntent().getStringExtra("pubName");
+        SetupFirstPub();
+
+
+
+
+    }
+
+    private void SetupFirstPub(){
+        pub1 = new PubSetup().returnPubByName(pub1_name);
 
         pub1_name_textview = findViewById(R.id.pub1_name_textview);
 
         pub1_name_textview.setText(pub1_name);
 
+        pub1_avg_rating = findViewById(R.id.pub1_avg_rating);
+        pub1_avg_rating.setText(String.valueOf(pub1.ratings.averageRating));
+    }
+
+
+
+    private void SetupSecondPub(String name) {
+
+        PubSetup setup = new PubSetup();
+        pub2 = setup.returnPubByName(name);
+
         pub2_name_textview = findViewById(R.id.pub2_name_textview);
+        pub2_avg_rating = findViewById(R.id.pub2_avg_rating);
 
-        SetupAlertDialog();
-
+        pub2_name_textview.setText(pub2.name);
+        pub2_avg_rating.setText(String.valueOf(pub2.ratings.averageRating));
 
     }
 
@@ -59,7 +89,7 @@ public class PubCompareActivity extends AppCompatActivity {
     }
 
 
-    private void SetupAlertDialog(){
+    private synchronized void SetupAlertDialog(){
 
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(PubCompareActivity.this);
         // builderSingle.setIcon(R.drawable.ic_launcher);
@@ -79,10 +109,8 @@ public class PubCompareActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String strName = arrayAdapter.getItem(which);
+                SetupSecondPub(strName);
 
-                PubSetup setup = new PubSetup();
-                pub2 = setup.returnPubByName(strName);
-                pub2_name_textview.setText(pub2.name);
 
                 AlertDialog.Builder builderInner = new AlertDialog.Builder(PubCompareActivity.this);
                 builderInner.setMessage(strName);
