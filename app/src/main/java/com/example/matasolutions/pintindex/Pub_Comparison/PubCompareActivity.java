@@ -1,32 +1,34 @@
 package com.example.matasolutions.pintindex;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.app.AlertDialog.Builder;
 import android.app.AlertDialog;
 
-
+import java.util.ArrayList;
 
 
 public class PubCompareActivity extends AppCompatActivity {
 
     String pub1_name;
-    TextView pub1_name_textview;
-    TextView pub1_avg_rating;
-
-
-    TextView pub2_name_textview;
-    TextView pub2_avg_rating;
 
     Pub pub1;
     Pub pub2;
+
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,40 +40,27 @@ public class PubCompareActivity extends AppCompatActivity {
         // Pub 1
 
         pub1_name = getIntent().getStringExtra("pubName");
-        SetupFirstPub();
 
+        recyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
 
+        // use this setting to improve performance if you know that changes
+        // in content do not change the layout size of the RecyclerView
+        recyclerView.setHasFixedSize(true);
+
+        // use a linear layout manager
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        // specify an adapter (see also next example)
+        mAdapter = new MyAdapter(null);
+        recyclerView.setAdapter(mAdapter);
 
 
     }
 
-    private void SetupFirstPub(){
-        pub1 = new PubSetup().returnPubByName(pub1_name);
-
-        pub1_name_textview = findViewById(R.id.pub1_name_textview);
-
-        pub1_name_textview.setText(pub1_name);
-
-        pub1_avg_rating = findViewById(R.id.pub1_avg_rating);
-        pub1_avg_rating.setText(String.valueOf(pub1.ratings.averageRating));
-    }
 
 
-
-    private void SetupSecondPub(String name) {
-
-        PubSetup setup = new PubSetup();
-        pub2 = setup.returnPubByName(name);
-
-        pub2_name_textview = findViewById(R.id.pub2_name_textview);
-        pub2_avg_rating = findViewById(R.id.pub2_avg_rating);
-
-        pub2_name_textview.setText(pub2.name);
-        pub2_avg_rating.setText(String.valueOf(pub2.ratings.averageRating));
-
-    }
-
-    private ArrayAdapter<String> SetupArrayAdapter(){
+    protected ArrayAdapter<String> SetupArrayAdapter(){
 
         PubSetup setup = new PubSetup();
 
@@ -89,7 +78,7 @@ public class PubCompareActivity extends AppCompatActivity {
     }
 
 
-    private synchronized void SetupAlertDialog(){
+    protected synchronized void SetupAlertDialog(){
 
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(PubCompareActivity.this);
         // builderSingle.setIcon(R.drawable.ic_launcher);
@@ -109,7 +98,7 @@ public class PubCompareActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String strName = arrayAdapter.getItem(which);
-                SetupSecondPub(strName);
+                //SetupSecondPub(strName);
 
 
                 AlertDialog.Builder builderInner = new AlertDialog.Builder(PubCompareActivity.this);
