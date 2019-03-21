@@ -34,8 +34,6 @@ public class StartActivity extends AppCompatActivity {
             buildAlertMessageNoGps();
         }
 
-
-
         setTitle("Pint Index");
 
         startButton = findViewById(R.id.startButton);
@@ -51,7 +49,6 @@ public class StartActivity extends AppCompatActivity {
 
             }
         });
-
     }
 
 
