@@ -3,6 +3,9 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_pub">Map</string>
     <string name="open_now_un">OPEN NOW (UNTIL 1 AM)\n
-</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    </string>
 
 </resources>

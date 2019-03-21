@@ -55,9 +55,7 @@ public class PubCompareActivity extends AppCompatActivity {
 
         SetupAlertDialog();
 
-
         // Pub 1
-
 
     }
 
@@ -68,13 +66,13 @@ public class PubCompareActivity extends AppCompatActivity {
 
         Picasso.get()
                 .load(pub1.url)
-                .resize(500, 500)
+                .resize(480, 360)
                 .centerCrop()
                 .into(pub1_image);
 
         Picasso.get()
                 .load(pub2.url)
-                .resize(500, 500)
+                .resize(480, 360)
                 .centerCrop()
                 .into(pub2_image);
 
@@ -148,7 +146,7 @@ public class PubCompareActivity extends AppCompatActivity {
     }
 
 
-    protected synchronized void SetupAlertDialog(){
+    public synchronized void SetupAlertDialog(){
 
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(PubCompareActivity.this);
         // builderSingle.setIcon(R.drawable.ic_launcher);
