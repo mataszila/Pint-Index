@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_camera"
+            android:icon="@drawable/ic_twotone_star_rate_18px"
+            android:title="Camera" />
+        <item
+            android:id="@+id/nav_pubs"
+            android:icon="@drawable/ic_twotone_star_rate_18px"
+            android:title="Pubs" />
+
+    </group>
+</menu>

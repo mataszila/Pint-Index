@@ -1,6 +1,10 @@
 package com.example.matasolutions.pintindex;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -8,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
@@ -15,6 +20,8 @@ public class StartActivity extends AppCompatActivity {
 
     boolean locationTurnedOn;
     Button startButton;
+    DrawerLayout drawer;
+
 
 
     @Override
@@ -45,7 +52,17 @@ public class StartActivity extends AppCompatActivity {
             }
         });
 
+    }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawer.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

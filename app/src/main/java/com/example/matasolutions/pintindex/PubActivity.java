@@ -1,23 +1,26 @@
 package com.example.matasolutions.pintindex;
 
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.res.ResourcesCompat;
-import androidx.fragment.app.FragmentActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -25,14 +28,13 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.squareup.picasso.Picasso;
 
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Set;
 
 public class PubActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -71,7 +73,6 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         setupPub();
         SetupToolbar();
-
 
         AddPubPageContent();
 
@@ -124,20 +125,25 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
     private void SetupToolbar(){
 
         toolbar_text_1 = findViewById(R.id.toolbar_text_1);
+        toolbar_text_1.setText(SetPubOpeningStatus());
+
         toolbar_text_2 = findViewById(R.id.toolbar_text_2);
+        toolbar_text_2.setText(ShowRatingText());
+
+
         toolbar_text_4 = findViewById(R.id.toolbar_text_4);
 
         toolbar_card_1 = findViewById(R.id.toolbar_card_1);
         toolbar_card_4 = findViewById(R.id.toolbar_card_4);
 
-        toolbar_text_1.setText(SetPubOpeningStatus());
-        toolbar_text_2.setText(ShowRatingText());
+
         toolbar_text_4.setText("COMPARE WITH...");
 
         toolbar_card_4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                     Intent intent = new Intent(getApplicationContext(),PubCompareActivity.class);
+                    intent.putExtra("pubName", pub.name);
                     startActivity(intent);
             }
         });
@@ -155,9 +161,8 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         toolbar_recyclerview = findViewById(R.id.toolbar_recyclerview);
 
         toolbar_recyclerview.setLayoutManager(layoutManager);
-        RecyclerView.Adapter mAdapter = new MyAdapter(facilityLogos);
+        RecyclerView.Adapter mAdapter = new MyAdapter(pub.facilities.facilities);
         toolbar_recyclerview.setAdapter(mAdapter);
-
 
     }
 
@@ -168,12 +173,9 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         for(int i=0;i<pub.facilities.facilities.size();i++){
 
             Facility thisFacility = pub.facilities.facilities.get(i);
-
             ImageView imageView = new ImageView(this);
 
             imageView.setImageResource(PubSetup.ReturnResourceID(thisFacility));
-
-            //Drawable drawable = ResourcesCompat.getDrawable(res,PubSetup.ReturnResourceID(thisFacility) , null);
 
             facilityLogos.add(imageView);
         }
@@ -190,11 +192,11 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private SpannableString SetPubOpeningStatus(){
 
-        SingleOpeningHours hoursForToday  = pub.weekOpeningHours.openingHours.get(GetCorrectDayOfWeek()-1);
+        SingleOpeningHours hoursForToday  = pub.weekOpeningHours.openingHours.get(HelperMethods.GetCorrectDayOfWeek()-1);
 
 
         try {
-            if(isPubOpen(hoursForToday.openingTime,hoursForToday.closingTime ,getHoursMinutesNow() )){
+            if(HelperMethods.isPubOpen(hoursForToday.openingTime,hoursForToday.closingTime ,HelperMethods.getHoursMinutesNow() )){
 
 
                 return FormatStatusText("OPEN NOW", "UNTIL ", hoursForToday.closingTime);
@@ -229,119 +231,11 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         String prep = status + " (" + action + actionTime + ")";
 
         SpannableString ans = new SpannableString(prep);
-        //#008B00
         ans.setSpan(new ForegroundColorSpan(Color.rgb(0,139,0)), status.length(), ans.length(), 0);
 
-
         return ans;
 
     }
-
-
-    private int GetCorrectDayOfWeek(){
-
-        Calendar calendar  = Calendar.getInstance();
-        int incorrect = calendar.get(Calendar.DAY_OF_WEEK);
-
-        int ans  = incorrect == 1 ? 7 : incorrect - 1;
-        return ans;
-
-    }
-
-
-    private String getHoursMinutesNow(){
-
-        Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance
-
-        int numHours = calendar.get(Calendar.HOUR_OF_DAY);
-        int numMinutes = calendar.get(Calendar.MINUTE);
-
-        String hours = String.valueOf(numHours);
-        String minutes = numMinutes < 10 ? "0" + String.valueOf(numMinutes) : String.valueOf(numMinutes);  // gets hour in 24h format
-
-        return hours + ":" + minutes;
-
-    }
-
-
-    public static boolean isPubOpen(String argStartTime,
-                                               String argEndTime, String argCurrentTime) throws ParseException, ParseException {
-        String reg = "^([0-1][0-9]|2[0-3]):([0-5][0-9])$";
-        //
-        if (argStartTime.matches(reg) && argEndTime.matches(reg)
-                && argCurrentTime.matches(reg)) {
-            boolean valid = false;
-            // Start Time
-            java.util.Date startTime = new SimpleDateFormat("HH:mm")
-                    .parse(argStartTime);
-            Calendar startCalendar = Calendar.getInstance();
-            startCalendar.setTime(startTime);
-
-            // Current Time
-            java.util.Date currentTime = new SimpleDateFormat("HH:mm")
-                    .parse(argCurrentTime);
-            Calendar currentCalendar = Calendar.getInstance();
-            currentCalendar.setTime(currentTime);
-
-            // End Time
-            java.util.Date endTime = new SimpleDateFormat("HH:mm")
-                    .parse(argEndTime);
-            Calendar endCalendar = Calendar.getInstance();
-            endCalendar.setTime(endTime);
-
-            //
-            if (currentTime.compareTo(endTime) < 0) {
-
-                currentCalendar.add(Calendar.DATE, 1);
-                currentTime = currentCalendar.getTime();
-
-            }
-
-            if (startTime.compareTo(endTime) < 0) {
-
-                startCalendar.add(Calendar.DATE, 1);
-                startTime = startCalendar.getTime();
-
-            }
-            //
-            if (currentTime.before(startTime)) {
-
-                System.out.println(" Time is Lesser ");
-
-                valid = false;
-            } else {
-
-                if (currentTime.after(endTime)) {
-                    endCalendar.add(Calendar.DATE, 1);
-                    endTime = endCalendar.getTime();
-
-                }
-
-                System.out.println("Comparing , Start Time /n " + startTime);
-                System.out.println("Comparing , End Time /n " + endTime);
-                System.out
-                        .println("Comparing , Current Time /n " + currentTime);
-
-                if (currentTime.before(endTime)) {
-                    System.out.println("RESULT, Time lies b/w");
-                    valid = true;
-                } else {
-                    valid = false;
-                    System.out.println("RESULT, Time does not lies b/w");
-                }
-
-            }
-            return valid;
-
-        } else {
-            throw new IllegalArgumentException(
-                    "Not a valid time, expecting HH:MM:SS format");
-        }
-
-    }
-
-
-
 
 
 
@@ -396,6 +290,63 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         ChildAdapter adapter = new ChildAdapter(parentList);
         recyclerView.setAdapter(adapter);
 
+    }
+
+
+    public static class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+        private ArrayList<Facility> mDataset;
+
+        // Provide a reference to the views for each data item
+        // Complex data items may need more than one view per item, and
+        // you provide access to all the views for a data item in a view holder
+        public static class MyViewHolder extends RecyclerView.ViewHolder {
+            // each data item is just a string in this case
+            public ImageView logo;
+
+
+            public MyViewHolder(View v) {
+                super(v);
+
+                logo = v.findViewById(R.id.facilityLogo);
+            }
+        }
+
+        // Provide a suitable constructor (depends on the kind of dataset)
+        public MyAdapter(ArrayList<Facility> myDataset) {
+            mDataset = myDataset;
+        }
+
+        // Create new views (invoked by the layout manager)
+        @Override
+        public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            // create a new view
+            Context context = parent.getContext();
+            LayoutInflater inflater = LayoutInflater.from(context);
+
+            View v = inflater.inflate(R.layout.facility_logo, parent, false);
+
+            MyViewHolder vh = new MyViewHolder(v);
+            return vh;
+        }
+
+        // Replace the contents of a view (invoked by the layout manager)
+        @Override
+        public void onBindViewHolder(MyAdapter.MyViewHolder holder, int position) {
+            // - get element from your dataset at this position
+            // - replace the contents of the view with that element
+            ImageView logo = holder.logo;
+
+            // Set item views based on your views and data model
+            logo.setImageDrawable(mDataset.get(position).logo);
+
+
+        }
+
+        // Return the size of your dataset (invoked by the layout manager)
+        @Override
+        public int getItemCount() {
+            return mDataset.size();
+        }
     }
 
 

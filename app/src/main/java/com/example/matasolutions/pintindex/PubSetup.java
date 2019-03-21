@@ -10,7 +10,7 @@ import androidx.core.content.res.ResourcesCompat;
 
 public class PubSetup {
 
-    ArrayList<Pub> pubs;
+    public ArrayList<Pub> pubs;
 
     public PubSetup(){
 
@@ -71,14 +71,29 @@ public class PubSetup {
         ratings.add(new Rating(RatingType.SERVICE,3.5));
         ratings.add(new Rating(RatingType.VALUE_FOR_PRICE,3.8));
 
-
         pub1.setRatings(new Ratings(ratings));
+
+        pub1.setUrl("https://media-cdn.tripadvisor.com/media/photo-s/0a/65/47/3c/bar-loco-newcastle.jpg");
 
         pubs.add(pub1);
 
         // End of setup for one pub.
 
-        pubs.add(new Pub("Hancock",54.979915,-1.6136037));
+        Pub pub2 = new Pub("Hancock",54.979915,-1.6136037);
+
+        ArrayList<Rating> ratings2 = new ArrayList<>();
+        ratings2.add(new Rating(RatingType.ATMOSPHERE,4.3));
+        ratings2.add(new Rating(RatingType.HYGIENE,3.7));
+        ratings2.add(new Rating(RatingType.SERVICE,4.0));
+        ratings2.add(new Rating(RatingType.VALUE_FOR_PRICE,4.2));
+
+        pub2.setUrl("https://farm3.staticflickr.com/2828/8750050391_6286ccff1e_b.jpg");
+
+
+        pub2.setRatings(new Ratings(ratings2));
+
+        pubs.add(pub2);
+
         pubs.add(new Pub("The Strawberry",54.9748055,-1.6217146));
         pubs.add(new Pub("Trent House",54.977095,-1.6205557));
         pubs.add(new Pub("Luther's",54.9789707,-1.6172808));
@@ -136,6 +151,21 @@ public class PubSetup {
         }
 
         return null;
+
+
+    }
+
+    public Pub returnPubByName(String name){
+
+        for(Pub p : pubs){
+            if(name.equals(p.name)){
+                return p;
+            }
+        }
+
+        return new Pub();
+
+
 
 
     }
