@@ -21,6 +21,8 @@ import android.app.AlertDialog;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -52,6 +54,8 @@ public class PubCompareActivity extends AppCompatActivity {
     LocationListener locationListener;
     LocationManager locationManager;
 
+    private GPSTracker tracker;
+
 
 
 
@@ -61,6 +65,8 @@ public class PubCompareActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pub_compare);
 
         SetupAlertDialog();
+
+        tracker = new GPSTracker(this);
 
 
     //            locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
@@ -95,13 +101,32 @@ public class PubCompareActivity extends AppCompatActivity {
         //String.valueOf(pub2.ratings.averageRating)
         //String.valueOf(pub1.ratings.averageRating)
         data.add(new PubCompareData("Rating", String.valueOf(pub1.ratings.averageRating), String.valueOf(pub2.ratings.averageRating)));
-        data.add(new PubCompareData("Distance from user", "0.2mi", "0.4mi"));
+
+        LatLng one = new LatLng(tracker.getCurrentLocation().getLatitude(), tracker.getCurrentLocation().getLongitude());
+
+        LatLng two = new LatLng(pub1.coordinates.latitude, pub1.coordinates.longitude);
+        LatLng three = new LatLng(pub2.coordinates.latitude, pub2.coordinates.longitude);
+
+
+
+        data.add(new PubCompareData("Distance from user", formatDistanceText(one,two ), formatDistanceText(one,three)));
         data.add(new PubCompareData("Price of Stella Artois (1 pint)", "3.60","4.2"));
         data.add(new PubCompareData("Price of Heineken (1 pint)", "3.5", "3.8"));
 
         return data;
 
     }
+
+    private String formatDistanceText(LatLng one, LatLng two){
+
+        double distance = HelperMethods.CalculationByDistance(one, two);
+
+        double rounded = Math.round(distance * 100.0) / 100.0;
+
+        return String.valueOf(rounded) + "km";
+
+    }
+
 
     private void SetupViews(String name) throws IOException {
 
@@ -167,8 +192,7 @@ public class PubCompareActivity extends AppCompatActivity {
     public synchronized void SetupAlertDialog(){
 
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(PubCompareActivity.this);
-        // builderSingle.setIcon(R.drawable.ic_launcher);
-        builderSingle.setTitle("Select One Name:-");
+        builderSingle.setTitle("Select A Pub:-");
 
         final ArrayAdapter<String> arrayAdapter = SetupArrayAdapter();
 
@@ -221,9 +245,7 @@ public class PubCompareActivity extends AppCompatActivity {
             public TextView criteria;
             public TextView card_left;
             public TextView card_right;
-
-
-
+            
 
             public MyViewHolder(View v) {
                 super(v);
