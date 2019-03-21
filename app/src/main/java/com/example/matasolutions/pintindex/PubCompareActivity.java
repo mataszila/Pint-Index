@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -47,6 +49,11 @@ public class PubCompareActivity extends AppCompatActivity {
     TextView pub1_name_textview;
     TextView pub2_name_textview;
 
+    LocationListener locationListener;
+    LocationManager locationManager;
+
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +62,9 @@ public class PubCompareActivity extends AppCompatActivity {
 
         SetupAlertDialog();
 
+
+    //            locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
+  //      locationListener = setupLocationListener();
         // Pub 1
 
     }
@@ -101,7 +111,6 @@ public class PubCompareActivity extends AppCompatActivity {
         pub1_name = getIntent().getStringExtra("pubName");
         pub1 = setup.returnPubByName(pub1_name);
 
-        SetupImages();
         data = SetupCompareData();
 
 
@@ -126,7 +135,16 @@ public class PubCompareActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
     }
 
+    private void SetupActivity(String pub2name){
 
+        try {
+            SetupViews(pub2name);
+            SetupImages();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     protected ArrayAdapter<String> SetupArrayAdapter(){
 
@@ -166,11 +184,8 @@ public class PubCompareActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String strName = arrayAdapter.getItem(which);
-                try {
-                    SetupViews(strName);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                    SetupActivity(strName);
+
 
 
                 SetupImages();
