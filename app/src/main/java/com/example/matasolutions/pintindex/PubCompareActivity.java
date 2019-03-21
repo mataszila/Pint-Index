@@ -68,11 +68,6 @@ public class PubCompareActivity extends AppCompatActivity {
 
         tracker = new GPSTracker(this);
 
-
-    //            locationManager = (LocationManager) this.getSystemService(LOCATION_SERVICE);
-  //      locationListener = setupLocationListener();
-        // Pub 1
-
     }
 
     private void SetupImages(){
@@ -145,6 +140,9 @@ public class PubCompareActivity extends AppCompatActivity {
         pub1_name_textview.setText(pub1_name);
         pub2_name_textview.setText(pub2.name);
 
+    }
+
+    private void SetupRecyclerView(){
         recyclerView =  findViewById(R.id.my_recycler_view);
 
         // use this setting to improve performance if you know that changes
@@ -160,11 +158,14 @@ public class PubCompareActivity extends AppCompatActivity {
         recyclerView.setAdapter(mAdapter);
     }
 
+
+
     private void SetupActivity(String pub2name){
 
         try {
             SetupViews(pub2name);
             SetupImages();
+            SetupRecyclerView();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -245,7 +246,7 @@ public class PubCompareActivity extends AppCompatActivity {
             public TextView criteria;
             public TextView card_left;
             public TextView card_right;
-            
+
 
             public MyViewHolder(View v) {
                 super(v);

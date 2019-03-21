@@ -37,8 +37,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private PubSetup pubSetup;
-    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
-
 
     private GPSTracker tracker;
 
@@ -124,8 +122,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
-
-
 
     }
 

@@ -16,7 +16,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import static android.content.Context.LOCATION_SERVICE;
-import static com.example.matasolutions.pintindex.MapsActivity.MY_PERMISSIONS_REQUEST_LOCATION;
 
 public class GPSTracker {
 
@@ -24,6 +23,7 @@ public class GPSTracker {
 
     public LocationListener locationListener;
     public LocationManager locationManager;
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
     public Location getCurrentLocation() {
 
