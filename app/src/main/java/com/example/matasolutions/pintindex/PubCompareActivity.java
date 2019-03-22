@@ -51,12 +51,7 @@ public class PubCompareActivity extends AppCompatActivity {
     TextView pub1_name_textview;
     TextView pub2_name_textview;
 
-    LocationListener locationListener;
-    LocationManager locationManager;
-
     private GPSTracker tracker;
-
-
 
 
     @Override
@@ -90,18 +85,21 @@ public class PubCompareActivity extends AppCompatActivity {
 
     }
 
+    private
+
+
+
+
     private ArrayList<PubCompareData> SetupCompareData(){
 
         ArrayList<PubCompareData> data = new ArrayList<PubCompareData>();
-        //String.valueOf(pub2.ratings.averageRating)
-        //String.valueOf(pub1.ratings.averageRating)
+
         data.add(new PubCompareData("Rating", String.valueOf(pub1.ratings.averageRating), String.valueOf(pub2.ratings.averageRating)));
 
         LatLng one = new LatLng(tracker.getCurrentLocation().getLatitude(), tracker.getCurrentLocation().getLongitude());
 
         LatLng two = new LatLng(pub1.coordinates.latitude, pub1.coordinates.longitude);
         LatLng three = new LatLng(pub2.coordinates.latitude, pub2.coordinates.longitude);
-
 
 
         Product product1 = new Product(Brand.STELLA_ARTOIS, DrinkType.BEER,Amount.PINT);
@@ -120,20 +118,28 @@ public class PubCompareActivity extends AppCompatActivity {
         data.add(new PubCompareData("Price of Heineken (1 pint)", price3, price4));
 
         return data;
-        //
     }
 
+    private ArrayList<Product> GetMatchingProducts(){
 
-    private String LookupProductPrice(Product product, Pub pub){
+        ArrayList<Product> productList = new ArrayList<>();
 
-        String ans = "N/A";
+        int pub1_size = pub1.prices.priceList.size();
+        int pub2_size = pub2.prices.priceList.size();
 
+        for(int i=0;i<pub1_size;i++){
 
-        for(Price i : pub.prices.priceList){
+            for(int j=0;j<pub2_size;j++){
 
-            if(i.product.brand == product.brand && i.product.type == product.type && i.product.amount == product.amount){
+                Product prod1 = pub1.prices.priceList.get(i).product;
+                Product prod2 = pub2.prices.priceList.get(j).product;
 
-                ans = String.valueOf(i.price);
+                if(prod1.amount == prod2.amount && prod1.type == prod2.type && prod1.brand == prod2.brand){
+
+                    productList.add(prod1);
+
+                }
+
 
 
             }
@@ -141,16 +147,31 @@ public class PubCompareActivity extends AppCompatActivity {
         }
 
 
-        return ans;
-
-
-
     }
 
 
-    private String formatDistanceText(LatLng one, LatLng two){
+    private String LookupProductPrice(Product product, Pub pub){
 
-        double distance = HelperMethods.CalculationByDistance(one, two);
+        String ans = "N/A";
+
+        for(Price i : pub.prices.priceList){
+
+            if(i.product.brand == product.brand && i.product.type == product.type && i.product.amount == product.amount){
+
+                ans = String.valueOf(i.price);
+            }
+
+        }
+        return ans;
+    }
+
+
+    private String formatDistanceText(Pub one){
+
+        LatLng current = new LatLng(tracker.getCurrentLocation().getLatitude(), tracker.getCurrentLocation().getLongitude());
+        LatLng pub = new LatLng(one.coordinates.latitude, one.coordinates.longitude);
+
+        double distance = HelperMethods.CalculationByDistance(current, pub);
 
         double rounded = Math.round(distance * 100.0) / 100.0;
 
@@ -337,9 +358,5 @@ public class PubCompareActivity extends AppCompatActivity {
             return mDataset.size();
         }
     }
-
-
-
-
 
 }
