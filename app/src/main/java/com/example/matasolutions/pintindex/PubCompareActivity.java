@@ -104,13 +104,49 @@ public class PubCompareActivity extends AppCompatActivity {
 
 
 
+        Product product1 = new Product(Brand.STELLA_ARTOIS, DrinkType.BEER,Amount.PINT);
+
+        String price1 = LookupProductPrice(product1, pub1);
+        String price2 = LookupProductPrice(product1, pub2);
+
+        Product product2 = new Product(Brand.HEINEKEN, DrinkType.BEER,Amount.PINT);
+
+        String price3 = LookupProductPrice(product2, pub1);
+        String price4 = LookupProductPrice(product2, pub2);
+
+
         data.add(new PubCompareData("Distance from user", formatDistanceText(one,two ), formatDistanceText(one,three)));
-        data.add(new PubCompareData("Price of Stella Artois (1 pint)", "3.60","4.2"));
-        data.add(new PubCompareData("Price of Heineken (1 pint)", "3.5", "3.8"));
+        data.add(new PubCompareData("Price of Stella Artois (1 pint)", price1,price2));
+        data.add(new PubCompareData("Price of Heineken (1 pint)", price3, price4));
 
         return data;
+        //
+    }
+
+
+    private String LookupProductPrice(Product product, Pub pub){
+
+        String ans = "N/A";
+
+
+        for(Price i : pub.prices.priceList){
+
+            if(i.product.brand == product.brand && i.product.type == product.type && i.product.amount == product.amount){
+
+                ans = String.valueOf(i.price);
+
+
+            }
+
+        }
+
+
+        return ans;
+
+
 
     }
+
 
     private String formatDistanceText(LatLng one, LatLng two){
 

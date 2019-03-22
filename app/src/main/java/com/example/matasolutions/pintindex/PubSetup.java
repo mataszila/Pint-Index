@@ -44,10 +44,11 @@ public class PubSetup {
 
         ArrayList<Price> singlePrices = new ArrayList<Price>();
 
-        singlePrices.add(new Price(productSetup.products.get(0),3.50));
-        singlePrices.add(new Price(productSetup.products.get(1),3.75));
-        singlePrices.add(new Price(productSetup.products.get(2),3.25));
+        singlePrices.add(new Price(productSetup.products.get(0),3.65));
+        singlePrices.add(new Price(productSetup.products.get(1),4.60));
+        singlePrices.add(new Price(productSetup.products.get(2),3.65));
         singlePrices.add(new Price(productSetup.products.get(3),4.00));
+        singlePrices.add(new Price(productSetup.products.get(4),3.90));
 
         WeekOpeningHours weekOpeningHours = new WeekOpeningHours(singleOpeningHours);
 
@@ -77,8 +78,11 @@ public class PubSetup {
 
         pubs.add(pub1);
 
+        // ----------------------------------
+        //
         // End of setup for one pub.
-
+        //
+        // ----------------------------------
         Pub pub2 = new Pub("Hancock",54.979915,-1.6136037);
 
         ArrayList<Rating> ratings2 = new ArrayList<>();
@@ -86,6 +90,18 @@ public class PubSetup {
         ratings2.add(new Rating(RatingType.HYGIENE,3.7));
         ratings2.add(new Rating(RatingType.SERVICE,4.0));
         ratings2.add(new Rating(RatingType.VALUE_FOR_PRICE,4.2));
+
+
+        ArrayList<Price> singlePrices2 = new ArrayList<Price>();
+
+        singlePrices2.add(new Price(productSetup.products.get(0),3.10));
+        singlePrices2.add(new Price(productSetup.products.get(1),4.15));
+        singlePrices2.add(new Price(productSetup.products.get(2),3.45));
+        singlePrices2.add(new Price(productSetup.products.get(3),3.80));
+        singlePrices2.add(new Price(productSetup.products.get(4),3.650));
+
+
+        pub2.setPrices(new Prices(singlePrices2));
 
         pub2.setUrl("https://farm3.staticflickr.com/2828/8750050391_6286ccff1e_b.jpg");
 
