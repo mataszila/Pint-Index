@@ -85,10 +85,6 @@ public class PubCompareActivity extends AppCompatActivity {
 
     }
 
-    private
-
-
-
 
     private ArrayList<PubCompareData> SetupCompareData(){
 
@@ -96,10 +92,7 @@ public class PubCompareActivity extends AppCompatActivity {
 
         data.add(new PubCompareData("Rating", String.valueOf(pub1.ratings.averageRating), String.valueOf(pub2.ratings.averageRating)));
 
-        LatLng one = new LatLng(tracker.getCurrentLocation().getLatitude(), tracker.getCurrentLocation().getLongitude());
-
-        LatLng two = new LatLng(pub1.coordinates.latitude, pub1.coordinates.longitude);
-        LatLng three = new LatLng(pub2.coordinates.latitude, pub2.coordinates.longitude);
+        ArrayList<Product> matchingList = GetMatchingProducts();
 
 
         Product product1 = new Product(Brand.STELLA_ARTOIS, DrinkType.BEER,Amount.PINT);
@@ -113,12 +106,142 @@ public class PubCompareActivity extends AppCompatActivity {
         String price4 = LookupProductPrice(product2, pub2);
 
 
-        data.add(new PubCompareData("Distance from user", formatDistanceText(one,two ), formatDistanceText(one,three)));
-        data.add(new PubCompareData("Price of Stella Artois (1 pint)", price1,price2));
-        data.add(new PubCompareData("Price of Heineken (1 pint)", price3, price4));
+        data.add(new PubCompareData("Distance from user", formatDistanceText(pub1), formatDistanceText(pub2)));
+
+        //Prices
+
+        for(int i = 0; i <matchingList.size();i++ ){
+
+            Product p = matchingList.get(i);
+
+            String p1 = String.valueOf(findProductinPub(p,pub1).price);
+            String p2 = String.valueOf(findProductinPub(p,pub2).price);
+
+            data.add(new PubCompareData
+                    (FormatProductPriceTitle(p), p1,p2));
+        }
+        
 
         return data;
     }
+
+
+    private String FormatProductPriceTitle(Product product){
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Price of ");
+        sb.append(GetBrandString(product.brand) + " ");
+        sb.append("(" + GetAmountString(product.amount) + ")");
+
+
+        return sb.toString();
+
+    }
+
+
+    private String GetAmountString(Amount amount){
+
+        String ans = "N/A";
+
+        //PINT, HALF_PINT, GLASS, SINGLE, DOUBLE, TRIPLE, UNIT
+
+        switch (amount){
+            case PINT:
+                ans = "1 pint";
+                break;
+            case HALF_PINT:
+                ans = "half pint";
+                break;
+            case GLASS:
+                ans = "glass";
+                break;
+            case SINGLE:
+                ans = "single";
+                break;
+            case DOUBLE:
+                ans = "double";
+                break;
+            case TRIPLE:
+                ans = "triple";
+                break;
+            case BOTTLE:
+                ans = "bottle";
+                break;
+        }
+
+
+        return ans;
+
+
+    }
+
+
+    private String GetBrandString(Brand brand){
+
+        String ans = "N/A";
+
+        switch (brand){
+            case STELLA_ARTOIS:
+                ans = "Stella Artois";
+                break;
+            case HEINEKEN:
+                ans = "Heineken";
+                break;
+            case CARLSBERG:
+                ans = "Carlsberg";
+                break;
+            case PERONI:
+                ans = "Peroni";
+                break;
+            case BIRRA_MORRETI:
+                ans = "Birra Moretti";
+                break;
+            case JOHN_SMITHS:
+                ans = "John Smiths";
+                break;
+            case FOSTERS:
+                ans = "Fosters";
+                break;
+        }
+
+
+        return ans;
+
+    }
+
+
+    private Price findProductinPub(Product prod, Pub pub){
+
+        Price ans = null;
+
+        for(Price p : pub.prices.priceList){
+
+            if(DoProductsMatch(p.product,prod)){
+
+                ans = p;
+
+            }
+
+        }
+
+
+
+        return ans;
+
+    }
+
+    private boolean DoProductsMatch(Product one, Product two){
+
+        if(one.brand == two.brand && one.type == two.type && one.amount == two.amount ){
+            return true;
+        }
+        return false;
+
+    }
+
+
+
 
     private ArrayList<Product> GetMatchingProducts(){
 
@@ -139,14 +262,11 @@ public class PubCompareActivity extends AppCompatActivity {
                     productList.add(prod1);
 
                 }
-
-
-
             }
 
         }
 
-
+        return productList;
     }
 
 

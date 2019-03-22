@@ -94,8 +94,6 @@ public class PubSetup {
 
         ArrayList<Price> singlePrices2 = new ArrayList<Price>();
 
-        singlePrices2.add(new Price(productSetup.products.get(0),3.10));
-        singlePrices2.add(new Price(productSetup.products.get(1),4.15));
         singlePrices2.add(new Price(productSetup.products.get(2),3.45));
         singlePrices2.add(new Price(productSetup.products.get(3),3.80));
         singlePrices2.add(new Price(productSetup.products.get(4),3.650));
