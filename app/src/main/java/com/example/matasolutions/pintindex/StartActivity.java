@@ -22,12 +22,17 @@ public class StartActivity extends AppCompatActivity {
     Button productActivityButton;
     DrawerLayout drawer;
 
+    GPSTracker tracker;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+        tracker = new GPSTracker(this);
+
 
         if(statusCheck() == false){
 
@@ -76,7 +81,7 @@ public class StartActivity extends AppCompatActivity {
 
 
     public  boolean statusCheck() {
-        final LocationManager manager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        final LocationManager manager = tracker.locationManager;
 
         if (manager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 

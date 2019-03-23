@@ -2,15 +2,14 @@ package com.example.matasolutions.pintindex;
 
 public class Product {
 
-    public String name;
+    public Brand brand;
     public DrinkType type;
-    public double amount;
+    public Amount amount;
 
-    public Product(String name, DrinkType type, double amount){
-        this.name = name;
+    public Product(Brand brand, DrinkType type, Amount amount){
+        this.brand = brand;
         this.type = type;
         this.amount = amount;
     }
-
 
 }

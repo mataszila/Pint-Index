@@ -29,7 +29,7 @@ class Prices implements PubPageContentInterface{
 
                 Price current = priceList.get(i);
 
-                sb.append(current.product.name + " " + current.price + "\n" );
+                sb.append(current.product.brand + " " + current.price + "\n" );
 
             }
 
