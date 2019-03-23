@@ -53,7 +53,6 @@ public class PubCompareActivity extends AppCompatActivity {
 
     private GPSTracker tracker;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,7 +125,6 @@ public class PubCompareActivity extends AppCompatActivity {
 
         data = SetupCompareData();
 
-
         pub1_name_textview = findViewById(R.id.pub1_name_textview);
         pub2_name_textview = findViewById(R.id.pub2_name_textview);
 
@@ -184,6 +182,7 @@ public class PubCompareActivity extends AppCompatActivity {
     }
 
     private void AddMatchingProducts(ArrayList<PubCompareData> data){
+
         ArrayList<Product> matchingList = GetMatchingProducts();
 
         for(int i = 0; i <matchingList.size();i++ ){
