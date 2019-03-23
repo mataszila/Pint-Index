@@ -18,8 +18,8 @@ import android.widget.Button;
 
 public class StartActivity extends AppCompatActivity {
 
-    boolean locationTurnedOn;
     Button startButton;
+    Button productActivityButton;
     DrawerLayout drawer;
 
 
@@ -46,6 +46,18 @@ public class StartActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
                         startActivity(intent);
                     }
+
+            }
+        });
+
+        productActivityButton = findViewById(R.id.productActivityButton);
+
+        productActivityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getApplicationContext(), ProductActivity.class);
+                startActivity(intent);
 
             }
         });

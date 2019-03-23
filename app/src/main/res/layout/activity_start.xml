@@ -14,12 +14,21 @@
         android:orientation="vertical">
 
 
-    <Button
+        <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Start"
         android:id="@+id/startButton"
         android:gravity="right"/>
+
+        <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Product Activity"
+        android:id="@+id/productActivityButton"
+        android:gravity="right"/>
+
+
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
