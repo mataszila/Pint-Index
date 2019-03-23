@@ -92,23 +92,15 @@ public class PubCompareActivity extends AppCompatActivity {
 
         data.add(new PubCompareData("Rating", String.valueOf(pub1.ratings.averageRating), String.valueOf(pub2.ratings.averageRating)));
 
-        ArrayList<Product> matchingList = GetMatchingProducts();
-
-
-        Product product1 = new Product(Brand.STELLA_ARTOIS, DrinkType.BEER,Amount.PINT);
-
-        String price1 = LookupProductPrice(product1, pub1);
-        String price2 = LookupProductPrice(product1, pub2);
-
-        Product product2 = new Product(Brand.HEINEKEN, DrinkType.BEER,Amount.PINT);
-
-        String price3 = LookupProductPrice(product2, pub1);
-        String price4 = LookupProductPrice(product2, pub2);
-
-
         data.add(new PubCompareData("Distance from user", formatDistanceText(pub1), formatDistanceText(pub2)));
 
-        //Prices
+        AddMatchingProducts();
+
+        return data;
+    }
+
+    private void AddMatchingProducts(){
+        ArrayList<Product> matchingList = GetMatchingProducts();
 
         for(int i = 0; i <matchingList.size();i++ ){
 
@@ -120,10 +112,12 @@ public class PubCompareActivity extends AppCompatActivity {
             data.add(new PubCompareData
                     (FormatProductPriceTitle(p), p1,p2));
         }
-        
 
-        return data;
+
+
     }
+
+
 
 
     private String FormatProductPriceTitle(Product product){
@@ -139,6 +133,8 @@ public class PubCompareActivity extends AppCompatActivity {
 
     }
 
+
+    // enum to String
 
     private String GetAmountString(Amount amount){
 
@@ -204,12 +200,11 @@ public class PubCompareActivity extends AppCompatActivity {
                 ans = "Fosters";
                 break;
         }
-
-
         return ans;
 
     }
 
+    // Pub Comparison helpers
 
     private Price findProductinPub(Product prod, Pub pub){
 
@@ -224,11 +219,7 @@ public class PubCompareActivity extends AppCompatActivity {
             }
 
         }
-
-
-
         return ans;
-
     }
 
     private boolean DoProductsMatch(Product one, Product two){
@@ -239,9 +230,6 @@ public class PubCompareActivity extends AppCompatActivity {
         return false;
 
     }
-
-
-
 
     private ArrayList<Product> GetMatchingProducts(){
 
@@ -257,10 +245,10 @@ public class PubCompareActivity extends AppCompatActivity {
                 Product prod1 = pub1.prices.priceList.get(i).product;
                 Product prod2 = pub2.prices.priceList.get(j).product;
 
-                if(prod1.amount == prod2.amount && prod1.type == prod2.type && prod1.brand == prod2.brand){
+
+                if(DoProductsMatch(prod1, prod2)) {
 
                     productList.add(prod1);
-
                 }
             }
 
@@ -276,15 +264,17 @@ public class PubCompareActivity extends AppCompatActivity {
 
         for(Price i : pub.prices.priceList){
 
-            if(i.product.brand == product.brand && i.product.type == product.type && i.product.amount == product.amount){
-
+            if(DoProductsMatch(i.product, product)){
                 ans = String.valueOf(i.price);
             }
-
         }
+
         return ans;
     }
 
+
+
+    // Text and Views
 
     private String formatDistanceText(Pub one){
 
@@ -322,15 +312,11 @@ public class PubCompareActivity extends AppCompatActivity {
     private void SetupRecyclerView(){
         recyclerView =  findViewById(R.id.my_recycler_view);
 
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
         recyclerView.setHasFixedSize(true);
 
-        // use a linear layout manager
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        // specify an adapter (see also next example)
         mAdapter = new MyAdapter(data);
         recyclerView.setAdapter(mAdapter);
     }
@@ -365,7 +351,6 @@ public class PubCompareActivity extends AppCompatActivity {
         return arrayAdapter;
 
     }
-
 
     public synchronized void SetupAlertDialog(){
 
