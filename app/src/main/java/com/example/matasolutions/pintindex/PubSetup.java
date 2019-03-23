@@ -109,9 +109,51 @@ public class PubSetup {
 
         pubs.add(pub2);
 
-        pubs.add(new Pub("The Strawberry",54.9748055,-1.6217146));
-        pubs.add(new Pub("Trent House",54.977095,-1.6205557));
-        pubs.add(new Pub("Luther's",54.9789707,-1.6172808));
+        Pub pub3 = new Pub("The Strawberry",54.9748055,-1.6217146);
+
+        ArrayList<Price> singlePrices3 = new ArrayList<Price>();
+        singlePrices3.add(new Price(productSetup.products.get(0),3.65));
+        singlePrices3.add(new Price(productSetup.products.get(1),4.60));
+        singlePrices3.add(new Price(productSetup.products.get(2),3.45));
+        singlePrices3.add(new Price(productSetup.products.get(3),3.80));
+        singlePrices3.add(new Price(productSetup.products.get(4),3.650));
+
+        pub3.setPrices(new Prices(singlePrices3));
+
+
+
+
+
+
+        Pub pub4 = new Pub("Trent House",54.977095,-1.6205557);
+
+        ArrayList<Price> singlePrices4 = new ArrayList<Price>();
+        singlePrices4.add(new Price(productSetup.products.get(0),3.65));
+        singlePrices4.add(new Price(productSetup.products.get(1),4.60));
+        singlePrices4.add(new Price(productSetup.products.get(2),3.45));
+        singlePrices4.add(new Price(productSetup.products.get(3),3.80));
+        singlePrices4.add(new Price(productSetup.products.get(4),3.650));
+
+        pub4.setPrices(new Prices(singlePrices4));
+
+
+        Pub pub5 = new Pub("Luther's",54.9789707,-1.6172808);
+
+        ArrayList<Price> singlePrices5 = new ArrayList<Price>();
+        singlePrices5.add(new Price(productSetup.products.get(0),3.65));
+        singlePrices5.add(new Price(productSetup.products.get(1),4.60));
+        singlePrices5.add(new Price(productSetup.products.get(2),3.45));
+        singlePrices5.add(new Price(productSetup.products.get(3),3.80));
+        singlePrices5.add(new Price(productSetup.products.get(4),3.650));
+
+        pub5.setPrices(new Prices(singlePrices5));
+
+
+
+        pubs.add(pub3);
+
+        pubs.add(pub4);
+        pubs.add(pub5);
 
     }
 

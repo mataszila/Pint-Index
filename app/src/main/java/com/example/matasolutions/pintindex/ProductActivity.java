@@ -25,6 +25,8 @@ public class ProductActivity extends AppCompatActivity {
 
     TextView textView;
 
+    ArrayList<Pub> pubsWithProduct;
+    String ansText;
 
     Button actionButton;
 
@@ -105,25 +107,94 @@ public class ProductActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 textView = findViewById(R.id.textview);
-                textView.setText(drinkType.toString() + brand.toString() + amount.toString() );
+                DoEverythingElse();
+
+                textView.setText(ansText );
 
             }
         });
 
 
-        Product prod = new Product(brand, drinkType, amount);
-
-        PubSetup setup = new PubSetup();
-
-
-
-        ArrayList<Pub> pubsWithMatchingProduct = new ArrayList<Pub>();
-
 
 
     }
 
-    private void Find
+    private void DoEverythingElse() {
+
+        Product prod = new Product(brand, drinkType, amount);
+
+        pubsWithProduct = FindPubsWithProduct(prod);
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append(drinkType.toString() + brand.toString() + amount.toString());
+
+        for(int i=0;i<pubsWithProduct.size();i++){
+
+            Pub thisPub = pubsWithProduct.get(i);
+
+            String val = String.valueOf(findProductinPub(prod, thisPub).price);
+
+            sb.append(thisPub.name + " " + val + " \n");
+        }
+
+        ansText = sb.toString();
+    }
+
+    private boolean DoProductsMatch(Product one, Product two){
+
+        if(one.brand == two.brand && one.type == two.type && one.amount == two.amount ){
+            return true;
+        }
+        return false;
+
+    }
+
+
+    private ArrayList<Pub> FindPubsWithProduct(Product prod){
+
+        ArrayList<Pub> list = new ArrayList<Pub>();
+
+        PubSetup setup = new PubSetup();
+
+        for(int i=0;i<setup.pubs.size();i++){
+
+            Pub thisPub = setup.pubs.get(i);
+
+            for(int j=0;j<thisPub.prices.priceList.size();j++){
+
+                Product thisProduct = thisPub.prices.priceList.get(j).product;
+
+                if(DoProductsMatch(prod, thisProduct)){
+
+                    list.add(thisPub);
+                }
+
+            }
+
+        }
+
+        return list;
+
+    }
+
+    private Price findProductinPub(Product prod, Pub pub){
+
+        Price ans = null;
+
+        for(Price p : pub.prices.priceList){
+
+            if(DoProductsMatch(p.product,prod)){
+
+                ans = p;
+
+            }
+
+        }
+        return ans;
+    }
+
+
 
 
 }
