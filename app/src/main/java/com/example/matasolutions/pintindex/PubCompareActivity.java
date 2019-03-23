@@ -65,6 +65,77 @@ public class PubCompareActivity extends AppCompatActivity {
 
     }
 
+    public synchronized void SetupAlertDialog(){
+
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(PubCompareActivity.this);
+        builderSingle.setTitle("Select A Pub:-");
+
+        final ArrayAdapter<String> arrayAdapter = SetupArrayAdapter();
+
+        builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+            }
+        });
+
+        builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String strName = arrayAdapter.getItem(which);
+                SetupActivity(strName);
+
+
+                AlertDialog.Builder builderInner = new AlertDialog.Builder(PubCompareActivity.this);
+                builderInner.setMessage(strName);
+                builderInner.setTitle("Your Selected Item is");
+                builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog,int which) {
+
+                        dialog.dismiss();
+                    }
+                });
+                builderInner.show();
+            }
+        });
+        builderSingle.show();
+    }
+
+
+    private void SetupActivity(String pub2name){
+
+        try {
+            SetupViews(pub2name);
+            SetupImages();
+            SetupRecyclerView();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void SetupViews(String name) throws IOException {
+
+        PubSetup setup = new PubSetup();
+
+        pub2 = setup.returnPubByName(name);
+        pub1_name = getIntent().getStringExtra("pubName");
+        pub1 = setup.returnPubByName(pub1_name);
+
+        data = SetupCompareData();
+
+
+        pub1_name_textview = findViewById(R.id.pub1_name_textview);
+        pub2_name_textview = findViewById(R.id.pub2_name_textview);
+
+        pub1_name_textview.setText(pub1_name);
+        pub2_name_textview.setText(pub2.name);
+
+    }
+
+
     private void SetupImages(){
 
         pub1_image = findViewById(R.id.pub1_image);
@@ -85,21 +156,34 @@ public class PubCompareActivity extends AppCompatActivity {
 
     }
 
+    private void SetupRecyclerView(){
+        recyclerView =  findViewById(R.id.my_recycler_view);
+
+        recyclerView.setHasFixedSize(true);
+
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        mAdapter = new MyAdapter(data);
+        recyclerView.setAdapter(mAdapter);
+    }
+
+
 
     private ArrayList<PubCompareData> SetupCompareData(){
 
-        ArrayList<PubCompareData> data = new ArrayList<PubCompareData>();
+        ArrayList<PubCompareData> setup = new ArrayList<PubCompareData>();
 
-        data.add(new PubCompareData("Rating", String.valueOf(pub1.ratings.averageRating), String.valueOf(pub2.ratings.averageRating)));
+        setup.add(new PubCompareData("Rating", String.valueOf(pub1.ratings.averageRating), String.valueOf(pub2.ratings.averageRating)));
 
-        data.add(new PubCompareData("Distance from user", formatDistanceText(pub1), formatDistanceText(pub2)));
+        setup.add(new PubCompareData("Distance from user", formatDistanceText(pub1), formatDistanceText(pub2)));
 
-        AddMatchingProducts();
+        AddMatchingProducts(setup);
 
-        return data;
+        return setup;
     }
 
-    private void AddMatchingProducts(){
+    private void AddMatchingProducts(ArrayList<PubCompareData> data){
         ArrayList<Product> matchingList = GetMatchingProducts();
 
         for(int i = 0; i <matchingList.size();i++ ){
@@ -113,11 +197,7 @@ public class PubCompareActivity extends AppCompatActivity {
                     (FormatProductPriceTitle(p), p1,p2));
         }
 
-
-
     }
-
-
 
 
     private String FormatProductPriceTitle(Product product){
@@ -290,50 +370,6 @@ public class PubCompareActivity extends AppCompatActivity {
     }
 
 
-    private void SetupViews(String name) throws IOException {
-
-        PubSetup setup = new PubSetup();
-
-        pub2 = setup.returnPubByName(name);
-        pub1_name = getIntent().getStringExtra("pubName");
-        pub1 = setup.returnPubByName(pub1_name);
-
-        data = SetupCompareData();
-
-
-        pub1_name_textview = findViewById(R.id.pub1_name_textview);
-        pub2_name_textview = findViewById(R.id.pub2_name_textview);
-
-        pub1_name_textview.setText(pub1_name);
-        pub2_name_textview.setText(pub2.name);
-
-    }
-
-    private void SetupRecyclerView(){
-        recyclerView =  findViewById(R.id.my_recycler_view);
-
-        recyclerView.setHasFixedSize(true);
-
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        mAdapter = new MyAdapter(data);
-        recyclerView.setAdapter(mAdapter);
-    }
-
-
-
-    private void SetupActivity(String pub2name){
-
-        try {
-            SetupViews(pub2name);
-            SetupImages();
-            SetupRecyclerView();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     protected ArrayAdapter<String> SetupArrayAdapter(){
 
@@ -349,49 +385,6 @@ public class PubCompareActivity extends AppCompatActivity {
         }
 
         return arrayAdapter;
-
-    }
-
-    public synchronized void SetupAlertDialog(){
-
-        AlertDialog.Builder builderSingle = new AlertDialog.Builder(PubCompareActivity.this);
-        builderSingle.setTitle("Select A Pub:-");
-
-        final ArrayAdapter<String> arrayAdapter = SetupArrayAdapter();
-
-        builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                dialog.dismiss();
-            }
-        });
-
-        builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String strName = arrayAdapter.getItem(which);
-                    SetupActivity(strName);
-
-
-
-                SetupImages();
-
-                AlertDialog.Builder builderInner = new AlertDialog.Builder(PubCompareActivity.this);
-                builderInner.setMessage(strName);
-                builderInner.setTitle("Your Selected Item is");
-                builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog,int which) {
-
-                        dialog.dismiss();
-                    }
-                });
-                builderInner.show();
-            }
-        });
-        builderSingle.show();
-
 
     }
 
