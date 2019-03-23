@@ -10,16 +10,17 @@ public class ProductSetup {
 
         products = new ArrayList<Product>();
 
-        products.add(new Product("Heineken", DrinkType.BEER, 0.568));
-        products.add(new Product("Stella Artois", DrinkType.BEER,0.568 ));
-        products.add(new Product("Newcastle Brown Ale",DrinkType.BEER,0.568));
-        products.add(new Product("Carling",DrinkType.BEER,0.568));
-
-
+        products.add(new Product(Brand.FOSTERS, DrinkType.BEER,Amount.PINT));
+        products.add(new Product(Brand.BIRRA_MORRETI, DrinkType.BEER,Amount.PINT));
+        products.add(new Product(Brand.HEINEKEN, DrinkType.BEER,Amount.PINT));
+        products.add(new Product(Brand.PERONI, DrinkType.BEER,Amount.PINT));
+        products.add(new Product(Brand.STELLA_ARTOIS, DrinkType.BEER,Amount.PINT));
 
     }
 
 
 
 
+
 }
+

@@ -51,13 +51,7 @@ public class PubCompareActivity extends AppCompatActivity {
     TextView pub1_name_textview;
     TextView pub2_name_textview;
 
-    LocationListener locationListener;
-    LocationManager locationManager;
-
     private GPSTracker tracker;
-
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,6 +63,76 @@ public class PubCompareActivity extends AppCompatActivity {
         tracker = new GPSTracker(this);
 
     }
+
+    public synchronized void SetupAlertDialog(){
+
+        AlertDialog.Builder builderSingle = new AlertDialog.Builder(PubCompareActivity.this);
+        builderSingle.setTitle("Select A Pub:-");
+
+        final ArrayAdapter<String> arrayAdapter = SetupArrayAdapter();
+
+        builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                dialog.dismiss();
+            }
+        });
+
+        builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String strName = arrayAdapter.getItem(which);
+                SetupActivity(strName);
+
+
+                AlertDialog.Builder builderInner = new AlertDialog.Builder(PubCompareActivity.this);
+                builderInner.setMessage(strName);
+                builderInner.setTitle("Your Selected Item is");
+                builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog,int which) {
+
+                        dialog.dismiss();
+                    }
+                });
+                builderInner.show();
+            }
+        });
+        builderSingle.show();
+    }
+
+
+    private void SetupActivity(String pub2name){
+
+        try {
+            SetupViews(pub2name);
+            SetupImages();
+            SetupRecyclerView();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    private void SetupViews(String name) throws IOException {
+
+        PubSetup setup = new PubSetup();
+
+        pub2 = setup.returnPubByName(name);
+        pub1_name = getIntent().getStringExtra("pubName");
+        pub1 = setup.returnPubByName(pub1_name);
+
+        data = SetupCompareData();
+
+        pub1_name_textview = findViewById(R.id.pub1_name_textview);
+        pub2_name_textview = findViewById(R.id.pub2_name_textview);
+
+        pub1_name_textview.setText(pub1_name);
+        pub2_name_textview.setText(pub2.name);
+
+    }
+
 
     private void SetupImages(){
 
@@ -90,31 +154,213 @@ public class PubCompareActivity extends AppCompatActivity {
 
     }
 
+    private void SetupRecyclerView(){
+        recyclerView =  findViewById(R.id.my_recycler_view);
+
+        recyclerView.setHasFixedSize(true);
+
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        mAdapter = new MyAdapter(data);
+        recyclerView.setAdapter(mAdapter);
+    }
+
+
+
     private ArrayList<PubCompareData> SetupCompareData(){
 
-        ArrayList<PubCompareData> data = new ArrayList<PubCompareData>();
-        //String.valueOf(pub2.ratings.averageRating)
-        //String.valueOf(pub1.ratings.averageRating)
-        data.add(new PubCompareData("Rating", String.valueOf(pub1.ratings.averageRating), String.valueOf(pub2.ratings.averageRating)));
+        ArrayList<PubCompareData> setup = new ArrayList<PubCompareData>();
 
-        LatLng one = new LatLng(tracker.getCurrentLocation().getLatitude(), tracker.getCurrentLocation().getLongitude());
+        setup.add(new PubCompareData("Rating", String.valueOf(pub1.ratings.averageRating), String.valueOf(pub2.ratings.averageRating)));
 
-        LatLng two = new LatLng(pub1.coordinates.latitude, pub1.coordinates.longitude);
-        LatLng three = new LatLng(pub2.coordinates.latitude, pub2.coordinates.longitude);
+        setup.add(new PubCompareData("Distance from user", formatDistanceText(pub1), formatDistanceText(pub2)));
 
+        AddMatchingProducts(setup);
 
+        return setup;
+    }
 
-        data.add(new PubCompareData("Distance from user", formatDistanceText(one,two ), formatDistanceText(one,three)));
-        data.add(new PubCompareData("Price of Stella Artois (1 pint)", "3.60","4.2"));
-        data.add(new PubCompareData("Price of Heineken (1 pint)", "3.5", "3.8"));
+    private void AddMatchingProducts(ArrayList<PubCompareData> data){
 
-        return data;
+        ArrayList<Product> matchingList = GetMatchingProducts();
+
+        for(int i = 0; i <matchingList.size();i++ ){
+
+            Product p = matchingList.get(i);
+
+            String p1 = String.valueOf(findProductinPub(p,pub1).price);
+            String p2 = String.valueOf(findProductinPub(p,pub2).price);
+
+            data.add(new PubCompareData
+                    (FormatProductPriceTitle(p), p1,p2));
+        }
 
     }
 
-    private String formatDistanceText(LatLng one, LatLng two){
 
-        double distance = HelperMethods.CalculationByDistance(one, two);
+    private String FormatProductPriceTitle(Product product){
+
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Price of ");
+        sb.append(GetBrandString(product.brand) + " ");
+        sb.append("(" + GetAmountString(product.amount) + ")");
+
+
+        return sb.toString();
+
+    }
+
+
+    // enum to String
+
+    private String GetAmountString(Amount amount){
+
+        String ans = "N/A";
+
+        //PINT, HALF_PINT, GLASS, SINGLE, DOUBLE, TRIPLE, UNIT
+
+        switch (amount){
+            case PINT:
+                ans = "1 pint";
+                break;
+            case HALF_PINT:
+                ans = "half pint";
+                break;
+            case GLASS:
+                ans = "glass";
+                break;
+            case SINGLE:
+                ans = "single";
+                break;
+            case DOUBLE:
+                ans = "double";
+                break;
+            case TRIPLE:
+                ans = "triple";
+                break;
+            case BOTTLE:
+                ans = "bottle";
+                break;
+        }
+
+
+        return ans;
+
+
+    }
+
+
+    private String GetBrandString(Brand brand){
+
+        String ans = "N/A";
+
+        switch (brand){
+            case STELLA_ARTOIS:
+                ans = "Stella Artois";
+                break;
+            case HEINEKEN:
+                ans = "Heineken";
+                break;
+            case CARLSBERG:
+                ans = "Carlsberg";
+                break;
+            case PERONI:
+                ans = "Peroni";
+                break;
+            case BIRRA_MORRETI:
+                ans = "Birra Moretti";
+                break;
+            case JOHN_SMITHS:
+                ans = "John Smiths";
+                break;
+            case FOSTERS:
+                ans = "Fosters";
+                break;
+        }
+        return ans;
+
+    }
+
+    // Pub Comparison helpers
+
+    private Price findProductinPub(Product prod, Pub pub){
+
+        Price ans = null;
+
+        for(Price p : pub.prices.priceList){
+
+            if(DoProductsMatch(p.product,prod)){
+
+                ans = p;
+
+            }
+
+        }
+        return ans;
+    }
+
+    private boolean DoProductsMatch(Product one, Product two){
+
+        if(one.brand == two.brand && one.type == two.type && one.amount == two.amount ){
+            return true;
+        }
+        return false;
+
+    }
+
+    private ArrayList<Product> GetMatchingProducts(){
+
+        ArrayList<Product> productList = new ArrayList<>();
+
+        int pub1_size = pub1.prices.priceList.size();
+        int pub2_size = pub2.prices.priceList.size();
+
+        for(int i=0;i<pub1_size;i++){
+
+            for(int j=0;j<pub2_size;j++){
+
+                Product prod1 = pub1.prices.priceList.get(i).product;
+                Product prod2 = pub2.prices.priceList.get(j).product;
+
+
+                if(DoProductsMatch(prod1, prod2)) {
+
+                    productList.add(prod1);
+                }
+            }
+
+        }
+
+        return productList;
+    }
+
+
+    private String LookupProductPrice(Product product, Pub pub){
+
+        String ans = "N/A";
+
+        for(Price i : pub.prices.priceList){
+
+            if(DoProductsMatch(i.product, product)){
+                ans = String.valueOf(i.price);
+            }
+        }
+
+        return ans;
+    }
+
+
+
+    // Text and Views
+
+    private String formatDistanceText(Pub one){
+
+        LatLng current = new LatLng(tracker.getCurrentLocation().getLatitude(), tracker.getCurrentLocation().getLongitude());
+        LatLng pub = new LatLng(one.coordinates.latitude, one.coordinates.longitude);
+
+        double distance = HelperMethods.CalculationByDistance(current, pub);
 
         double rounded = Math.round(distance * 100.0) / 100.0;
 
@@ -123,54 +369,6 @@ public class PubCompareActivity extends AppCompatActivity {
     }
 
 
-    private void SetupViews(String name) throws IOException {
-
-        PubSetup setup = new PubSetup();
-
-        pub2 = setup.returnPubByName(name);
-        pub1_name = getIntent().getStringExtra("pubName");
-        pub1 = setup.returnPubByName(pub1_name);
-
-        data = SetupCompareData();
-
-
-        pub1_name_textview = findViewById(R.id.pub1_name_textview);
-        pub2_name_textview = findViewById(R.id.pub2_name_textview);
-
-        pub1_name_textview.setText(pub1_name);
-        pub2_name_textview.setText(pub2.name);
-
-    }
-
-    private void SetupRecyclerView(){
-        recyclerView =  findViewById(R.id.my_recycler_view);
-
-        // use this setting to improve performance if you know that changes
-        // in content do not change the layout size of the RecyclerView
-        recyclerView.setHasFixedSize(true);
-
-        // use a linear layout manager
-        layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-
-        // specify an adapter (see also next example)
-        mAdapter = new MyAdapter(data);
-        recyclerView.setAdapter(mAdapter);
-    }
-
-
-
-    private void SetupActivity(String pub2name){
-
-        try {
-            SetupViews(pub2name);
-            SetupImages();
-            SetupRecyclerView();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     protected ArrayAdapter<String> SetupArrayAdapter(){
 
@@ -186,50 +384,6 @@ public class PubCompareActivity extends AppCompatActivity {
         }
 
         return arrayAdapter;
-
-    }
-
-
-    public synchronized void SetupAlertDialog(){
-
-        AlertDialog.Builder builderSingle = new AlertDialog.Builder(PubCompareActivity.this);
-        builderSingle.setTitle("Select A Pub:-");
-
-        final ArrayAdapter<String> arrayAdapter = SetupArrayAdapter();
-
-        builderSingle.setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-                dialog.dismiss();
-            }
-        });
-
-        builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                String strName = arrayAdapter.getItem(which);
-                    SetupActivity(strName);
-
-
-
-                SetupImages();
-
-                AlertDialog.Builder builderInner = new AlertDialog.Builder(PubCompareActivity.this);
-                builderInner.setMessage(strName);
-                builderInner.setTitle("Your Selected Item is");
-                builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog,int which) {
-
-                        dialog.dismiss();
-                    }
-                });
-                builderInner.show();
-            }
-        });
-        builderSingle.show();
-
 
     }
 
@@ -301,9 +455,5 @@ public class PubCompareActivity extends AppCompatActivity {
             return mDataset.size();
         }
     }
-
-
-
-
 
 }
