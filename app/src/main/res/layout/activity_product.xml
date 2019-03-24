@@ -32,6 +32,22 @@
         />
 
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sort high to low"
+        android:id="@+id/sort_high_to_low"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sort low to high"
+        android:id="@+id/sort_low_to_high"
+
+        />
+
+
     <androidx.recyclerview.widget.RecyclerView
         android:layout_width="match_parent"
         android:layout_height="240dp"

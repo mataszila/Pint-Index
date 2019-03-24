@@ -15,7 +15,10 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.EnumSet;
 
 public class ProductActivity extends AppCompatActivity {
@@ -33,6 +36,10 @@ public class ProductActivity extends AppCompatActivity {
     String ansText;
 
     Button actionButton;
+
+    Button sort_high_to_low;
+    Button sort_low_to_high;
+
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -126,7 +133,7 @@ public class ProductActivity extends AppCompatActivity {
 
     private void DoEverythingElse() {
 
-        Product prod = new Product(brand, drinkType, amount);
+        final Product prod = new Product(brand, drinkType, amount);
 
         pubsWithProduct = FindPubsWithProduct(prod);
 
@@ -156,11 +163,59 @@ public class ProductActivity extends AppCompatActivity {
         mAdapter = new MyAdapter(prod,pubsWithProduct);
         recyclerView.setAdapter(mAdapter);
 
+        sort_high_to_low = findViewById(R.id.sort_high_to_low);
+        sort_low_to_high= findViewById(R.id.sort_low_to_high);
+
+        sort_high_to_low.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                SortByPrice(true, prod);
+                recyclerView.setAdapter(mAdapter);
 
 
+            }
+        });
+
+        sort_low_to_high.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SortByPrice(false, prod);
+                recyclerView.setAdapter(mAdapter);
+
+            }
+        });
+
+    }
+
+
+    public void SortByPrice(final boolean highToLow, final Product prod){
+
+        Collections.sort(pubsWithProduct, new Comparator<Pub>() {
+            @Override
+            public int compare(Pub lhs, Pub rhs) {
+                // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+
+                double p1 = findProductinPub(prod, lhs).price;
+                double p2 = findProductinPub(prod, rhs).price;
+
+                if(highToLow == true){
+                    return p1 > p2 ? -1 : (p1 < p2) ? 1 : 0;
+
+                }
+
+                return p1 > p2 ? 1 : (p1 < p2) ? -1 : 0;
+            }
+        });
 
 
     }
+
+
+
+
+
+
 
     private boolean DoProductsMatch(Product one, Product two){
 

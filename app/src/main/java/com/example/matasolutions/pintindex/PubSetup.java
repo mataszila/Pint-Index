@@ -112,11 +112,11 @@ public class PubSetup {
         Pub pub3 = new Pub("The Strawberry",54.9748055,-1.6217146);
 
         ArrayList<Price> singlePrices3 = new ArrayList<Price>();
-        singlePrices3.add(new Price(productSetup.products.get(0),3.65));
+        singlePrices3.add(new Price(productSetup.products.get(0),4.30));
         singlePrices3.add(new Price(productSetup.products.get(1),4.60));
-        singlePrices3.add(new Price(productSetup.products.get(2),3.45));
-        singlePrices3.add(new Price(productSetup.products.get(3),3.80));
-        singlePrices3.add(new Price(productSetup.products.get(4),3.650));
+        singlePrices3.add(new Price(productSetup.products.get(2),3.95));
+        singlePrices3.add(new Price(productSetup.products.get(3),3.20));
+        singlePrices3.add(new Price(productSetup.products.get(4),3.15));
 
         pub3.setPrices(new Prices(singlePrices3));
 
@@ -128,10 +128,10 @@ public class PubSetup {
         Pub pub4 = new Pub("Trent House",54.977095,-1.6205557);
 
         ArrayList<Price> singlePrices4 = new ArrayList<Price>();
-        singlePrices4.add(new Price(productSetup.products.get(0),3.65));
+        singlePrices4.add(new Price(productSetup.products.get(0),3.85));
         singlePrices4.add(new Price(productSetup.products.get(1),4.60));
-        singlePrices4.add(new Price(productSetup.products.get(2),3.45));
-        singlePrices4.add(new Price(productSetup.products.get(3),3.80));
+        singlePrices4.add(new Price(productSetup.products.get(2),3.85));
+        singlePrices4.add(new Price(productSetup.products.get(3),4.05));
         singlePrices4.add(new Price(productSetup.products.get(4),3.650));
 
         pub4.setPrices(new Prices(singlePrices4));
@@ -140,10 +140,10 @@ public class PubSetup {
         Pub pub5 = new Pub("Luther's",54.9789707,-1.6172808);
 
         ArrayList<Price> singlePrices5 = new ArrayList<Price>();
-        singlePrices5.add(new Price(productSetup.products.get(0),3.65));
+        singlePrices5.add(new Price(productSetup.products.get(0),3.35));
         singlePrices5.add(new Price(productSetup.products.get(1),4.60));
-        singlePrices5.add(new Price(productSetup.products.get(2),3.45));
-        singlePrices5.add(new Price(productSetup.products.get(3),3.80));
+        singlePrices5.add(new Price(productSetup.products.get(2),3.25));
+        singlePrices5.add(new Price(productSetup.products.get(3),3.70));
         singlePrices5.add(new Price(productSetup.products.get(4),3.650));
 
         pub5.setPrices(new Prices(singlePrices5));
