@@ -1,9 +1,14 @@
 package com.example.matasolutions.pintindex;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -23,21 +28,25 @@ public class ProductActivity extends AppCompatActivity {
     Brand brand;
     Amount amount;
 
-    TextView textView;
 
     ArrayList<Pub> pubsWithProduct;
     String ansText;
 
     Button actionButton;
 
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
 
-        DrinkTypeSpinner =findViewById(R.id.DrinkType_Spinner);
-        BrandSpinner =findViewById(R.id.Brand_Spinner);
-        AmountSpinner =findViewById(R.id.Amount_Spinner);
+        DrinkTypeSpinner = findViewById(R.id.DrinkType_Spinner);
+        BrandSpinner = findViewById(R.id.Brand_Spinner);
+        AmountSpinner = findViewById(R.id.Amount_Spinner);
 
         ArrayList<DrinkType> drinkTypeList = new ArrayList<DrinkType>(EnumSet.allOf(DrinkType.class));
         ArrayList<Brand> brandList = new ArrayList<Brand>(EnumSet.allOf(Brand.class));
@@ -106,15 +115,11 @@ public class ProductActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                textView = findViewById(R.id.textview);
                 DoEverythingElse();
 
-                textView.setText(ansText );
 
             }
         });
-
-
 
 
     }
@@ -139,6 +144,22 @@ public class ProductActivity extends AppCompatActivity {
         }
 
         ansText = sb.toString();
+
+
+        recyclerView =  findViewById(R.id.my_recycler_view);
+
+        recyclerView.setHasFixedSize(true);
+
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        mAdapter = new MyAdapter(prod,pubsWithProduct);
+        recyclerView.setAdapter(mAdapter);
+
+
+
+
+
     }
 
     private boolean DoProductsMatch(Product one, Product two){
@@ -149,6 +170,8 @@ public class ProductActivity extends AppCompatActivity {
         return false;
 
     }
+
+
 
 
     private ArrayList<Pub> FindPubsWithProduct(Product prod){
@@ -193,6 +216,83 @@ public class ProductActivity extends AppCompatActivity {
         }
         return ans;
     }
+
+
+
+    public static class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
+        private ArrayList<Pub> mDataset;
+        private Product product;
+
+
+        // Provide a reference to the views for each data item
+        // Complex data items may need more than one view per item, and
+        // you provide access to all the views for a data item in a view holder
+        public static class MyViewHolder extends RecyclerView.ViewHolder {
+            // each data item is just a string in this case
+
+            public TextView place;
+            public TextView brand;
+            public TextView price;
+
+
+            public MyViewHolder(View v) {
+                super(v);
+
+                place = (TextView) v.findViewById(R.id.place);
+                brand = (TextView) v.findViewById(R.id.brand);
+                price = (TextView) v.findViewById(R.id.price);
+            }
+        }
+
+        // Provide a suitable constructor (depends on the kind of dataset)
+        public MyAdapter(Product prod,ArrayList<Pub> myDataset) {
+            mDataset = myDataset;
+            product = prod;
+        }
+
+        // Create new views (invoked by the layout manager)
+        @Override
+        public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            // create a new view
+            Context context = parent.getContext();
+            LayoutInflater inflater = LayoutInflater.from(context);
+
+            View v = inflater.inflate(R.layout.productprice_recyclerview, parent, false);
+
+            MyAdapter.MyViewHolder vh = new MyAdapter.MyViewHolder(v);
+            return vh;
+        }
+
+        // Replace the contents of a view (invoked by the layout manager)
+        @Override
+        public void onBindViewHolder(MyAdapter.MyViewHolder holder, int position) {
+            // - get element from your dataset at this position
+            // - replace the contents of the view with that element
+            Pub thisPub = mDataset.get(position);
+
+            // Set item views based on your views and data model
+            TextView place = holder.place;
+            TextView brand = holder.brand;
+            TextView price  = holder.price;
+
+            place.setText(String.valueOf(position));
+            brand.setText(thisPub.name);
+            price.setText(String.valueOf(HelperMethods.LookupProductPrice(product, thisPub)));
+
+
+        }
+
+        // Return the size of your dataset (invoked by the layout manager)
+        @Override
+        public int getItemCount() {
+            return mDataset.size();
+        }
+    }
+
+
+
+
+
 
 
 

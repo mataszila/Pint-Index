@@ -398,16 +398,16 @@ public class PubCompareActivity extends AppCompatActivity {
 
 
             public TextView criteria;
-            public TextView card_left;
-            public TextView card_right;
+            public TextView left_value;
+            public TextView right_value;
 
 
             public MyViewHolder(View v) {
                 super(v);
 
                 criteria = (TextView) v.findViewById(R.id.pub_compare_text_criteria);
-                card_left = (TextView) v.findViewById(R.id.pub_compare_text_left);
-                card_right = (TextView) v.findViewById(R.id.pub_compare_text_right);
+                left_value = (TextView) v.findViewById(R.id.pub_compare_text_left);
+                right_value = (TextView) v.findViewById(R.id.pub_compare_text_right);
             }
         }
 
@@ -439,8 +439,8 @@ public class PubCompareActivity extends AppCompatActivity {
 
             // Set item views based on your views and data model
             TextView criteria = holder.criteria;
-            TextView left = holder.card_left;
-            TextView right = holder.card_right;
+            TextView left = holder.left_value;
+            TextView right = holder.right_value;
 
             criteria.setText(data.criteria);
             left.setText(data.left_value);

@@ -139,5 +139,45 @@ public class HelperMethods {
     }
 
 
+    public static String LookupProductPrice(Product product, Pub pub){
+
+        String ans = "N/A";
+
+        for(Price i : pub.prices.priceList){
+
+            if(DoProductsMatch(i.product, product)){
+                ans = String.valueOf(i.price);
+            }
+        }
+
+        return ans;
+    }
+
+    public static  boolean DoProductsMatch(Product one, Product two){
+
+        if(one.brand == two.brand && one.type == two.type && one.amount == two.amount ){
+            return true;
+        }
+        return false;
+
+    }
+
+    public static Price findProductinPub(Product prod, Pub pub){
+
+        Price ans = null;
+
+        for(Price p : pub.prices.priceList){
+
+            if(DoProductsMatch(p.product,prod)){
+
+                ans = p;
+
+            }
+
+        }
+        return ans;
+    }
+
+
 
 }
