@@ -31,7 +31,6 @@ public class ProductActivity extends AppCompatActivity {
     Brand brand;
     Amount amount;
 
-
     ArrayList<Pub> pubsWithProduct;
     String ansText;
 
@@ -40,11 +39,9 @@ public class ProductActivity extends AppCompatActivity {
     Button sort_high_to_low;
     Button sort_low_to_high;
 
-
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,48 +69,10 @@ public class ProductActivity extends AppCompatActivity {
         BrandSpinner.setAdapter(brandAdapter);
         AmountSpinner.setAdapter(amountAdapter);
 
-        DrinkTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
 
-           @Override
-           public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-               drinkType = (DrinkType) adapterView.getItemAtPosition(i);
-           }
-
-           @Override
-           public void onNothingSelected(AdapterView<?> adapterView) {
-
-           }
-       });
-
-
-        BrandSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                brand = (Brand) adapterView.getItemAtPosition(i);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
-
-        AmountSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                amount = (Amount) adapterView.getItemAtPosition(i);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
+        SetListener(DrinkTypeSpinner, ProductSpinnerType.DRINKTYPE);
+        SetListener(BrandSpinner, ProductSpinnerType.BRAND);
+        SetListener(AmountSpinner, ProductSpinnerType.AMOUNT);
 
 
         actionButton = findViewById(R.id.action_button);
@@ -131,6 +90,37 @@ public class ProductActivity extends AppCompatActivity {
 
     }
 
+
+    private void SetListener(Spinner spinner, final ProductSpinnerType type ){
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                switch (type){
+
+                    case BRAND:
+                        brand = (Brand) adapterView.getItemAtPosition(i);
+                        break;
+                    case AMOUNT:
+                        amount = (Amount) adapterView.getItemAtPosition(i);
+                        break;
+                    case DRINKTYPE:
+                        drinkType = (DrinkType) adapterView.getItemAtPosition(i);
+                        break;
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
+    }
+
+    
     private void DoEverythingElse() {
 
         final Product prod = new Product(brand, drinkType, amount);
@@ -151,7 +141,6 @@ public class ProductActivity extends AppCompatActivity {
         }
 
         ansText = sb.toString();
-
 
         recyclerView =  findViewById(R.id.my_recycler_view);
 
@@ -330,7 +319,7 @@ public class ProductActivity extends AppCompatActivity {
             TextView brand = holder.brand;
             TextView price  = holder.price;
 
-            place.setText(String.valueOf(position));
+            place.setText(String.valueOf(position+1));
             brand.setText(thisPub.name);
             price.setText(String.valueOf(HelperMethods.LookupProductPrice(product, thisPub)));
 
