@@ -5,6 +5,8 @@ import com.google.android.gms.maps.model.LatLngBounds;
 
 import org.junit.Test;
 
+import java.text.ParseException;
+
 import androidx.constraintlayout.solver.widgets.Helper;
 
 import static org.junit.Assert.*;
@@ -17,8 +19,7 @@ public class HelperMethodsTest {
     }
 
     @Test
-    public void calculationByDistance() {
-
+    public void Test_HelperMethods_CalculationByDistance() {
 
         //Newcastle
         LatLng ncl_Lat = new LatLng(54.9783, 1.6178);
@@ -39,13 +40,21 @@ public class HelperMethodsTest {
 
         assertEquals(expectedResult2, actualResult2,1);
 
-
-
     }
 
 
     @Test
-    public void isPubOpen() {
+    public void Test_HelperMethods_IsPubOpen() {
+
+        try {
+            assertTrue(HelperMethods.isPubOpen("15:00","02:00","01:59"));
+            assertFalse(HelperMethods.isPubOpen("10:00","02:00","02:30"));
+            assertTrue(HelperMethods.isPubOpen("12:00", "01:00", "17:45"));
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Test
