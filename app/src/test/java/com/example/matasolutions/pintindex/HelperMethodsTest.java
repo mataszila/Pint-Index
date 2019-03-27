@@ -63,6 +63,18 @@ public class HelperMethodsTest {
 
     @Test
     public void doProductsMatch() {
+
+        Product p1 = new Product(Brand.HEINEKEN, DrinkType.BEER,Amount.PINT );
+        Product p2 = new Product(Brand.HEINEKEN, DrinkType.BEER,Amount.PINT );
+        Product p3 = new Product(Brand.HEINEKEN, DrinkType.BEER,Amount.HALF_PINT );
+        Product p4 = new Product(Brand.STELLA_ARTOIS, DrinkType.BEER,Amount.PINT );
+
+        assertTrue(HelperMethods.DoProductsMatch(p1, p2));
+
+        assertFalse(HelperMethods.DoProductsMatch(p1, p3));
+
+        assertFalse(HelperMethods.DoProductsMatch(p1,p4 ));
+
     }
 
     @Test
