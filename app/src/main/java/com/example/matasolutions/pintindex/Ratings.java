@@ -20,6 +20,9 @@ class Ratings implements PubPageContentInterface {
         this.averageRating = calculateAverageRating();
     }
 
+    public Ratings(){
+
+    }
 
 
 
@@ -52,6 +55,12 @@ class Ratings implements PubPageContentInterface {
     }
 
     private double calculateAverageRating(){
+
+        if(ratings == null) {
+
+            return 0;
+        }
+
         double sum = 0;
 
         for(int i=0;i<ratings.size();i++){
