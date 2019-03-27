@@ -6,12 +6,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,15 +16,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-
 
 public class PubCompareActivity extends AppCompatActivity {
 
@@ -137,7 +126,6 @@ public class PubCompareActivity extends AppCompatActivity {
 
     }
 
-
     private void SetupImages(){
 
         pub1_image = findViewById(R.id.pub1_image);
@@ -169,7 +157,6 @@ public class PubCompareActivity extends AppCompatActivity {
         mAdapter = new MyAdapter(data);
         recyclerView.setAdapter(mAdapter);
     }
-
 
 
     private ArrayList<PubCompareData> SetupCompareData(){
@@ -345,24 +332,6 @@ public class PubCompareActivity extends AppCompatActivity {
     }
 
 
-    private String LookupProductPrice(Product product, Pub pub){
-
-        String ans = "N/A";
-
-        for(Price i : pub.prices.priceList){
-
-            if(DoProductsMatch(i.product, product)){
-                ans = String.valueOf(i.price);
-            }
-        }
-
-        return ans;
-    }
-
-
-
-    // Text and Views
-
     private String formatDistanceText(Pub one){
 
         LatLng current = new LatLng(tracker.getCurrentLocation().getLatitude(), tracker.getCurrentLocation().getLongitude());
@@ -375,7 +344,6 @@ public class PubCompareActivity extends AppCompatActivity {
         return String.valueOf(rounded) + "km";
 
     }
-
 
 
     protected ArrayAdapter<String> SetupArrayAdapter(){
@@ -401,14 +369,12 @@ public class PubCompareActivity extends AppCompatActivity {
         // Provide a reference to the views for each data item
         // Complex data items may need more than one view per item, and
         // you provide access to all the views for a data item in a view holder
-        public static class MyViewHolder extends RecyclerView.ViewHolder {
-            // each data item is just a string in this case
 
+        public static class MyViewHolder extends RecyclerView.ViewHolder {
 
             public TextView criteria;
             public TextView left_value;
             public TextView right_value;
-
 
             public MyViewHolder(View v) {
                 super(v);
@@ -425,10 +391,9 @@ public class PubCompareActivity extends AppCompatActivity {
         }
 
         // Create new views (invoked by the layout manager)
+
         @Override
-        public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                         int viewType) {
-            // create a new view
+        public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             Context context = parent.getContext();
             LayoutInflater inflater = LayoutInflater.from(context);
 
@@ -453,7 +418,6 @@ public class PubCompareActivity extends AppCompatActivity {
             criteria.setText(data.criteria);
             left.setText(data.left_value);
             right.setText(data.right_value);
-
 
         }
 
