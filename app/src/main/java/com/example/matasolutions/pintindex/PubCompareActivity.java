@@ -6,12 +6,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.Drawable;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.media.Image;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,15 +16,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
-
 
 public class PubCompareActivity extends AppCompatActivity {
 
@@ -106,7 +95,8 @@ public class PubCompareActivity extends AppCompatActivity {
     private void SetupActivity(String pub2name){
 
         try {
-            SetupViews(pub2name);
+            SetupData(pub2name);
+            SetupViews();
             SetupImages();
             SetupRecyclerView();
         } catch (IOException e) {
@@ -115,15 +105,18 @@ public class PubCompareActivity extends AppCompatActivity {
 
     }
 
-    private void SetupViews(String name) throws IOException {
-
+    private void SetupData(String name){
         PubSetup setup = new PubSetup();
 
         pub2 = setup.returnPubByName(name);
         pub1_name = getIntent().getStringExtra("pubName");
-        pub1 = setup.returnPubByName(pub1_name);
 
+        pub1 = setup.returnPubByName(pub1_name);
         data = SetupCompareData();
+    }
+
+
+    private void SetupViews() throws IOException {
 
         pub1_name_textview = findViewById(R.id.pub1_name_textview);
         pub2_name_textview = findViewById(R.id.pub2_name_textview);
@@ -133,26 +126,25 @@ public class PubCompareActivity extends AppCompatActivity {
 
     }
 
-
     private void SetupImages(){
 
         pub1_image = findViewById(R.id.pub1_image);
         pub2_image = findViewById(R.id.pub2_image);
 
-        Picasso.get()
-                .load(pub1.url)
-                .resize(480, 360)
-                .centerCrop()
-                .into(pub1_image);
+        SetupSingleImage(pub1_image, pub1.url);
+        SetupSingleImage(pub2_image, pub2.url);
+
+        }
+
+    private void SetupSingleImage(ImageView imageView, String url){
 
         Picasso.get()
-                .load(pub2.url)
+                .load(url)
                 .resize(480, 360)
                 .centerCrop()
-                .into(pub2_image);
-
-
+                .into(imageView);
     }
+
 
     private void SetupRecyclerView(){
         recyclerView =  findViewById(R.id.my_recycler_view);
@@ -167,14 +159,19 @@ public class PubCompareActivity extends AppCompatActivity {
     }
 
 
-
     private ArrayList<PubCompareData> SetupCompareData(){
 
         ArrayList<PubCompareData> setup = new ArrayList<PubCompareData>();
 
-        setup.add(new PubCompareData("Rating", String.valueOf(pub1.ratings.averageRating), String.valueOf(pub2.ratings.averageRating)));
+        setup.add(new PubCompareData("Rating",
+                String.valueOf(pub1.ratings.averageRating),
+                String.valueOf(pub2.ratings.averageRating
+                )));
 
-        setup.add(new PubCompareData("Distance from user", formatDistanceText(pub1), formatDistanceText(pub2)));
+        setup.add(
+                new PubCompareData("Distance from user",
+                        formatDistanceText(pub1),
+                        formatDistanceText(pub2)));
 
         AddMatchingProducts(setup);
 
@@ -324,36 +321,16 @@ public class PubCompareActivity extends AppCompatActivity {
                 Product prod1 = pub1.prices.priceList.get(i).product;
                 Product prod2 = pub2.prices.priceList.get(j).product;
 
-
                 if(DoProductsMatch(prod1, prod2)) {
 
                     productList.add(prod1);
                 }
             }
-
         }
 
         return productList;
     }
 
-
-    private String LookupProductPrice(Product product, Pub pub){
-
-        String ans = "N/A";
-
-        for(Price i : pub.prices.priceList){
-
-            if(DoProductsMatch(i.product, product)){
-                ans = String.valueOf(i.price);
-            }
-        }
-
-        return ans;
-    }
-
-
-
-    // Text and Views
 
     private String formatDistanceText(Pub one){
 
@@ -367,7 +344,6 @@ public class PubCompareActivity extends AppCompatActivity {
         return String.valueOf(rounded) + "km";
 
     }
-
 
 
     protected ArrayAdapter<String> SetupArrayAdapter(){
@@ -393,21 +369,19 @@ public class PubCompareActivity extends AppCompatActivity {
         // Provide a reference to the views for each data item
         // Complex data items may need more than one view per item, and
         // you provide access to all the views for a data item in a view holder
-        public static class MyViewHolder extends RecyclerView.ViewHolder {
-            // each data item is just a string in this case
 
+        public static class MyViewHolder extends RecyclerView.ViewHolder {
 
             public TextView criteria;
-            public TextView card_left;
-            public TextView card_right;
-
+            public TextView left_value;
+            public TextView right_value;
 
             public MyViewHolder(View v) {
                 super(v);
 
                 criteria = (TextView) v.findViewById(R.id.pub_compare_text_criteria);
-                card_left = (TextView) v.findViewById(R.id.pub_compare_text_left);
-                card_right = (TextView) v.findViewById(R.id.pub_compare_text_right);
+                left_value = (TextView) v.findViewById(R.id.pub_compare_text_left);
+                right_value = (TextView) v.findViewById(R.id.pub_compare_text_right);
             }
         }
 
@@ -417,10 +391,9 @@ public class PubCompareActivity extends AppCompatActivity {
         }
 
         // Create new views (invoked by the layout manager)
+
         @Override
-        public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent,
-                                                         int viewType) {
-            // create a new view
+        public MyAdapter.MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             Context context = parent.getContext();
             LayoutInflater inflater = LayoutInflater.from(context);
 
@@ -439,13 +412,12 @@ public class PubCompareActivity extends AppCompatActivity {
 
             // Set item views based on your views and data model
             TextView criteria = holder.criteria;
-            TextView left = holder.card_left;
-            TextView right = holder.card_right;
+            TextView left = holder.left_value;
+            TextView right = holder.right_value;
 
             criteria.setText(data.criteria);
             left.setText(data.left_value);
             right.setText(data.right_value);
-
 
         }
 

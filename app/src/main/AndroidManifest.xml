@@ -17,8 +17,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-
-
         <uses-library
             android:name="org.apache.http.legacy"
             android:required="false" />
@@ -48,7 +46,8 @@
             android:name=".PubActivity"
             android:label="@string/title_activity_pub" />
         <activity android:name=".PubCompareActivity" />
-        <activity android:name=".MapsActivity"></activity>
+        <activity android:name=".MapsActivity" />
+        <activity android:name=".ProductActivity"></activity>
     </application>
 
 </manifest>

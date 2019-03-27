@@ -5,6 +5,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -19,6 +20,7 @@ import android.widget.Button;
 public class StartActivity extends AppCompatActivity {
 
     Button startButton;
+    Button productActivityButton;
     DrawerLayout drawer;
 
     GPSTracker tracker;
@@ -50,6 +52,18 @@ public class StartActivity extends AppCompatActivity {
                         Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
                         startActivity(intent);
                     }
+
+            }
+        });
+
+        productActivityButton = findViewById(R.id.productActivityButton);
+
+        productActivityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getApplicationContext(), ProductActivity.class);
+                startActivity(intent);
 
             }
         });
