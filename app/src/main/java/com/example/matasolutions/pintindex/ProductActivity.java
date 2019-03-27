@@ -40,7 +40,6 @@ public class ProductActivity extends AppCompatActivity {
 
     Button actionButton;
 
-
     Button sort_high_to_low;
     Button sort_low_to_high;
 
@@ -61,8 +60,6 @@ public class ProductActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 SearchButtonClicked();
-
-
             }
         });
 
