@@ -17,7 +17,9 @@ class Ratings implements PubPageContentInterface {
     public Ratings(ArrayList<Rating> ratings){
 
         this.ratings = ratings;
+        ConvertList();
         this.averageRating = calculateAverageRating();
+
     }
 
     public Ratings(){
@@ -53,6 +55,51 @@ class Ratings implements PubPageContentInterface {
         }
 
     }
+
+    private void ConvertList() {
+
+        ArrayList<Rating> compare = new ArrayList<>();
+
+        if (ratings != null) {
+
+            for (int i = ratings.size()-1; i >= 0 ; i--) {
+
+                Rating thisRating = ratings.get(i);
+
+                if(i == ratings.size()-1){
+
+                    compare.add(thisRating);
+                    continue;
+                }
+                int counter=  0;
+
+                for(int j = 0 ; j< compare.size();j++){
+
+                    Rating compRating = compare.get(j);
+
+                    if(thisRating.type != compRating.type){
+
+                        counter++;
+                    }
+
+                    if(counter == compare.size()){
+                        compare.add(thisRating);
+                    }
+
+                }
+
+
+
+
+            }
+            ratings = compare;
+
+
+        }
+
+
+    }
+
 
     private double calculateAverageRating(){
 

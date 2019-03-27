@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 public class RatingsTest {
 
     private Ratings ratings;
-
+    ArrayList<Rating> ratingList = new ArrayList<>();
 
     public RatingsTest(){
     }
@@ -27,8 +27,6 @@ public class RatingsTest {
     @Test
     public void Test_Rating_AverageRating(){
 
-        ArrayList<Rating> ratingList = new ArrayList<>();
-
         ratingList.add(new Rating(RatingType.VALUE_FOR_PRICE, 5.0));
         ratingList.add(new Rating(RatingType.SERVICE, 4.0));
         ratingList.add(new Rating(RatingType.HYGIENE, 3.0));
@@ -42,5 +40,49 @@ public class RatingsTest {
         assertEquals(testRating,ratings.averageRating,margin);
 
     }
-    
+
+    @Test
+    public void Test_Check_Repeating_Ratings(){
+
+        ratingList.add(new Rating(RatingType.ATMOSPHERE,1.0 ));
+        ratingList.add(new Rating(RatingType.ATMOSPHERE,2.0 ));
+        ratingList.add(new Rating(RatingType.ATMOSPHERE,3.0 ));
+        ratingList.add(new Rating(RatingType.ATMOSPHERE,4.0 ));
+        ratingList.add(new Rating(RatingType.ATMOSPHERE,5.0 ));
+        ratingList.add(new Rating(RatingType.ATMOSPHERE,6.0 ));
+        ratingList.add(new Rating(RatingType.ATMOSPHERE,7.0 ));
+
+        ratingList.add(new Rating(RatingType.HYGIENE,1.0 ));
+        ratingList.add(new Rating(RatingType.HYGIENE,2.0 ));
+        ratingList.add(new Rating(RatingType.HYGIENE,3.0 ));
+        ratingList.add(new Rating(RatingType.HYGIENE,4.0 ));
+        ratingList.add(new Rating(RatingType.HYGIENE,5.0 ));
+        ratingList.add(new Rating(RatingType.HYGIENE,6.0 ));
+
+        ratingList.add(new Rating(RatingType.SERVICE,1.0 ));
+        ratingList.add(new Rating(RatingType.SERVICE,1.0 ));
+        ratingList.add(new Rating(RatingType.SERVICE,1.0 ));
+        ratingList.add(new Rating(RatingType.SERVICE,1.0 ));
+        ratingList.add(new Rating(RatingType.SERVICE,5.0 ));
+
+        ratingList.add(new Rating(RatingType.VALUE_FOR_PRICE,1.0 ));
+        ratingList.add(new Rating(RatingType.VALUE_FOR_PRICE,2.0 ));
+
+
+        ratings = new Ratings(ratingList);
+
+        double testSize = 3.0;
+        double margin =0.001;
+
+
+
+        assertEquals(testSize, ratings.ratings.size(),margin);
+
+
+
+    }
+
+
+
+
 }
