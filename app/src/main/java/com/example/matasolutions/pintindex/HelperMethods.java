@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -177,6 +178,31 @@ public class HelperMethods {
         }
         return ans;
     }
+
+    public static ArrayList<Pub> FindPubsWithProduct(Product prod){
+
+        ArrayList<Pub> list = new ArrayList<Pub>();
+
+        PubSetup setup = new PubSetup();
+
+        for(int i=0;i<setup.pubs.size();i++){
+
+            Pub thisPub = setup.pubs.get(i);
+
+            for(int j=0;j<thisPub.prices.priceList.size();j++){
+
+                Product thisProduct = thisPub.prices.priceList.get(j).product;
+
+                if(HelperMethods.DoProductsMatch(prod, thisProduct)){
+
+                    list.add(thisPub);
+                }
+            }
+        }
+
+        return list;
+    }
+
 
 
 

@@ -7,21 +7,36 @@
     android:orientation="vertical"
     tools:context=".ProductActivity">
 
-    <Spinner
-        android:id="@+id/DrinkType_Spinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        android:orientation="vertical"
+
+        >
+        <Spinner
+            android:id="@+id/DrinkType_Spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
 
 
-    <Spinner
-        android:id="@+id/Brand_Spinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/Brand_Spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
 
-    <Spinner
-        android:id="@+id/Amount_Spinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        <Spinner
+            android:id="@+id/Amount_Spinner"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+
+    </LinearLayout>
+
 
     <Button
         android:id="@+id/action_button"
@@ -44,7 +59,6 @@
         android:layout_height="wrap_content"
         android:text="Sort low to high"
         android:id="@+id/sort_low_to_high"
-
         />
 
 
