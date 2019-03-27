@@ -48,22 +48,16 @@ public class RatingsTest {
         ratingList.add(new Rating(RatingType.ATMOSPHERE,2.0 ));
         ratingList.add(new Rating(RatingType.ATMOSPHERE,3.0 ));
         ratingList.add(new Rating(RatingType.ATMOSPHERE,4.0 ));
-        ratingList.add(new Rating(RatingType.ATMOSPHERE,5.0 ));
-        ratingList.add(new Rating(RatingType.ATMOSPHERE,6.0 ));
-        ratingList.add(new Rating(RatingType.ATMOSPHERE,7.0 ));
 
-        ratingList.add(new Rating(RatingType.HYGIENE,1.0 ));
-        ratingList.add(new Rating(RatingType.HYGIENE,2.0 ));
-        ratingList.add(new Rating(RatingType.HYGIENE,3.0 ));
+
         ratingList.add(new Rating(RatingType.HYGIENE,4.0 ));
         ratingList.add(new Rating(RatingType.HYGIENE,5.0 ));
         ratingList.add(new Rating(RatingType.HYGIENE,6.0 ));
 
+
         ratingList.add(new Rating(RatingType.SERVICE,1.0 ));
-        ratingList.add(new Rating(RatingType.SERVICE,1.0 ));
-        ratingList.add(new Rating(RatingType.SERVICE,1.0 ));
-        ratingList.add(new Rating(RatingType.SERVICE,1.0 ));
-        ratingList.add(new Rating(RatingType.SERVICE,5.0 ));
+        ratingList.add(new Rating(RatingType.SERVICE,2.0 ));
+        ratingList.add(new Rating(RatingType.SERVICE,3.0 ));
 
         ratingList.add(new Rating(RatingType.VALUE_FOR_PRICE,1.0 ));
         ratingList.add(new Rating(RatingType.VALUE_FOR_PRICE,2.0 ));
@@ -71,7 +65,7 @@ public class RatingsTest {
 
         ratings = new Ratings(ratingList);
 
-        double testSize = 3.0;
+        double testSize = 4.0;
         double margin =0.001;
 
 

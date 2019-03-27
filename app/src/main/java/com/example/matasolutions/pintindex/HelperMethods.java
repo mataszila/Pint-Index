@@ -57,8 +57,7 @@ public class HelperMethods {
         int kmInDec = Integer.valueOf(newFormat.format(km));
         double meter = valueResult % 1000;
         int meterInDec = Integer.valueOf(newFormat.format(meter));
-        Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec
-                + " Meter   " + meterInDec);
+
 
         return Radius * c;
     }
