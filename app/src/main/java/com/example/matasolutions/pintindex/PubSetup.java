@@ -58,7 +58,6 @@ public class PubSetup {
         //Facilities;
 
         ArrayList<Facility>  facilityInitList = new ArrayList<Facility>();
-
         facilityInitList.add(new Facility(FacilityType.CAR_PARKING,"Car Parking"));
         facilityInitList.add(new Facility(FacilityType.LIVE_SPORTS,"Live Sports"));
 

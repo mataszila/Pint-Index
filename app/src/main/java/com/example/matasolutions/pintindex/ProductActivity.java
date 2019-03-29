@@ -40,7 +40,6 @@ public class ProductActivity extends AppCompatActivity {
 
     Button actionButton;
 
-
     Button sort_high_to_low;
     Button sort_low_to_high;
 
@@ -203,8 +202,8 @@ public class ProductActivity extends AppCompatActivity {
             public int compare(Pub lhs, Pub rhs) {
                 // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
 
-                double p1 = HelperMethods.findProductinPub(prod, lhs).price;
-                double p2 = HelperMethods.findProductinPub(prod, rhs).price;
+                double p1 = HelperMethods.FindProductinPub(prod, lhs).price;
+                double p2 = HelperMethods.FindProductinPub(prod, rhs).price;
 
                 if(highToLow == true){
                     return p1 > p2 ? -1 : (p1 < p2) ? 1 : 0;

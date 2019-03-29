@@ -64,17 +64,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         setupMap();
         setupMarkers();
         setupListeners();
-
     }
 
     private void setupMap() {
+        tracker.updateCurrentLocation();
 
         if(tracker.checkLocationPermission() && tracker.getCurrentLocation() != null){
-            tracker.locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, tracker.locationListener);
             mMap.setMyLocationEnabled(true);
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(tracker.getCurrentLocation().getLatitude(),tracker.getCurrentLocation().getLongitude()), 15.0f));
+            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
+                    new LatLng(
+                            tracker.getCurrentLocation().getLatitude(),
+                            tracker.getCurrentLocation().getLongitude()),
+                            15.0f));
         }
-
     }
 
     private void setupListeners(){
@@ -146,15 +148,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         for(int i=0;i<pubSetup.pubs.size();i++){
 
                 Pub thisPub = pubSetup.pubs.get(i);
-                tracker.updateCurrentLocation();
-                LatLng curLatLng = tracker.getCurrentLocation()  == null ? null : new LatLng(tracker.getCurrentLocation().getLatitude(),tracker.getCurrentLocation().getLongitude());
+                LatLng curLatLng = tracker.getCurrentLocation()  == null
+                        ? null
+                        : new LatLng(
+                                tracker.getCurrentLocation().getLatitude(),
+                        tracker.getCurrentLocation().getLongitude());
 
-                String title = formatMarkerTitle(thisPub.name, HelperMethods.CalculationByDistance(curLatLng, thisPub.coordinates));
+                String title = formatMarkerTitle(thisPub.name, HelperMethods.CalculationByDistance(curLatLng,thisPub.coordinates));
 
-                thisPub.marker = mMap.addMarker(new MarkerOptions().position(thisPub.coordinates).title(title));
-
+                thisPub.marker = mMap.addMarker(new MarkerOptions().
+                        position(thisPub.coordinates).
+                        title(title));
         }
-
     }
 
     private String formatMarkerTitle(String name, double distance){

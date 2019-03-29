@@ -12,3 +12,6 @@ public enum FacilityType {
     WC,
     LIVE_MUSIC
 }
+
+
+

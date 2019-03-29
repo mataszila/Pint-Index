@@ -38,7 +38,7 @@ public class HelperMethods {
     }
 
 
-    public static double CalculationByDistance(LatLng StartP, LatLng EndP) {
+     static double CalculationByDistance(LatLng StartP, LatLng EndP) {
         int Radius = 6371;// radius of earth in Km
         double lat1 = StartP.latitude;
         double lat2 = EndP.latitude;
@@ -51,16 +51,8 @@ public class HelperMethods {
                 * Math.cos(Math.toRadians(lat2)) * Math.sin(dLon / 2)
                 * Math.sin(dLon / 2);
         double c = 2 * Math.asin(Math.sqrt(a));
-        double valueResult = Radius * c;
-        double km = valueResult / 1;
-        DecimalFormat newFormat = new DecimalFormat("####");
-        int kmInDec = Integer.valueOf(newFormat.format(km));
-        double meter = valueResult % 1000;
-        int meterInDec = Integer.valueOf(newFormat.format(meter));
-        Log.i("Radius Value", "" + valueResult + "   KM  " + kmInDec
-                + " Meter   " + meterInDec);
 
-        return Radius * c;
+        return Radius*c;
     }
 
     public static boolean isPubOpen(String argStartTime,
@@ -163,7 +155,7 @@ public class HelperMethods {
 
     }
 
-    public static Price findProductinPub(Product prod, Pub pub){
+    public static Price FindProductinPub(Product prod, Pub pub){
 
         Price ans = null;
 

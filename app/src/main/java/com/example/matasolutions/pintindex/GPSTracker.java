@@ -21,23 +21,22 @@ public class GPSTracker {
 
     private Context context;
 
-    public LocationListener locationListener;
-    public LocationManager locationManager;
+    LocationListener locationListener;
+    LocationManager locationManager;
+    Location currentLocation;
+
+
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
-    public Location getCurrentLocation() {
+     Location getCurrentLocation() {
 
         updateCurrentLocation();
         return currentLocation;
-    }
+     }
 
     public void setCurrentLocation(Location currentLocation) {
         this.currentLocation = currentLocation;
     }
-
-    public Location currentLocation;
-
-
 
     public GPSTracker(Context context){
         this.context = context;
@@ -51,7 +50,7 @@ public class GPSTracker {
 
     }
 
-    public boolean checkLocationPermission()
+    boolean checkLocationPermission()
     {
         String permission = "android.permission.ACCESS_FINE_LOCATION";
         int res = context.checkCallingOrSelfPermission(permission);
@@ -105,13 +104,7 @@ public class GPSTracker {
             @Override
             public void onLocationChanged(Location location) {
                 if (context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && context.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    Activity#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for Activity#requestPermissions for more details.
+                    setupPermissions();
                     return;
                 }
                 currentLocation = location;
@@ -136,14 +129,8 @@ public class GPSTracker {
     }
     private void setupPermissions(){
 
-        if (context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && context.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    Activity#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for Activity#requestPermissions for more details.
+        if (context.checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && context.checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
 
             ActivityCompat.requestPermissions((Activity) context,new String[] {Manifest.permission.ACCESS_FINE_LOCATION},1);
         }
@@ -156,6 +143,7 @@ public class GPSTracker {
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, locationListener);
 
     }
+
 
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -187,11 +175,14 @@ public class GPSTracker {
         }
     }
 
-    public void updateCurrentLocation() {
+     void updateCurrentLocation() {
 
         if(checkLocationPermission()){
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, locationListener);
-            currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+            locationManager.requestLocationUpdates(
+                    LocationManager.GPS_PROVIDER,
+                    1000, 0, locationListener);
+            currentLocation = locationManager.getLastKnownLocation(
+                    LocationManager.GPS_PROVIDER);
         }
         else{
             setupPermissions();
