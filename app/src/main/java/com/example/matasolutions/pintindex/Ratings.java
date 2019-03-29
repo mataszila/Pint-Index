@@ -78,26 +78,15 @@ class Ratings implements PubPageContentInterface {
                     Rating compRating = compare.get(j);
 
                     if(thisRating.type != compRating.type){
-
                         counter++;
                     }
-
                     if(counter == compare.size()){
                         compare.add(thisRating);
                     }
-
                 }
-
-
-
-
             }
             ratings = compare;
-
-
         }
-
-
     }
 
 

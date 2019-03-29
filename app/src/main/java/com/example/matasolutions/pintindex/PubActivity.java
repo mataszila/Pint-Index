@@ -41,20 +41,11 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     Pub pub;
 
-    String workingHours;
-    String prices;
-    String facilities;
-    String ratings;
-
-    ArrayList<Facility> facilityArrayList;
-
     TextView toolbar_text_1;
     TextView toolbar_text_2;
-    TextView toolbar_text_3;
     TextView toolbar_text_4;
 
     CardView toolbar_card_1;
-    CardView toolbar_card_2;
     CardView toolbar_card_3;
     CardView toolbar_card_4;
 
@@ -337,7 +328,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
             ImageView logo = holder.logo;
 
             // Set item views based on your views and data model
-            logo.setImageDrawable(mDataset.get(position).logo);
+            logo.setImageResource(new PubSetup().ReturnResourceID(mDataset.get(position)));
 
 
         }

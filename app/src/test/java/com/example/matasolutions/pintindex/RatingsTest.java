@@ -1,9 +1,6 @@
 package com.example.matasolutions.pintindex;
 
-import org.junit.Assert;
 import org.junit.Test;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
@@ -11,7 +8,7 @@ import static org.junit.Assert.*;
 public class RatingsTest {
 
     private Ratings ratings;
-    ArrayList<Rating> ratingList = new ArrayList<>();
+    private ArrayList<Rating> ratingList = new ArrayList<>();
 
     public RatingsTest(){
     }
@@ -21,7 +18,7 @@ public class RatingsTest {
 
         ratings = new Ratings(null);
 
-        assertTrue(ratings.ratings ==null);
+        assertNull(ratings.ratings);
     }
 
     @Test
@@ -38,7 +35,6 @@ public class RatingsTest {
         double margin =0.0001;
 
         assertEquals(testRating,ratings.averageRating,margin);
-
     }
 
     @Test
@@ -49,11 +45,9 @@ public class RatingsTest {
         ratingList.add(new Rating(RatingType.ATMOSPHERE,3.0 ));
         ratingList.add(new Rating(RatingType.ATMOSPHERE,4.0 ));
 
-
         ratingList.add(new Rating(RatingType.HYGIENE,4.0 ));
         ratingList.add(new Rating(RatingType.HYGIENE,5.0 ));
         ratingList.add(new Rating(RatingType.HYGIENE,6.0 ));
-
 
         ratingList.add(new Rating(RatingType.SERVICE,1.0 ));
         ratingList.add(new Rating(RatingType.SERVICE,2.0 ));
@@ -62,18 +56,12 @@ public class RatingsTest {
         ratingList.add(new Rating(RatingType.VALUE_FOR_PRICE,1.0 ));
         ratingList.add(new Rating(RatingType.VALUE_FOR_PRICE,2.0 ));
 
-
         ratings = new Ratings(ratingList);
 
         double testSize = 4.0;
         double margin =0.001;
 
-
-
         assertEquals(testSize, ratings.ratings.size(),margin);
-
-
-
     }
 
 

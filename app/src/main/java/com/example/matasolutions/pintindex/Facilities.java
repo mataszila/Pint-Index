@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 class Facilities  {
 
-    public ArrayList<Facility> facilities;
+    ArrayList<Facility> facilities;
     public final PubPageCategory category = PubPageCategory.FACILITIES;
 
 
