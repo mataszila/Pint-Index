@@ -28,6 +28,13 @@
         android:id="@+id/productActivityButton"
         android:gravity="right"/>
 
+        <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Feedback Activity"
+        android:id="@+id/feedbackActivityButton"
+        android:gravity="right"/>
+
 
     </LinearLayout>
 
