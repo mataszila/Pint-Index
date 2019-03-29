@@ -47,7 +47,8 @@
             android:label="@string/title_activity_pub" />
         <activity android:name=".PubCompareActivity" />
         <activity android:name=".MapsActivity" />
-        <activity android:name=".ProductActivity"></activity>
+        <activity android:name=".ProductActivity" />
+        <activity android:name=".FeedbackActivity"></activity>
     </application>
 
 </manifest>
