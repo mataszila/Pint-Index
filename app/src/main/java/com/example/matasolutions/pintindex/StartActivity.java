@@ -21,6 +21,7 @@ public class StartActivity extends AppCompatActivity {
 
     Button startButton;
     Button productActivityButton;
+    Button feedbackActivityButton;
     DrawerLayout drawer;
 
     GPSTracker tracker;
@@ -67,6 +68,20 @@ public class StartActivity extends AppCompatActivity {
 
             }
         });
+
+        feedbackActivityButton = findViewById(R.id.feedbackActivityButton);
+
+        feedbackActivityButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getApplicationContext(), FeedbackActivity.class);
+                startActivity(intent);
+
+            }
+        });
+
+
     }
 
 
