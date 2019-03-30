@@ -5,7 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".FeedbackActivity">
+    tools:context=".FeedbackActivity"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    >
 
     <TextView
         android:layout_width="match_parent"
@@ -23,12 +26,15 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/form_hint_name">
+        android:hint="@string/form_hint_subject"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/feedback_input_name"
+            android:id="@+id/feedback_input_subject"
         />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -36,26 +42,20 @@
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/form_hint_email">
+        android:hint="@string/form_hint_query"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/feedback_input_email"
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/form_hint_suggestions"
         >
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/feedback_input_query"
+            android:maxLength="1000"
+            android:maxHeight="150dp"
+            android:height="150dp"
+            android:gravity="bottom"
+
             />
 
     </com.google.android.material.textfield.TextInputLayout>
@@ -65,9 +65,9 @@
         android:layout_height="wrap_content"
         android:text="Submit"
         android:layout_gravity="center"
+        android:layout_marginTop="150dp"
         android:id="@+id/feedback_actionbutton">
 
     </Button>
-
 
 </LinearLayout>
