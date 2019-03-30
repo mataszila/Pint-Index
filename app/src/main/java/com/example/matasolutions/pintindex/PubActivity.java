@@ -46,8 +46,8 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
     TextView toolbar_text_4;
 
     CardView toolbar_card_1;
-    CardView toolbar_card_3;
-    CardView toolbar_card_4;
+    CardView rate_card;
+    CardView compare_with_card;
 
     ArrayList<ImageView> facilityLogos;
 
@@ -125,12 +125,23 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         toolbar_text_4 = findViewById(R.id.toolbar_text_4);
 
         toolbar_card_1 = findViewById(R.id.toolbar_card_1);
-        toolbar_card_4 = findViewById(R.id.toolbar_card_4);
+        compare_with_card = findViewById(R.id.toolbar_card_4);
+
+        rate_card = findViewById(R.id.toolbar_card_3);
+
+        rate_card.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(getApplicationContext(),RateActivity.class);
+
+            }
+        });
 
 
         toolbar_text_4.setText("COMPARE WITH...");
 
-        toolbar_card_4.setOnClickListener(new View.OnClickListener() {
+        compare_with_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                     Intent intent = new Intent(getApplicationContext(),PubCompareActivity.class);
@@ -139,9 +150,13 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
 
+
+
+
+
         SetupFacilityLogos();
 
-        SetupRecyclerView();
+        //SetupRecyclerView();
 
     }
 

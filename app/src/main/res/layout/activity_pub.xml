@@ -107,6 +107,7 @@
         <!-- COLUMN 1  -->
 
         <androidx.cardview.widget.CardView
+            android:id="@+id/toolbar_card_3"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:layout_columnWeight="1"
@@ -120,6 +121,19 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
+
+                <TextView
+                    android:textAlignment="center"
+                    android:text="Text"
+                    android:textColor="#000"
+                    android:textSize="14sp"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/toolbar_text_3"
+                    android:drawableLeft="@drawable/ic_twotone_star_rate_18px"
+                    android:layout_marginRight="5sp"
+                    />
 
 
                 <androidx.recyclerview.widget.RecyclerView
