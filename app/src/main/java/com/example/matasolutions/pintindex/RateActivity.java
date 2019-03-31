@@ -15,6 +15,8 @@ import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.matasolutions.pintindex.Pub_Data.RatingEntry;
+
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
@@ -51,10 +53,13 @@ public class RateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_rate);
 
 
-        
+            ArrayList<RatingEntry> ratingEntries = new ArrayList<>();
 
+            ratingEntries.add(new RatingEntry(RatingType.ATMOSPHERE));
+            ratingEntries.add(new RatingEntry(RatingType.HYGIENE));
+            ratingEntries.add(new RatingEntry(RatingType.SERVICE));
+            ratingEntries.add(new RatingEntry(RatingType.VALUE_FOR_PRICE));
 
-            pubsWithProduct = HelperMethods.FindPubsWithProduct(prod);
 
             recyclerView =  findViewById(R.id.my_recycler_view);
 
@@ -63,7 +68,7 @@ public class RateActivity extends AppCompatActivity {
             layoutManager = new LinearLayoutManager(this);
             recyclerView.setLayoutManager(layoutManager);
 
-            mAdapter = new ProductActivity.MyAdapter(prod,pubsWithProduct);
+            mAdapter = new MyAdapter(ratingEntries);
             recyclerView.setAdapter(mAdapter);
 
 
@@ -74,7 +79,7 @@ public class RateActivity extends AppCompatActivity {
     }
 
     public static class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
-        private ArrayList<Rating> mDataset;
+        private ArrayList<RatingEntry> mDataset;
         private Product product;
 
 
@@ -109,7 +114,7 @@ public class RateActivity extends AppCompatActivity {
         }
 
         // Provide a suitable constructor (depends on the kind of dataset)
-        public MyAdapter(ArrayList<Rating> myDataset) {
+        public MyAdapter(ArrayList<RatingEntry> myDataset) {
             mDataset = myDataset;
         }
 
@@ -132,7 +137,7 @@ public class RateActivity extends AppCompatActivity {
         public void onBindViewHolder(MyAdapter.MyViewHolder holder, int position) {
             // - get element from your dataset at this position
             // - replace the contents of the view with that element
-            Rating rating = mDataset.get(position);
+            RatingEntry rating = mDataset.get(position);
 
             // Set item views based on your views and data model
             ImageView star_1 = holder.star_1;
@@ -150,7 +155,7 @@ public class RateActivity extends AppCompatActivity {
             star_4.setImageResource(R.drawable.ic_twotone_star_rate_18px);
             star_5.setImageResource(R.drawable.ic_twotone_star_rate_18px);
 
-            ratingType.setText(rating.type.toString());
+            ratingType.setText(rating.ratingType.toString());
 
 
         }
