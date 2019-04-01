@@ -105,8 +105,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 Intent intent = new Intent(getApplicationContext(),PubActivity.class);
                 intent.putExtra("name", thisPub.name);
-                Bundle args = new Bundle();
-                args.putParcelable("coordinates", thisPub.coordinates);
 
                 // Will have to be fixed
 
@@ -118,7 +116,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 intent.putExtra("ratingsList", thisPub.ratings.ratings);
                 intent.putExtra("averageRating", thisPub.ratings.globalAverageRating);
 
+
+                Bundle args = new Bundle();
+                args.putParcelable("coordinates", thisPub.coordinates);
                 intent.putExtra("bundle", args);
+
+
+                intent.putExtra("pub", thisPub);
+
 
                 startActivity(intent);
 
@@ -140,6 +145,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
         return new Pub();
     }
+
 
 
 

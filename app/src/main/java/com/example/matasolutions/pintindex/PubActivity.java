@@ -30,6 +30,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -95,19 +97,11 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void setupPub(){
 
-        pub = new Pub();
+        pub = getIntent().getExtras().getParcelable("pub");
 
         Bundle bundle = getIntent().getParcelableExtra("bundle");
         pub.coordinates = bundle.getParcelable("coordinates");
         pub.name = (String) getIntent().getSerializableExtra("name");
-
-        pub.coordinates = bundle.getParcelable("coordinates");
-        //marker;
-
-        pub.weekOpeningHours = new WeekOpeningHours((ArrayList<SingleOpeningHours>) getIntent().getSerializableExtra("workingHoursList"));
-        pub.prices = new Prices((ArrayList<Price>) getIntent().getSerializableExtra("pricesList"));
-        pub.facilities = new Facilities((ArrayList<Facility>) getIntent().getSerializableExtra("facilitiesList"));
-        pub.ratings = new Ratings((ArrayList<Rating>) getIntent().getSerializableExtra("ratingsList"));
 
         setTitle(pub.name);
 
@@ -135,6 +129,11 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
                 Intent intent = new Intent(getApplicationContext(),RateActivity.class);
                 intent.putExtra("name", pub.name);
+                intent.putExtra("pub", pub);
+                Bundle args = new Bundle();
+                args.putParcelable("coordinates", pub.coordinates);
+                intent.putExtra("bundle", args);
+
                 startActivity(intent);
             }
         });
@@ -146,7 +145,11 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
             @Override
             public void onClick(View view) {
                     Intent intent = new Intent(getApplicationContext(),PubCompareActivity.class);
-                    intent.putExtra("pubName", pub.name);
+                    intent.putExtra("pub", pub);
+                    Bundle args = new Bundle();
+                    args.putParcelable("coordinates", pub.coordinates);
+                    intent.putExtra("bundle", args);
+
                     startActivity(intent);
             }
         });
@@ -193,7 +196,10 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
     private String ShowRatingText(){
-        return pub.ratings.globalAverageRating + "/5";
+
+        NumberFormat formatter = new DecimalFormat("#0.00");
+
+        return formatter.format(pub.ratings.globalAverageRating) + "/5";
     }
 
 

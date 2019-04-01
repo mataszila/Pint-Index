@@ -48,7 +48,8 @@ public class RateActivity extends AppCompatActivity implements OnItemClick {
 
         String name = (String) getIntent().getSerializableExtra("name");
 
-        pub = new PubSetup().returnPubByName(name);
+        pub = getIntent().getExtras().getParcelable("pub");
+
 
         final ArrayList<RatingEntry> ratingEntries = new ArrayList<>();
 
@@ -90,12 +91,17 @@ public class RateActivity extends AppCompatActivity implements OnItemClick {
                     pub.ratings.AddNewEntry(thisEntry);
 
                     Intent intent = new Intent(getApplicationContext(),PubActivity.class);
+
+                    intent.putExtra("pub", pub);
+
+                    Bundle args = new Bundle();
+                    args.putParcelable("coordinates", pub.coordinates);
+                    intent.putExtra("bundle", args);
+
+
                     startActivity(intent);
 
-
                 }
-
-
             }
         });
 
