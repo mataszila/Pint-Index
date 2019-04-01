@@ -48,7 +48,8 @@
         <activity android:name=".PubCompareActivity" />
         <activity android:name=".MapsActivity" />
         <activity android:name=".ProductActivity" />
-        <activity android:name=".FeedbackActivity"></activity>
+        <activity android:name=".FeedbackActivity" />
+        <activity android:name=".RateActivity"></activity>
     </application>
 
 </manifest>

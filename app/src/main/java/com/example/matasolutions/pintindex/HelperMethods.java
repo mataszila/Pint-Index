@@ -30,7 +30,7 @@ public class HelperMethods {
         int numHours = calendar.get(Calendar.HOUR_OF_DAY);
         int numMinutes = calendar.get(Calendar.MINUTE);
 
-        String hours = String.valueOf(numHours);
+        String hours = numHours < 10 ? "0" + String.valueOf(numHours) : String.valueOf(numHours);
         String minutes = numMinutes < 10 ? "0" + String.valueOf(numMinutes) : String.valueOf(numMinutes);  // gets hour in 24h format
 
         return hours + ":" + minutes;

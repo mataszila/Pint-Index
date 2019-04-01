@@ -66,10 +66,28 @@ public class PubSetup {
         // Ratings;
 
         ArrayList<Rating> ratings = new ArrayList<>();
-        ratings.add(new Rating(RatingType.ATMOSPHERE,4.5));
-        ratings.add(new Rating(RatingType.HYGIENE,4.0));
-        ratings.add(new Rating(RatingType.SERVICE,3.5));
-        ratings.add(new Rating(RatingType.VALUE_FOR_PRICE,3.8));
+
+        ArrayList<RatingEntry> atmosphereEntries = new ArrayList<>();
+
+        atmosphereEntries.add(new RatingEntry(RatingType.ATMOSPHERE,4.5));
+
+        ratings.add(new Rating(RatingType.ATMOSPHERE, atmosphereEntries));
+
+
+        ArrayList<RatingEntry> serviceEntries = new ArrayList<>();
+
+        serviceEntries.add(new RatingEntry(RatingType.SERVICE,4.0));
+
+        ratings.add(new Rating(RatingType.SERVICE, serviceEntries));
+
+
+        ArrayList<RatingEntry> hygieneEntries = new ArrayList<>();
+
+        hygieneEntries.add(new RatingEntry(RatingType.HYGIENE,4.0));
+
+        ratings.add(new Rating(RatingType.HYGIENE, hygieneEntries));
+
+
 
         pub1.setRatings(new Ratings(ratings));
 
@@ -85,10 +103,29 @@ public class PubSetup {
         Pub pub2 = new Pub("Hancock",54.979915,-1.6136037);
 
         ArrayList<Rating> ratings2 = new ArrayList<>();
-        ratings2.add(new Rating(RatingType.ATMOSPHERE,4.3));
-        ratings2.add(new Rating(RatingType.HYGIENE,3.7));
-        ratings2.add(new Rating(RatingType.SERVICE,4.0));
-        ratings2.add(new Rating(RatingType.VALUE_FOR_PRICE,4.2));
+
+        ArrayList<RatingEntry> atmosphereEntries2 = new ArrayList<>();
+
+        atmosphereEntries2.add(new RatingEntry(RatingType.ATMOSPHERE,3.5));
+
+        ratings2.add(new Rating(RatingType.ATMOSPHERE, atmosphereEntries2));
+
+
+        ArrayList<RatingEntry> serviceEntries2 = new ArrayList<>();
+
+        serviceEntries2.add(new RatingEntry(RatingType.SERVICE,3.0));
+
+        ratings2.add(new Rating(RatingType.SERVICE, serviceEntries2));
+
+
+        ArrayList<RatingEntry> hygieneEntries2 = new ArrayList<>();
+
+        hygieneEntries2.add(new RatingEntry(RatingType.HYGIENE,3.5));
+
+        ratings2.add(new Rating(RatingType.HYGIENE, hygieneEntries2));
+
+        pub2.setRatings(new Ratings(ratings2));
+        
 
 
         ArrayList<Price> singlePrices2 = new ArrayList<Price>();
@@ -103,8 +140,6 @@ public class PubSetup {
 
         pub2.setUrl("https://farm3.staticflickr.com/2828/8750050391_6286ccff1e_b.jpg");
 
-
-        pub2.setRatings(new Ratings(ratings2));
 
         pubs.add(pub2);
 
