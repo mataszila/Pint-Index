@@ -1,12 +1,15 @@
 package com.example.matasolutions.pintindex;
 
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
 import java.net.URL;
 
-public class Pub  {
+public class Pub implements Parcelable  {
 
     public LatLng coordinates;
     public String name;
@@ -70,6 +73,49 @@ public class Pub  {
     public Pub(){
 
     }
+    protected Pub(Parcel in) {
+        coordinates = (LatLng) in.readValue(LatLng.class.getClassLoader());
+        name = in.readString();
+        marker = (Marker) in.readValue(Marker.class.getClassLoader());
+        url = in.readString();
+        weekOpeningHours = (WeekOpeningHours) in.readValue(WeekOpeningHours.class.getClassLoader());
+        prices = (Prices) in.readValue(Prices.class.getClassLoader());
+        facilities = (Facilities) in.readValue(Facilities.class.getClassLoader());
+        ratings = (Ratings) in.readValue(Ratings.class.getClassLoader());
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeValue(coordinates);
+        dest.writeString(name);
+        dest.writeValue(marker);
+        dest.writeString(url);
+        dest.writeValue(weekOpeningHours);
+        dest.writeValue(prices);
+        dest.writeValue(facilities);
+        dest.writeValue(ratings);
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<Pub> CREATOR = new Parcelable.Creator<Pub>() {
+        @Override
+        public Pub createFromParcel(Parcel in) {
+            return new Pub(in);
+        }
+
+        @Override
+        public Pub[] newArray(int size) {
+            return new Pub[size];
+        }
+    };
+
+
+
 
 
 
