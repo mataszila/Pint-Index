@@ -67,9 +67,6 @@ public class PubSetup {
 
         ArrayList<Rating> ratings = new ArrayList<>();
 
-
-
-
         ArrayList<RatingEntry> atmosphereEntries = new ArrayList<>();
 
         atmosphereEntries.add(new RatingEntry(RatingType.ATMOSPHERE,4.5));
@@ -128,9 +125,7 @@ public class PubSetup {
         ratings2.add(new Rating(RatingType.HYGIENE, hygieneEntries2));
 
         pub2.setRatings(new Ratings(ratings2));
-
-
-
+        
 
 
         ArrayList<Price> singlePrices2 = new ArrayList<Price>();
