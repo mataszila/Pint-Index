@@ -134,6 +134,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
             public void onClick(View view) {
 
                 Intent intent = new Intent(getApplicationContext(),RateActivity.class);
+                intent.putExtra("name", pub.name);
                 startActivity(intent);
             }
         });
@@ -192,7 +193,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
 
     private String ShowRatingText(){
-        return pub.ratings.averageRating + "/5";
+        return pub.ratings.globalAverageRating + "/5";
     }
 
 

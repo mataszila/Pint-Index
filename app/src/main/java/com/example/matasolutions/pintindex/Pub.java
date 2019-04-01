@@ -4,9 +4,7 @@ package com.example.matasolutions.pintindex;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
-import java.net.MalformedURLException;
 import java.net.URL;
-
 
 public class Pub  {
 
@@ -14,13 +12,6 @@ public class Pub  {
     public String name;
     public Marker marker;
 
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-            this.url =  url;
-    }
 
     public String url;
     public WeekOpeningHours weekOpeningHours;
@@ -59,6 +50,15 @@ public class Pub  {
     public void setRatings(Ratings ratings) {
         this.ratings = ratings;
     }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url =  url;
+    }
+
 
 
     public Pub(String name,double lat,double lng){

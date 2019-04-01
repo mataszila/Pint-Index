@@ -116,7 +116,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 intent.putExtra("facilitiesList", thisPub.facilities.facilities);
                 intent.putExtra("ratings", thisPub.ratings.ContentToString());
                 intent.putExtra("ratingsList", thisPub.ratings.ratings);
-                intent.putExtra("averageRating", thisPub.ratings.averageRating);
+                intent.putExtra("averageRating", thisPub.ratings.globalAverageRating);
 
                 intent.putExtra("bundle", args);
 

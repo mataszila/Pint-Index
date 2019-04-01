@@ -164,8 +164,8 @@ public class PubCompareActivity extends AppCompatActivity {
         ArrayList<PubCompareData> setup = new ArrayList<PubCompareData>();
 
         setup.add(new PubCompareData("Rating",
-                String.valueOf(pub1.ratings.averageRating),
-                String.valueOf(pub2.ratings.averageRating
+                String.valueOf(pub1.ratings.globalAverageRating),
+                String.valueOf(pub2.ratings.globalAverageRating
                 )));
 
         setup.add(

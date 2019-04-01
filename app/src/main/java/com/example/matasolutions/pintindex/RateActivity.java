@@ -1,6 +1,5 @@
 package com.example.matasolutions.pintindex;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,18 +9,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
-import android.widget.Spinner;
 import android.widget.TextView;
-
-import com.example.matasolutions.pintindex.Pub_Data.RatingEntry;
-
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -53,48 +46,58 @@ public class RateActivity extends AppCompatActivity implements OnItemClick {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate);
 
+        String name = (String) getIntent().getSerializableExtra("name");
 
-            final ArrayList<RatingEntry> ratingEntries = new ArrayList<>();
+        pub = new PubSetup().returnPubByName(name);
 
-            ratingEntries.add(new RatingEntry(RatingType.ATMOSPHERE));
-            ratingEntries.add(new RatingEntry(RatingType.HYGIENE));
-            ratingEntries.add(new RatingEntry(RatingType.SERVICE));
-            ratingEntries.add(new RatingEntry(RatingType.VALUE_FOR_PRICE));
+        final ArrayList<RatingEntry> ratingEntries = new ArrayList<>();
+
+        ratingEntries.add(new RatingEntry(RatingType.ATMOSPHERE));
+        ratingEntries.add(new RatingEntry(RatingType.HYGIENE));
+        ratingEntries.add(new RatingEntry(RatingType.SERVICE));
+        ratingEntries.add(new RatingEntry(RatingType.VALUE_FOR_PRICE));
+
+        info_view = findViewById(R.id.info_view);
+
+        recyclerView =  findViewById(R.id.my_recycler_view);
+
+        recyclerView.setHasFixedSize(true);
+
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+
+        mAdapter = new MyAdapter(ratingEntries,this);
 
 
-            info_view = findViewById(R.id.info_view);
+        recyclerView.setAdapter(mAdapter);
 
-            recyclerView =  findViewById(R.id.my_recycler_view);
+        //info_view.setText(((MyAdapter) mAdapter).getCallback());
 
-            recyclerView.setHasFixedSize(true);
+        button_submit = findViewById(R.id.button_submit);
 
-            layoutManager = new LinearLayoutManager(this);
-            recyclerView.setLayoutManager(layoutManager);
+        button_submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
-            mAdapter = new MyAdapter(ratingEntries,this);
+                for(int i=0;i<ratingEntries.size();i++){
 
+                    String msg = ratingEntries.get(i).ratingType.toString() + String.valueOf(ratingEntries.get(i).input_rating);
 
-            recyclerView.setAdapter(mAdapter);
+                    Log.i("TAG",msg);
 
-            //info_view.setText(((MyAdapter) mAdapter).getCallback());
+                    RatingEntry thisEntry = ratingEntries.get(i);
 
-            button_submit = findViewById(R.id.button_submit);
+                    pub.ratings.AddNewEntry(thisEntry);
 
-            button_submit.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    for(int i=0;i<ratingEntries.size();i++){
-
-                        String msg = ratingEntries.get(i).ratingType.toString() + String.valueOf(ratingEntries.get(i).input_rating);
-
-                        Log.i("TAG",msg);
-
-                    }
+                    Intent intent = new Intent(getApplicationContext(),PubActivity.class);
+                    startActivity(intent);
 
 
                 }
-            });
+
+
+            }
+        });
 
 
 
@@ -203,11 +206,7 @@ public class RateActivity extends AppCompatActivity implements OnItemClick {
 
                 }
             });
-
-
-
             mCallback.onClick(String.valueOf(ratingBar.getNumStars()));
-
 
         }
 

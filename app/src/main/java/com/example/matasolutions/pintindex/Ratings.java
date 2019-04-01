@@ -11,20 +11,41 @@ class Ratings implements PubPageContentInterface {
     public final PubPageCategory category = PubPageCategory.RATINGS;
 
     public ArrayList<Rating> ratings;
-    public double averageRating;
+    public double globalAverageRating;
 
 
     public Ratings(ArrayList<Rating> ratings){
 
         this.ratings = ratings;
         ConvertList();
-        this.averageRating = calculateAverageRating();
+        this.globalAverageRating = calculateAverageRating();
 
     }
 
     public Ratings(){
 
+
+
     }
+
+
+    public void AddNewEntry(RatingEntry entry){
+
+        for(int i=0;i<ratings.size();i++){
+
+            Rating thisRating = ratings.get(i);
+
+            if(entry.ratingType == thisRating.type){
+
+                thisRating.ratingEntries.add(entry);
+
+                thisRating.setAverageRating();
+
+            }
+
+        }
+    }
+
 
 
 
@@ -39,9 +60,7 @@ class Ratings implements PubPageContentInterface {
 
                 Rating current = ratings.get(i);
 
-
-                sb.append(current.type.toString() + " " + current.rating + "\n");
-
+                sb.append(current.type.toString() + " " + current.averageRating + "\n");
 
             }
 
@@ -101,7 +120,7 @@ class Ratings implements PubPageContentInterface {
 
         for(int i=0;i<ratings.size();i++){
 
-            sum+=ratings.get(i).rating;
+            sum+=ratings.get(i).averageRating;
 
         }
 
