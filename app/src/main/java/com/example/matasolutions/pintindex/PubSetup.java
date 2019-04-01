@@ -12,6 +12,8 @@ public class PubSetup {
 
     public ArrayList<Pub> pubs;
 
+
+
     public PubSetup(){
 
         pubs = new ArrayList<Pub>();
@@ -125,7 +127,7 @@ public class PubSetup {
         ratings2.add(new Rating(RatingType.HYGIENE, hygieneEntries2));
 
         pub2.setRatings(new Ratings(ratings2));
-        
+
 
 
         ArrayList<Price> singlePrices2 = new ArrayList<Price>();
@@ -153,8 +155,6 @@ public class PubSetup {
         singlePrices3.add(new Price(productSetup.products.get(4),3.15));
 
         pub3.setPrices(new Prices(singlePrices3));
-
-
 
 
 
