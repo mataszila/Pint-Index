@@ -134,7 +134,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
             public void onClick(View view) {
 
                 Intent intent = new Intent(getApplicationContext(),RateActivity.class);
-
+                startActivity(intent);
             }
         });
 

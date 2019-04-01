@@ -124,14 +124,13 @@
 
                 <TextView
                     android:textAlignment="center"
-                    android:text="Text"
+                    android:text="Rate"
                     android:textColor="#000"
                     android:textSize="14sp"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:id="@+id/toolbar_text_3"
-                    android:drawableLeft="@drawable/ic_twotone_star_rate_18px"
                     android:layout_marginRight="5sp"
                     />
 

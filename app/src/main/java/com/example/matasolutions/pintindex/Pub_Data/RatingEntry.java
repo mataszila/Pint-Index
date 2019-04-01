@@ -5,7 +5,7 @@ import com.example.matasolutions.pintindex.RatingType;
 public class RatingEntry {
 
     public RatingType ratingType;
-    public int input_rating;
+    public double input_rating;
 
     public RatingEntry(RatingType ratingType){
 

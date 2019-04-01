@@ -63,42 +63,11 @@
                 android:orientation="horizontal">
 
 
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_twotone_star_rate_18px"
-                    android:id="@+id/star_1"
-                    />
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_twotone_star_rate_18px"
-                    android:id="@+id/star_2"
-                    />
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_twotone_star_rate_18px"
-                    android:id="@+id/star_3"
-                    />
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_twotone_star_rate_18px"
-                    android:id="@+id/star_4"
-
-                    />
-
-                <ImageView
-                    android:layout_width="50dp"
-                    android:layout_height="50dp"
-                    android:src="@drawable/ic_twotone_star_rate_18px"
-                    android:id="@+id/star_5"
-                    />
-
+                <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/rating_stars"
+                    android:numStars="5"/>
 
             </LinearLayout>
 
