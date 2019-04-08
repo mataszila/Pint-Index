@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
@@ -35,6 +36,7 @@ public class AuthenticationActivity extends AppCompatActivity {
             password =(EditText) findViewById(R.id.signup_password_input);
             button_register = (Button)findViewById(R.id.button_register);
             button_login = (Button)findViewById(R.id.button_login);
+            FirebaseApp.initializeApp(this);
             mAuth = FirebaseAuth.getInstance();
 
             button_register.setOnClickListener(new View.OnClickListener() {
@@ -62,16 +64,7 @@ public class AuthenticationActivity extends AppCompatActivity {
                 }
             });
 
-
-
-
-
-
-
         }
-
-
-
 
 
     public void RegisterUser(){

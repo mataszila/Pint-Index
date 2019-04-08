@@ -52,7 +52,8 @@
         <activity android:name=".RateActivity" />
         <activity android:name=".Authentication" />
         <activity android:name=".AuthenticationActivity" />
-        <activity android:name=".ProfileActivity"></activity>
+        <activity android:name=".ProfileActivity" />
+        <activity android:name=".LoginActivity"></activity>
     </application>
 
 </manifest>

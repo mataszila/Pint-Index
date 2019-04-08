@@ -17,6 +17,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 
+import com.google.firebase.FirebaseApp;
+
 public class StartActivity extends AppCompatActivity {
 
     Button startButton;
@@ -35,6 +37,7 @@ public class StartActivity extends AppCompatActivity {
         setContentView(R.layout.activity_start);
 
         tracker = new GPSTracker(this);
+        FirebaseApp.initializeApp(this);
 
 
         if(statusCheck() == false){
