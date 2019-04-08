@@ -49,7 +49,9 @@
         <activity android:name=".MapsActivity" />
         <activity android:name=".ProductActivity" />
         <activity android:name=".FeedbackActivity" />
-        <activity android:name=".RateActivity"></activity>
+        <activity android:name=".RateActivity" />
+        <activity android:name=".Authentication" />
+        <activity android:name=".AuthenticationActivity"></activity>
     </application>
 
 </manifest>
