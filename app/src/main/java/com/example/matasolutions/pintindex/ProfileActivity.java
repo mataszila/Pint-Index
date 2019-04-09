@@ -27,6 +27,8 @@ public class ProfileActivity extends MapsActivity {
 
     private Profile profile;
 
+    private TextView ratedPubs;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -40,6 +42,8 @@ public class ProfileActivity extends MapsActivity {
         mAuth = FirebaseAuth.getInstance();
         logout = (Button) findViewById(R.id.button_logout);
         button_refresh = findViewById(R.id.button_refresh);
+
+        ratedPubs = findViewById(R.id.ratedPubs);
 
         button_start = findViewById(R.id.button_start);
 
@@ -59,10 +63,10 @@ public class ProfileActivity extends MapsActivity {
             String uid = user.getUid();
             Email.setText(email);
             Uid.setText(uid);
+            StringBuilder sb = new StringBuilder();
 
             if(!profile.ratingEntries.isEmpty()){
 
-                StringBuilder sb = new StringBuilder();
 
                 for(RatingEntry i : profile.ratingEntries){
 
@@ -71,7 +75,7 @@ public class ProfileActivity extends MapsActivity {
 
                     sb.append("\n");
                 }
-                Uid.setText(sb.toString());
+                ratedPubs.setText(sb.toString());
 
             }
 

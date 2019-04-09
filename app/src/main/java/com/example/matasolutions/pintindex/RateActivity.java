@@ -16,6 +16,9 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 public class RateActivity extends AppCompatActivity {
@@ -37,6 +40,10 @@ public class RateActivity extends AppCompatActivity {
 
     Button sort_high_to_low;
     Button sort_low_to_high;
+
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+
 
     Button button_submit;
 
