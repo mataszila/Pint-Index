@@ -10,7 +10,12 @@ public class Profile {
     private FirebaseAuth mAuth;
     private FirebaseUser user;
 
+
+    private String user_email;
+    private String user_uID;
+
     public ArrayList<String> ratedPubIds;
+    public ArrayList<RatingEntry> ratingEntries;
 
 
     public Profile(){
@@ -18,8 +23,13 @@ public class Profile {
         mAuth = FirebaseAuth.getInstance();
         user = mAuth.getCurrentUser();
 
-        ratedPubIds = new ArrayList<>();
+        if(user !=null){
+            user_email =user.getEmail();
+            user_uID = user.getUid();
+        }
 
+        ratedPubIds = new ArrayList<>();
+        ratingEntries = new ArrayList<>();
 
     }
 

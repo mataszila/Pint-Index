@@ -15,14 +15,6 @@ public class Pub implements Parcelable  {
     public String name;
     public Marker marker;
 
-    public String getID() {
-        return ID;
-    }
-
-    public void setID(String ID) {
-        this.ID = ID;
-    }
-
     public String ID;
 
     public String url;
@@ -71,7 +63,13 @@ public class Pub implements Parcelable  {
         this.url =  url;
     }
 
+    public String getID() {
+        return ID;
+    }
 
+    public void setID(String ID) {
+        this.ID = ID;
+    }
 
     public Pub(String name,double lat,double lng){
         this.coordinates = new LatLng(lat, lng);
@@ -83,9 +81,9 @@ public class Pub implements Parcelable  {
 
     }
     protected Pub(Parcel in) {
-        ID = in.readString();
         coordinates = (LatLng) in.readValue(LatLng.class.getClassLoader());
         name = in.readString();
+        ID = in.readString();
         url = in.readString();
         weekOpeningHours = (WeekOpeningHours) in.readValue(WeekOpeningHours.class.getClassLoader());
         prices = (Prices) in.readValue(Prices.class.getClassLoader());
@@ -102,7 +100,7 @@ public class Pub implements Parcelable  {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(coordinates);
         dest.writeString(name);
-        dest.writeValue(ID);
+        dest.writeString(ID);
         dest.writeString(url);
         dest.writeValue(weekOpeningHours);
         dest.writeValue(prices);

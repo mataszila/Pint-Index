@@ -95,9 +95,9 @@ public class RateActivity extends AppCompatActivity implements OnItemClick {
 
                     if(profile.CheckIfNotRatedYet(pub.ID)){
                         pub.ratings.AddNewEntry(thisEntry);
+                        profile.ratingEntries.add(thisEntry);
                         profile.ratedPubIds.add(pub.ID);
                     }
-
 
                     Intent intent = new Intent(getApplicationContext(),PubActivity.class);
 

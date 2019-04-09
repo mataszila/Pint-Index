@@ -17,11 +17,15 @@ public class ProfileActivity extends AppCompatActivity {
     private FirebaseUser user;
 
 
-
     private TextView Email;
     private TextView Uid;
     private Button logout;
     private Button button_start;
+
+    private Button button_refresh;
+
+
+    private Profile profile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +33,13 @@ public class ProfileActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile);
 
 
+        profile = new Profile();
+
         Email = (TextView) findViewById(R.id.profileEmail);
         Uid = (TextView) findViewById(R.id.profileUid);
         mAuth = FirebaseAuth.getInstance();
         logout = (Button) findViewById(R.id.button_logout);
-
+        button_refresh = findViewById(R.id.button_refresh);
 
         button_start = findViewById(R.id.button_start);
 
@@ -53,6 +59,23 @@ public class ProfileActivity extends AppCompatActivity {
             String uid = user.getUid();
             Email.setText(email);
             Uid.setText(uid);
+
+            if(!profile.ratingEntries.isEmpty()){
+
+                StringBuilder sb = new StringBuilder();
+
+                for(RatingEntry i : profile.ratingEntries){
+
+                    sb.append(i.ratingType);
+                    sb.append(i.input_rating);
+
+                    sb.append("\n");
+                }
+                Uid.setText(sb.toString());
+
+            }
+
+
         }
 
         logout.setOnClickListener(new View.OnClickListener() {
@@ -68,6 +91,15 @@ public class ProfileActivity extends AppCompatActivity {
 
 
                 }
+            }
+        });
+
+        button_refresh.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                    finish();
+                    startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
             }
         });
 
