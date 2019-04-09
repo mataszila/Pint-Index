@@ -1,13 +1,9 @@
 package com.example.matasolutions.pintindex;
 
-import android.content.Intent;
-
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.util.ArrayList;
-
-import androidx.annotation.NonNull;
 
 public class Profile {
 
@@ -25,6 +21,7 @@ public class Profile {
     public ArrayList<String> ratedPubIds;
     public ArrayList<RatingEntry> ratingEntries;
 
+    ArrayList<PubRatingEntry> pubRatingEntries;
 
     public Profile(){
 
@@ -38,13 +35,8 @@ public class Profile {
             age = "18";
         }
 
-        ratedPubIds = new ArrayList<>();
         ratingEntries = new ArrayList<>();
-
-
-
-
-
+        pubRatingEntries = new ArrayList<PubRatingEntry>();
 
         }
 

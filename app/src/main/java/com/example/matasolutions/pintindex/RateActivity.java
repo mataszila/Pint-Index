@@ -49,6 +49,7 @@ public class RateActivity extends AppCompatActivity {
 
     Profile profile;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +57,8 @@ public class RateActivity extends AppCompatActivity {
 
         profile = new Profile();
 
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference().child("userData");
 
         String name = (String) getIntent().getSerializableExtra("name");
 
@@ -90,21 +93,29 @@ public class RateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                for(int i=0;i<ratingEntries.size();i++){
 
-                    String msg = ratingEntries.get(i).ratingType.toString() + String.valueOf(ratingEntries.get(i).input_rating);
+                if (profile.CheckIfNotRatedYet(pub.ID)) {
 
-                    Log.i("TAG",msg);
+                    for (int i = 0; i < ratingEntries.size(); i++) {
 
-                    RatingEntry thisEntry = ratingEntries.get(i);
+                        String msg = ratingEntries.get(i).ratingType.toString() + String.valueOf(ratingEntries.get(i).input_rating);
 
-                    if(profile.CheckIfNotRatedYet(pub.ID)){
+                        Log.i("TAG", msg);
+
+                        RatingEntry thisEntry = ratingEntries.get(i);
+
+
                         pub.ratings.AddNewEntry(thisEntry);
                         profile.ratingEntries.add(thisEntry);
                         profile.ratedPubIds.add(pub.ID);
+                        String id = profile.user_uID;
+
+
+                        profile.pubRatingEntries.add(new PubRatingEntry(pub.getID(),profile.ratingEntries));
                     }
 
-                    Intent intent = new Intent(getApplicationContext(),PubActivity.class);
+                    myRef.child(profile.user_uID).child("ratingEntries").setValue(profile.pubRatingEntries);
+                    Intent intent = new Intent(getApplicationContext(), PubActivity.class);
 
                     intent.putExtra("pub", pub);
 
@@ -115,8 +126,10 @@ public class RateActivity extends AppCompatActivity {
 
                     startActivity(intent);
 
+
                 }
             }
+
         });
 
 
