@@ -17,6 +17,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.util.Log;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -28,6 +29,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -46,11 +48,46 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private FirebaseUser currentUser;
 
+    private BottomNavigationView bottomNavigationView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        bottomNavigationView = findViewById(R.id.bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+                int menuId = menuItem.getItemId();
+
+                switch(menuId){
+
+                    case R.id.navbar_home_item:
+                        finish();
+                        startActivity(new Intent(getApplicationContext(),MapsActivity.class));
+                        break;
+                    case R.id.navbar_search_item:
+                        break;
+                    case R.id.navbar_profile_item:
+                        startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                        break;
+                    case R.id.navbar_products_item:
+                        startActivity(new Intent(getApplicationContext(),ProductActivity.class));
+                        break;
+                }
+
+
+
+
+                return false;
+            }
+        });
+
+
 
         tracker = new GPSTracker(this);
 
@@ -58,6 +95,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         currentUser = mAauth.getCurrentUser();
 
         Log.d("TAG", "username: " + currentUser.getEmail());
+
+
 
 
 

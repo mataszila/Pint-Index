@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class RateActivity extends AppCompatActivity implements OnItemClick {
+public class RateActivity extends AppCompatActivity {
 
     Pub pub;
 
@@ -34,7 +34,6 @@ public class RateActivity extends AppCompatActivity implements OnItemClick {
 
     Button actionButton;
 
-    TextView info_view;
 
     Button sort_high_to_low;
     Button sort_low_to_high;
@@ -63,7 +62,6 @@ public class RateActivity extends AppCompatActivity implements OnItemClick {
         ratingEntries.add(new RatingEntry(RatingType.SERVICE));
         ratingEntries.add(new RatingEntry(RatingType.VALUE_FOR_PRICE));
 
-        info_view = findViewById(R.id.info_view);
 
         recyclerView =  findViewById(R.id.my_recycler_view);
 
@@ -72,7 +70,7 @@ public class RateActivity extends AppCompatActivity implements OnItemClick {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new MyAdapter(ratingEntries,this);
+        mAdapter = new MyAdapter(ratingEntries);
 
 
         recyclerView.setAdapter(mAdapter);
@@ -116,11 +114,6 @@ public class RateActivity extends AppCompatActivity implements OnItemClick {
 
 
 
-    }
-
-    @Override
-    public void onClick(String value){
-        info_view.setText(value);
     }
 
 
@@ -178,9 +171,8 @@ public class RateActivity extends AppCompatActivity implements OnItemClick {
         }
 
         // Provide a suitable constructor (depends on the kind of dataset)
-        public MyAdapter(ArrayList<RatingEntry> myDataset, OnItemClick listener) {
+        public MyAdapter(ArrayList<RatingEntry> myDataset) {
             mDataset = myDataset;
-            mCallback = listener;
         }
 
         // Create new views (invoked by the layout manager)
@@ -221,8 +213,6 @@ public class RateActivity extends AppCompatActivity implements OnItemClick {
 
                 }
             });
-            mCallback.onClick(String.valueOf(ratingBar.getNumStars()));
-
         }
 
 

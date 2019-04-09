@@ -12,5 +12,12 @@
     <string name="form_hint_query">Your query</string>
 
     <string name="dev_email">pintindex@gmail.com</string>
+    <string name="navbar_home">HOME</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="navbar_search_text">SEARCH</string>
+    <string name="navbar_profile_text">PROFILE</string>
+    <string name="navbar_products_text">PRODUCTS</string>
 
 </resources>

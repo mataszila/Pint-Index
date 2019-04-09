@@ -22,7 +22,7 @@ import java.util.Comparator;
 import java.util.EnumSet;
 import java.util.Set;
 
-public class ProductActivity extends AppCompatActivity {
+public class ProductActivity extends MapsActivity {
 
     Spinner DrinkTypeSpinner;
     Spinner BrandSpinner;
