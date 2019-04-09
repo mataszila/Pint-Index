@@ -87,13 +87,13 @@ public class AuthenticationActivity extends AppCompatActivity {
                             if (task.isSuccessful()) {
                                 //User is successfully registered and logged in
                                 //start Profile Activity here
-                                Toast.makeText(AuthenticationActivity.this, "registration successful",
-                                        Toast.LENGTH_SHORT).show();
+                                Toast.makeText(AuthenticationActivity.this, "Registration successful",
+                                        Toast.LENGTH_LONG).show();
                                 finish();
                                 startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                             }else{
                                 Toast.makeText(AuthenticationActivity.this, "Couldn't register, try again",
-                                        Toast.LENGTH_SHORT).show();
+                                        Toast.LENGTH_LONG).show();
                             }
                         }catch (Exception e){
                             e.printStackTrace();
