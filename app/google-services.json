@@ -1,0 +1,44 @@
+{
+  "project_info": {
+    "project_number": "982940731649",
+    "firebase_url": "https://pintindex.firebaseio.com",
+    "project_id": "pintindex",
+    "storage_bucket": "pintindex.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:982940731649:android:9f18d1eb2ee2c171",
+        "android_client_info": {
+          "package_name": "com.example.matasolutions.pintindex"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "982940731649-1lrfgnun86sc6198n48iirvtsmkrhttg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.matasolutions.pintindex",
+            "certificate_hash": "635007c3da5df3bb4085d256ad7cac3581ea1cd8"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQAcy0PZNi_UGKNgnDxPaxseWw6qYmy8w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "982940731649-a3t8ede02h99gpoushv1ml8fd2i8q11a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

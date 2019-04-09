@@ -25,6 +25,8 @@ public class PubSetup {
 
         Pub pub1 = new Pub("Bar Loco",54.9755819,-1.6202004);
 
+        pub1.ID = "1";
+
         //Opening hours
 
 

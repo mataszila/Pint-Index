@@ -41,10 +41,15 @@ public class RateActivity extends AppCompatActivity implements OnItemClick {
 
     Button button_submit;
 
+    Profile profile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate);
+
+        profile = new Profile();
+
 
         String name = (String) getIntent().getSerializableExtra("name");
 
@@ -88,7 +93,11 @@ public class RateActivity extends AppCompatActivity implements OnItemClick {
 
                     RatingEntry thisEntry = ratingEntries.get(i);
 
-                    pub.ratings.AddNewEntry(thisEntry);
+                    if(profile.CheckIfNotRatedYet(pub.ID)){
+                        pub.ratings.AddNewEntry(thisEntry);
+                        profile.ratingEntries.add(thisEntry);
+                        profile.ratedPubIds.add(pub.ID);
+                    }
 
                     Intent intent = new Intent(getApplicationContext(),PubActivity.class);
 
