@@ -12,5 +12,6 @@
     <string name="form_hint_query">Your query</string>
 
     <string name="dev_email">pintindex@gmail.com</string>
+    <string name="navbar_home">HOME</string>
 
 </resources>
