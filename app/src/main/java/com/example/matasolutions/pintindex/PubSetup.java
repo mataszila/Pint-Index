@@ -12,6 +12,8 @@ public class PubSetup {
 
     public ArrayList<Pub> pubs;
 
+
+
     public PubSetup(){
 
         pubs = new ArrayList<Pub>();
@@ -69,6 +71,7 @@ public class PubSetup {
 
         ArrayList<Rating> ratings = new ArrayList<>();
 
+
         ArrayList<RatingEntry> atmosphereEntries = new ArrayList<>();
 
         atmosphereEntries.add(new RatingEntry(RatingType.ATMOSPHERE,4.5));
@@ -89,6 +92,12 @@ public class PubSetup {
 
         ratings.add(new Rating(RatingType.HYGIENE, hygieneEntries));
 
+
+        ArrayList<RatingEntry> valueForPriceEntries = new ArrayList<>();
+
+        valueForPriceEntries.add(new RatingEntry(RatingType.VALUE_FOR_PRICE,4.0));
+
+        ratings.add(new Rating(RatingType.VALUE_FOR_PRICE, valueForPriceEntries));
 
 
         pub1.setRatings(new Ratings(ratings));
@@ -127,7 +136,6 @@ public class PubSetup {
         ratings2.add(new Rating(RatingType.HYGIENE, hygieneEntries2));
 
         pub2.setRatings(new Ratings(ratings2));
-        
 
 
         ArrayList<Price> singlePrices2 = new ArrayList<Price>();
@@ -136,7 +144,6 @@ public class PubSetup {
         singlePrices2.add(new Price(productSetup.products.get(2),3.45));
         singlePrices2.add(new Price(productSetup.products.get(3),3.80));
         singlePrices2.add(new Price(productSetup.products.get(4),3.650));
-
 
         pub2.setPrices(new Prices(singlePrices2));
 
@@ -155,8 +162,6 @@ public class PubSetup {
         singlePrices3.add(new Price(productSetup.products.get(4),3.15));
 
         pub3.setPrices(new Prices(singlePrices3));
-
-
 
 
 

@@ -17,8 +17,6 @@ public class Profile {
     public String gender;
     public String age;
 
-
-    public ArrayList<String> ratedPubIds;
     public ArrayList<RatingEntry> ratingEntries;
 
     ArrayList<PubRatingEntry> pubRatingEntries;
@@ -42,7 +40,7 @@ public class Profile {
 
     public boolean CheckIfNotRatedYet(String givenID){
 
-        if(ratedPubIds.isEmpty()) {
+        if(pubRatingEntries.isEmpty()) {
 
             return true;
 
@@ -50,11 +48,12 @@ public class Profile {
 
         else{
 
-            for(String id : ratedPubIds){
+            for(PubRatingEntry entry : pubRatingEntries){
 
-                if(id.equals(givenID)){
+                if(entry.pubID.equals(givenID)){
 
                     return false;
+
                 }
             }
             return true;
