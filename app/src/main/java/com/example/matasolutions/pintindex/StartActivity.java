@@ -86,7 +86,7 @@ public class StartActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                
+                startActivity(new Intent(getApplicationContext(),SignupActivity.class));
 
 
 
