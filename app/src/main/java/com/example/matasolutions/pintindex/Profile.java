@@ -11,12 +11,15 @@ public class Profile {
     private FirebaseUser user;
 
 
-    private String user_email;
-    private String user_uID;
+    public String user_email;
+    public String user_uID;
 
-    public ArrayList<String> ratedPubIds;
+    public String gender;
+    public String age;
+
     public ArrayList<RatingEntry> ratingEntries;
 
+    ArrayList<PubRatingEntry> pubRatingEntries;
 
     public Profile(){
 
@@ -26,16 +29,18 @@ public class Profile {
         if(user !=null){
             user_email =user.getEmail();
             user_uID = user.getUid();
+            gender = "male";
+            age = "18";
         }
 
-        ratedPubIds = new ArrayList<>();
         ratingEntries = new ArrayList<>();
+        pubRatingEntries = new ArrayList<PubRatingEntry>();
 
-    }
+        }
 
     public boolean CheckIfNotRatedYet(String givenID){
 
-        if(ratedPubIds.isEmpty()) {
+        if(pubRatingEntries.isEmpty()) {
 
             return true;
 
@@ -43,19 +48,15 @@ public class Profile {
 
         else{
 
+            for(PubRatingEntry entry : pubRatingEntries){
 
-            for(String id : ratedPubIds){
-
-                if(id.equals(givenID)){
+                if(entry.pubID.equals(givenID)){
 
                     return false;
 
                 }
-
-
             }
             return true;
-
         }
     }
 

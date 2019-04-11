@@ -44,9 +44,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private PubSetup pubSetup;
 
     private GPSTracker tracker;
-    private FirebaseAuth mAauth;
-
-    private FirebaseUser currentUser;
+    private Profile profile;
 
     private BottomNavigationView bottomNavigationView;
 
@@ -55,6 +53,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+
+        profile = new Profile();
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -73,7 +74,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     case R.id.navbar_search_item:
                         break;
                     case R.id.navbar_profile_item:
-                        startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+
+                        if(profile != null){
+                            startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                        }
+                        else {
+                            startActivity(new Intent(getApplicationContext(), AuthenticationActivity.class));
+                        }
                         break;
                     case R.id.navbar_products_item:
                         startActivity(new Intent(getApplicationContext(),ProductActivity.class));
@@ -91,10 +98,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         tracker = new GPSTracker(this);
 
-        mAauth = FirebaseAuth.getInstance();
-        currentUser = mAauth.getCurrentUser();
-
-        Log.d("TAG", "username: " + currentUser.getEmail());
 
 
 

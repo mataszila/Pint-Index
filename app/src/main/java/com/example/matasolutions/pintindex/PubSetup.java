@@ -1,23 +1,69 @@
 package com.example.matasolutions.pintindex;
 
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.widget.ImageView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 
 public class PubSetup {
 
     public ArrayList<Pub> pubs;
 
+    ArrayList<Pub> db_pubs;
+
+    FirebaseDatabase database;
+    DatabaseReference myRef;
+
     public PubSetup(){
 
         pubs = new ArrayList<Pub>();
+
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("pubsList");
+
+        db_pubs = new ArrayList<Pub>();
+
         AddPubs();
 
+        ReadData(new MyCallback() {
+            @Override
+            public void onPubCallback(ArrayList<Pub> value) {
+                Log.i("CALLBACK_TAG", "CALLBACK EXECUTED");
+                db_pubs = value;
+                Log.i("CALLBACK_TAG","DB_PUBS SIZE IS: " + db_pubs.size());
+            }
+        });
     }
+
+    private void ReadData(final MyCallback myCallback){
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                ArrayList<Pub> pubs = (ArrayList<Pub>) dataSnapshot.child("list").getValue();
+                myCallback.onPubCallback(pubs);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+    }
+
 
     private void AddPubs(){
 
@@ -25,10 +71,9 @@ public class PubSetup {
 
         Pub pub1 = new Pub("Bar Loco",54.9755819,-1.6202004);
 
-        pub1.ID = "1";
+        pub1.setID(myRef.getKey());
 
         //Opening hours
-
 
         ArrayList<SingleOpeningHours> singleOpeningHours = new ArrayList<SingleOpeningHours>();
 
@@ -90,8 +135,14 @@ public class PubSetup {
         ratings.add(new Rating(RatingType.HYGIENE, hygieneEntries));
 
 
+        ArrayList<RatingEntry> valueForPriceEntries = new ArrayList<>();
+
+        valueForPriceEntries.add(new RatingEntry(RatingType.VALUE_FOR_PRICE,4.0));
+
+        ratings.add(new Rating(RatingType.VALUE_FOR_PRICE, valueForPriceEntries));
 
         pub1.setRatings(new Ratings(ratings));
+
 
         pub1.setUrl("https://media-cdn.tripadvisor.com/media/photo-s/0a/65/47/3c/bar-loco-newcastle.jpg");
 
@@ -103,6 +154,10 @@ public class PubSetup {
         //
         // ----------------------------------
         Pub pub2 = new Pub("Hancock",54.979915,-1.6136037);
+
+        pub2.setID(myRef.getKey());
+
+
 
         ArrayList<Rating> ratings2 = new ArrayList<>();
 
@@ -127,7 +182,6 @@ public class PubSetup {
         ratings2.add(new Rating(RatingType.HYGIENE, hygieneEntries2));
 
         pub2.setRatings(new Ratings(ratings2));
-        
 
 
         ArrayList<Price> singlePrices2 = new ArrayList<Price>();
@@ -137,7 +191,6 @@ public class PubSetup {
         singlePrices2.add(new Price(productSetup.products.get(3),3.80));
         singlePrices2.add(new Price(productSetup.products.get(4),3.650));
 
-
         pub2.setPrices(new Prices(singlePrices2));
 
         pub2.setUrl("https://farm3.staticflickr.com/2828/8750050391_6286ccff1e_b.jpg");
@@ -146,6 +199,9 @@ public class PubSetup {
         pubs.add(pub2);
 
         Pub pub3 = new Pub("The Strawberry",54.9748055,-1.6217146);
+
+        pub3.setID(myRef.getKey());
+
 
         ArrayList<Price> singlePrices3 = new ArrayList<Price>();
         singlePrices3.add(new Price(productSetup.products.get(0),4.30));
@@ -157,11 +213,10 @@ public class PubSetup {
         pub3.setPrices(new Prices(singlePrices3));
 
 
-
-
-
-
         Pub pub4 = new Pub("Trent House",54.977095,-1.6205557);
+
+        pub4.setID(myRef.getKey());
+
 
         ArrayList<Price> singlePrices4 = new ArrayList<Price>();
         singlePrices4.add(new Price(productSetup.products.get(0),3.85));
@@ -184,12 +239,18 @@ public class PubSetup {
 
         pub5.setPrices(new Prices(singlePrices5));
 
+        pub5.setID(myRef.getKey());
 
 
         pubs.add(pub3);
 
         pubs.add(pub4);
         pubs.add(pub5);
+
+        //myRef.child("list").setValue(pubs);
+
+
+
 
     }
 

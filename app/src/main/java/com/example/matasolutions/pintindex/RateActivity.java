@@ -16,6 +16,10 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class RateActivity extends AppCompatActivity {
@@ -26,21 +30,18 @@ public class RateActivity extends AppCompatActivity {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
 
-    DrinkType drinkType;
     Brand brand;
-    Amount amount;
-
-    ArrayList<Pub> pubsWithProduct;
-
-    Button actionButton;
-
-
     Button sort_high_to_low;
     Button sort_low_to_high;
+
+    FirebaseDatabase database;
+    DatabaseReference myRef;
 
     Button button_submit;
 
     Profile profile;
+
+    ArrayList<RatingEntry> ratingEntries;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,19 +50,26 @@ public class RateActivity extends AppCompatActivity {
 
         profile = new Profile();
 
-
-        String name = (String) getIntent().getSerializableExtra("name");
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference();
 
         pub = getIntent().getExtras().getParcelable("pub");
 
-
-        final ArrayList<RatingEntry> ratingEntries = new ArrayList<>();
+        ratingEntries = new ArrayList<>();
 
         ratingEntries.add(new RatingEntry(RatingType.ATMOSPHERE));
         ratingEntries.add(new RatingEntry(RatingType.HYGIENE));
         ratingEntries.add(new RatingEntry(RatingType.SERVICE));
         ratingEntries.add(new RatingEntry(RatingType.VALUE_FOR_PRICE));
 
+
+        SetupRecyclerView();
+
+        SetupSubmitButton();
+
+    }
+
+    public void SetupRecyclerView(){
 
         recyclerView =  findViewById(R.id.my_recycler_view);
 
@@ -75,7 +83,9 @@ public class RateActivity extends AppCompatActivity {
 
         recyclerView.setAdapter(mAdapter);
 
-        //info_view.setText(((MyAdapter) mAdapter).getCallback());
+    }
+
+    private void SetupSubmitButton(){
 
         button_submit = findViewById(R.id.button_submit);
 
@@ -83,21 +93,24 @@ public class RateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                for(int i=0;i<ratingEntries.size();i++){
+                if (profile.CheckIfNotRatedYet(pub.getID())) {
 
-                    String msg = ratingEntries.get(i).ratingType.toString() + String.valueOf(ratingEntries.get(i).input_rating);
+                    for (int i = 0; i < ratingEntries.size(); i++) {
 
-                    Log.i("TAG",msg);
+                        RatingEntry thisEntry = ratingEntries.get(i);
 
-                    RatingEntry thisEntry = ratingEntries.get(i);
-
-                    if(profile.CheckIfNotRatedYet(pub.ID)){
                         pub.ratings.AddNewEntry(thisEntry);
+
                         profile.ratingEntries.add(thisEntry);
-                        profile.ratedPubIds.add(pub.ID);
+
                     }
 
-                    Intent intent = new Intent(getApplicationContext(),PubActivity.class);
+                    profile.pubRatingEntries.add(new PubRatingEntry(pub.getID(),profile.ratingEntries));
+
+                    myRef.child("userData").child(profile.user_uID).child("ratingEntries").setValue(profile.pubRatingEntries);
+                    myRef.child("pubData").child(pub.getID()).child("ratingEntries").setValue(pub.ratings);
+
+                    Intent intent = new Intent(getApplicationContext(), PubActivity.class);
 
                     intent.putExtra("pub", pub);
 
@@ -105,19 +118,14 @@ public class RateActivity extends AppCompatActivity {
                     args.putParcelable("coordinates", pub.coordinates);
                     intent.putExtra("bundle", args);
 
-
                     startActivity(intent);
 
                 }
             }
+
         });
 
-
-
     }
-
-
-
 
     //Adapter
 

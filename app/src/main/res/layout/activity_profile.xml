@@ -33,6 +33,16 @@
             android:layout_height="wrap_content"
             android:text="Email"
             android:id="@+id/profileUid"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratedPubs"
+            android:layout_marginTop="25dp"
+            />
+
+
+
         <Button
             android:id="@+id/button_logout"
             android:layout_width="wrap_content"

@@ -21,6 +21,10 @@
             "package_name": "com.example.matasolutions.pintindex",
             "certificate_hash": "635007c3da5df3bb4085d256ad7cac3581ea1cd8"
           }
+        },
+        {
+          "client_id": "982940731649-a3t8ede02h99gpoushv1ml8fd2i8q11a.apps.googleusercontent.com",
+          "client_type": 3
         }
       ],
       "api_key": [

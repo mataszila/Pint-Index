@@ -16,9 +16,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class AuthenticationActivity extends AppCompatActivity {
-
 
     private FirebaseAuth mAuth;
     private EditText password;
@@ -26,6 +27,8 @@ public class AuthenticationActivity extends AppCompatActivity {
     private Button button_register;
     private Button button_login;
 
+    private FirebaseDatabase database;
+    private DatabaseReference myRef;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +67,7 @@ public class AuthenticationActivity extends AppCompatActivity {
                 }
             });
 
+
         }
 
 
@@ -89,6 +93,13 @@ public class AuthenticationActivity extends AppCompatActivity {
                                 //start Profile Activity here
                                 Toast.makeText(AuthenticationActivity.this, "Registration successful",
                                         Toast.LENGTH_LONG).show();
+
+                                database = FirebaseDatabase.getInstance();
+                                myRef = database.getReference("userData");
+
+                                myRef.child(mAuth.getUid()).setValue(new Profile());
+
+
                                 finish();
                                 startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
                             }else{

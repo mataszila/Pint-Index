@@ -6,6 +6,8 @@ import android.os.Parcelable;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.net.URL;
 
@@ -15,7 +17,11 @@ public class Pub implements Parcelable  {
     public String name;
     public Marker marker;
 
-    public String ID;
+    public String id;
+
+
+    FirebaseDatabase database;
+    DatabaseReference myRef;
 
     public String url;
     public WeekOpeningHours weekOpeningHours;
@@ -64,16 +70,17 @@ public class Pub implements Parcelable  {
     }
 
     public String getID() {
-        return ID;
+        return id;
     }
 
     public void setID(String ID) {
-        this.ID = ID;
+        this.id = id;
     }
 
     public Pub(String name,double lat,double lng){
         this.coordinates = new LatLng(lat, lng);
         this.name = name;
+
 
     }
 
@@ -83,7 +90,7 @@ public class Pub implements Parcelable  {
     protected Pub(Parcel in) {
         coordinates = (LatLng) in.readValue(LatLng.class.getClassLoader());
         name = in.readString();
-        ID = in.readString();
+        id = in.readString();
         url = in.readString();
         weekOpeningHours = (WeekOpeningHours) in.readValue(WeekOpeningHours.class.getClassLoader());
         prices = (Prices) in.readValue(Prices.class.getClassLoader());
@@ -100,7 +107,7 @@ public class Pub implements Parcelable  {
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeValue(coordinates);
         dest.writeString(name);
-        dest.writeString(ID);
+        dest.writeString(id);
         dest.writeString(url);
         dest.writeValue(weekOpeningHours);
         dest.writeValue(prices);
