@@ -93,7 +93,7 @@ public class RateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                if (profile.CheckIfNotRatedYet(pub.ID)) {
+                if (profile.CheckIfNotRatedYet(pub.getID())) {
 
                     for (int i = 0; i < ratingEntries.size(); i++) {
 
@@ -108,7 +108,7 @@ public class RateActivity extends AppCompatActivity {
                     profile.pubRatingEntries.add(new PubRatingEntry(pub.getID(),profile.ratingEntries));
 
                     myRef.child("userData").child(profile.user_uID).child("ratingEntries").setValue(profile.pubRatingEntries);
-                    myRef.child("pubData").child(pub.ID).child("ratingEntries").setValue(pub.ratings);
+                    myRef.child("pubData").child(pub.getID()).child("ratingEntries").setValue(pub.ratings);
 
                     Intent intent = new Intent(getApplicationContext(), PubActivity.class);
 

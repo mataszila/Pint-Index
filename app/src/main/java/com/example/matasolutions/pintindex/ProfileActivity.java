@@ -84,14 +84,12 @@ public class ProfileActivity extends MapsActivity {
 
             }
 
-
         }
 
     }
 
 
     private void SetupButtonListeners(){
-
 
         logout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -103,7 +101,6 @@ public class ProfileActivity extends MapsActivity {
 
                     startActivity(new Intent(getApplicationContext(),
                             AuthenticationActivity.class));
-
 
                 }
             }

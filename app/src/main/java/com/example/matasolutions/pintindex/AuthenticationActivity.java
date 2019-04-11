@@ -21,7 +21,6 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class AuthenticationActivity extends AppCompatActivity {
 
-
     private FirebaseAuth mAuth;
     private EditText password;
     private EditText email;
