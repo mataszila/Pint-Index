@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -121,6 +122,11 @@ public class RateActivity extends AppCompatActivity {
                     startActivity(intent);
 
                 }
+                else{
+                    Toast.makeText(getApplicationContext(), "Sorry, you have already rated this pub",Toast.LENGTH_SHORT);
+                }
+
+
             }
 
         });
@@ -157,12 +163,6 @@ public class RateActivity extends AppCompatActivity {
             // each data item is just a string in this case
 
             public TextView ratingType;
-
-            public ImageView star_1;
-            public ImageView star_2 ;
-            public ImageView star_3;
-            public ImageView star_4;
-            public ImageView star_5;
 
             RatingBar ratingBar;
 
