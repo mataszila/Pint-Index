@@ -37,6 +37,7 @@ import net.danlew.android.joda.JodaTimeAndroid;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -79,7 +80,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
                         }
                         else {
-                            startActivity(new Intent(getApplicationContext(), AuthenticationActivity.class));
+                            startActivity(new Intent(getApplicationContext(), StartActivity.class));
                         }
                         break;
                     case R.id.navbar_products_item:
@@ -98,10 +99,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         tracker = new GPSTracker(this);
 
+        //pubSetup = new PubSetup();
+
+        pubSetup = getIntent().getParcelableExtra("pubSetup");
 
 
-
-        pubSetup = new PubSetup();
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
@@ -127,7 +129,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     new LatLng(
                             tracker.getCurrentLocation().getLatitude(),
                             tracker.getCurrentLocation().getLongitude()),
-                            15.0f));
+                    15.0f));
         }
     }
 
@@ -205,18 +207,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         for(int i=0;i<pubSetup.pubs.size();i++){
 
-                Pub thisPub = pubSetup.pubs.get(i);
-                LatLng curLatLng = tracker.getCurrentLocation()  == null
-                        ? null
-                        : new LatLng(
-                                tracker.getCurrentLocation().getLatitude(),
-                        tracker.getCurrentLocation().getLongitude());
+            Pub thisPub = pubSetup.pubs.get(i);
+            LatLng curLatLng = tracker.getCurrentLocation()  == null
+                    ? null
+                    : new LatLng(
+                    tracker.getCurrentLocation().getLatitude(),
+                    tracker.getCurrentLocation().getLongitude());
 
-                String title = formatMarkerTitle(thisPub.name, HelperMethods.CalculationByDistance(curLatLng,thisPub.coordinates));
+            String title = formatMarkerTitle(thisPub.name, HelperMethods.CalculationByDistance(curLatLng,thisPub.coordinates));
 
-                thisPub.marker = mMap.addMarker(new MarkerOptions().
-                        position(thisPub.coordinates).
-                        title(title));
+            thisPub.marker = mMap.addMarker(new MarkerOptions().
+                    position(thisPub.coordinates).
+                    title(title));
         }
     }
 

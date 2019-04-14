@@ -46,7 +46,6 @@
             android:name=".PubActivity"
             android:label="@string/title_activity_pub" />
         <activity android:name=".PubCompareActivity" />
-        <activity android:name=".MapsActivity" />
         <activity android:name=".ProductActivity" />
         <activity android:name=".FeedbackActivity" />
         <activity android:name=".RateActivity" />
@@ -54,7 +53,11 @@
         <activity android:name=".AuthenticationActivity" />
         <activity android:name=".ProfileActivity" />
         <activity android:name=".LoginActivity" />
-        <activity android:name=".SignupActivity"></activity>
+        <activity android:name=".SignupActivity" />
+        <activity android:name=".WelcomeBackActivity" />
+        <activity
+            android:name=".MapsActivity"
+            android:label="@string/title_activity_maps"></activity>
     </application>
 
 </manifest>

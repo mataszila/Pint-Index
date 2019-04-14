@@ -17,8 +17,9 @@ class Prices implements PubPageContentInterface,Parcelable {
         this.priceList  =  priceList;
     }
 
+
     public Prices() {
-        priceList = new ArrayList<Price>();
+
     }
 
     @Override

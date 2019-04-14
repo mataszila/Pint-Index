@@ -73,7 +73,7 @@ public class Pub implements Parcelable  {
         return id;
     }
 
-    public void setID(String ID) {
+    public void setID(String id) {
         this.id = id;
     }
 

@@ -45,11 +45,17 @@ public class StartActivity extends AppCompatActivity {
 
     private TextView register;
 
+    PubSetup setup;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
+
+        setup = new PubSetup();
+
+
 
         tracker = new GPSTracker(this);
 
@@ -64,36 +70,40 @@ public class StartActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
 
-        email = (EditText) findViewById(R.id.login_email_input);
-        password = (EditText) findViewById(R.id.login_password_input);
+        email = findViewById(R.id.login_email_input);
+        password = findViewById(R.id.login_password_input);
 
-        login_button = (Button) findViewById(R.id.button_login);
-        login_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                if (view == login_button){
-                    LoginUser();
-                }
-
-            }
-        });
-
-
+        login_button =  findViewById(R.id.button_login);
         register = findViewById(R.id.textView_register);
 
-        register.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
 
-                startActivity(new Intent(getApplicationContext(),SignupActivity.class));
+        if(currentUser == null){
 
+            login_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
+                    if (view == login_button){
+                        LoginUser();
+                    }
 
-            }
-        });
+                }
+            });
 
+            register.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(getApplicationContext(),SignupActivity.class));
+                }
+            });
 
+        }
+
+        else{
+
+            Toast.makeText(this, "Welcome back " + currentUser.getEmail() , Toast.LENGTH_LONG);
+            startActivity(new Intent(getApplicationContext(),WelcomeBackActivity.class));
+        }
 
     }
 

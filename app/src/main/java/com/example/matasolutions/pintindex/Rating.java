@@ -22,6 +22,11 @@ class Rating implements Parcelable {
     }
 
 
+    public Rating(){
+
+    }
+
+
     protected Rating(Parcel in) {
         type = (RatingType) in.readValue(RatingType.class.getClassLoader());
         averageRating = in.readDouble();

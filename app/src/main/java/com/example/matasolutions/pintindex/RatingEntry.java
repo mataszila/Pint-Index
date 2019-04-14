@@ -22,6 +22,9 @@ public class RatingEntry implements Serializable {
         this.ratingType = ratingType;
 
     }
+    public RatingEntry(){
+
+    }
 
 
 

@@ -15,7 +15,9 @@ public class Price implements Parcelable {
 
     }
 
+    public Price(){
 
+    }
 
     protected Price(Parcel in) {
         product = (Product) in.readValue(Product.class.getClassLoader());

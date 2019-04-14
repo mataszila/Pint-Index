@@ -62,9 +62,8 @@ public class SignupActivity extends AppCompatActivity {
             }
         });
 
-
     }
-    
+
 
     private boolean CheckIfPasswordsMatch(){
 

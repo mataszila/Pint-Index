@@ -62,7 +62,6 @@ public class RateActivity extends AppCompatActivity {
         ratingEntries.add(new RatingEntry(RatingType.SERVICE));
         ratingEntries.add(new RatingEntry(RatingType.VALUE_FOR_PRICE));
 
-
         SetupRecyclerView();
 
         SetupSubmitButton();
@@ -108,7 +107,7 @@ public class RateActivity extends AppCompatActivity {
                     profile.pubRatingEntries.add(new PubRatingEntry(pub.getID(),profile.ratingEntries));
 
                     myRef.child("userData").child(profile.user_uID).child("ratingEntries").setValue(profile.pubRatingEntries);
-                    myRef.child("pubData").child(pub.getID()).child("ratingEntries").setValue(pub.ratings);
+                    myRef.child("pubsList").child("list").child(pub.getID()).child("ratings").setValue(pub.ratings);
 
                     Intent intent = new Intent(getApplicationContext(), PubActivity.class);
 

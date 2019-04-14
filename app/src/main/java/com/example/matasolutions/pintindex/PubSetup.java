@@ -1,6 +1,8 @@
 package com.example.matasolutions.pintindex;
 
 import android.graphics.drawable.Drawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -16,7 +18,7 @@ import java.util.ArrayList;
 import androidx.annotation.NonNull;
 import androidx.core.content.res.ResourcesCompat;
 
-public class PubSetup {
+public class PubSetup implements Parcelable {
 
     public ArrayList<Pub> pubs;
 
@@ -36,23 +38,68 @@ public class PubSetup {
 
         AddPubs();
 
-        ReadData(new MyCallback() {
-            @Override
-            public void onPubCallback(ArrayList<Pub> value) {
-                Log.i("CALLBACK_TAG", "CALLBACK EXECUTED");
-                db_pubs = value;
-                Log.i("CALLBACK_TAG","DB_PUBS SIZE IS: " + db_pubs.size());
-            }
-        });
     }
 
-    private void ReadData(final MyCallback myCallback){
+    protected PubSetup(Parcel in) {
+        if (in.readByte() == 0x01) {
+            pubs = new ArrayList<Pub>();
+            in.readList(pubs, Pub.class.getClassLoader());
+        } else {
+            pubs = null;
+        }
+        if (in.readByte() == 0x01) {
+            db_pubs = new ArrayList<Pub>();
+            in.readList(db_pubs, Pub.class.getClassLoader());
+        } else {
+            db_pubs = null;
+        }
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (pubs == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(pubs);
+        }
+        if (db_pubs == null) {
+            dest.writeByte((byte) (0x00));
+        } else {
+            dest.writeByte((byte) (0x01));
+            dest.writeList(db_pubs);
+        }
+    }
+
+    @SuppressWarnings("unused")
+    public static final Parcelable.Creator<PubSetup> CREATOR = new Parcelable.Creator<PubSetup>() {
+        @Override
+        public PubSetup createFromParcel(Parcel in) {
+            return new PubSetup(in);
+        }
+
+        @Override
+        public PubSetup[] newArray(int size) {
+            return new PubSetup[size];
+        }
+    };
+
+
+
+
+    public void ReadData(final MyCallback myCallback){
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                ArrayList<Pub> pubs = (ArrayList<Pub>) dataSnapshot.child("list").getValue();
+                //pubs = (ArrayList<Pub>) dataSnapshot.getValue();
+                ConvertSnapshot(dataSnapshot.child("list"));
                 myCallback.onPubCallback(pubs);
             }
 
@@ -64,6 +111,20 @@ public class PubSetup {
 
     }
 
+    private ArrayList<Pub> ConvertSnapshot(DataSnapshot dataSnapshot){
+
+        ArrayList<Pub> list = new ArrayList<>();
+
+        for(DataSnapshot snap : dataSnapshot.getChildren()){
+
+            Pub pub =   snap.getValue(Pub.class);
+            list.add(pub);
+
+        }
+        return list;
+
+    }
+
 
     private void AddPubs(){
 
@@ -71,7 +132,7 @@ public class PubSetup {
 
         Pub pub1 = new Pub("Bar Loco",54.9755819,-1.6202004);
 
-        pub1.setID(myRef.getKey());
+        pub1.setID("0");
 
         //Opening hours
 
@@ -155,7 +216,7 @@ public class PubSetup {
         // ----------------------------------
         Pub pub2 = new Pub("Hancock",54.979915,-1.6136037);
 
-        pub2.setID(myRef.getKey());
+        pub2.setID("1");
 
 
 
@@ -200,7 +261,7 @@ public class PubSetup {
 
         Pub pub3 = new Pub("The Strawberry",54.9748055,-1.6217146);
 
-        pub3.setID(myRef.getKey());
+        pub3.setID("2");
 
 
         ArrayList<Price> singlePrices3 = new ArrayList<Price>();
@@ -215,7 +276,7 @@ public class PubSetup {
 
         Pub pub4 = new Pub("Trent House",54.977095,-1.6205557);
 
-        pub4.setID(myRef.getKey());
+        pub4.setID("3");
 
 
         ArrayList<Price> singlePrices4 = new ArrayList<Price>();
@@ -239,13 +300,14 @@ public class PubSetup {
 
         pub5.setPrices(new Prices(singlePrices5));
 
-        pub5.setID(myRef.getKey());
+        pub5.setID("4");
 
 
         pubs.add(pub3);
 
         pubs.add(pub4);
         pubs.add(pub5);
+
 
         //myRef.child("list").setValue(pubs);
 

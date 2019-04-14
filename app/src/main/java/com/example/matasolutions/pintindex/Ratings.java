@@ -24,6 +24,10 @@ class Ratings implements PubPageContentInterface,Parcelable {
 
     }
 
+    public Ratings(){
+
+    }
+
 
     public void AddNewEntry(RatingEntry entry){
 
