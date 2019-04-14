@@ -88,10 +88,10 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = pub.coordinates;
+        LatLng sydney = HelperMethods.convertLatLng(pub.coordinates);
         mMap.addMarker(new MarkerOptions().position(sydney).title(pub.name));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(pub.coordinates.latitude,pub.coordinates.longitude), 15.0f));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(pub.coordinates.getLatitude(),pub.coordinates.getLongitude()), 15.0f));
 
     }
 
@@ -131,7 +131,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
                 intent.putExtra("name", pub.name);
                 intent.putExtra("pub", pub);
                 Bundle args = new Bundle();
-                args.putParcelable("coordinates", pub.coordinates);
+                args.putParcelable("coordinates", HelperMethods.convertLatLng(pub.coordinates));
                 intent.putExtra("bundle", args);
 
                 startActivity(intent);
@@ -147,7 +147,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
                     Intent intent = new Intent(getApplicationContext(),PubCompareActivity.class);
                     intent.putExtra("pub", pub);
                     Bundle args = new Bundle();
-                    args.putParcelable("coordinates", pub.coordinates);
+                    args.putParcelable("coordinates", HelperMethods.convertLatLng(pub.coordinates));
                     intent.putExtra("bundle", args);
 
                     startActivity(intent);

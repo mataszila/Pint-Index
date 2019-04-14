@@ -1,6 +1,7 @@
 package com.example.matasolutions.pintindex;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.solver.widgets.Helper;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -26,7 +27,6 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -126,9 +126,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(tracker.checkLocationPermission() && tracker.getCurrentLocation() != null){
             mMap.setMyLocationEnabled(true);
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(
-                            tracker.getCurrentLocation().getLatitude(),
-                            tracker.getCurrentLocation().getLongitude()),
+                    HelperMethods.convertLatLng(new LatLng(tracker.currentLocation.getLatitude(),tracker.currentLocation.getLongitude())),
                     15.0f));
         }
     }
@@ -143,7 +141,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     tracker.updateCurrentLocation();
                     Pub thisPub = pubLookupByMarker(marker);
                     LatLng curLatLng = new LatLng(tracker.getCurrentLocation().getLatitude(),tracker.getCurrentLocation().getLongitude());
-                    marker.setTitle(formatMarkerTitle(thisPub.name, HelperMethods.CalculationByDistance(curLatLng, thisPub.coordinates)));
+                    marker.setTitle(formatMarkerTitle(thisPub.name, HelperMethods.CalculationByDistance(HelperMethods.convertLatLng(curLatLng), HelperMethods
+                            .convertLatLng(thisPub.coordinates))));
                 }
 
                 return false;
@@ -173,8 +172,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                 Bundle args = new Bundle();
                 args.putParcelable("coordinates", thisPub.coordinates);
-                intent.putExtra("bundle", args);
 
+                intent.putExtra("bundle", args);
 
                 intent.putExtra("pub", thisPub);
 
@@ -214,10 +213,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     tracker.getCurrentLocation().getLatitude(),
                     tracker.getCurrentLocation().getLongitude());
 
-            String title = formatMarkerTitle(thisPub.name, HelperMethods.CalculationByDistance(curLatLng,thisPub.coordinates));
+            String title = formatMarkerTitle(thisPub.name, HelperMethods.CalculationByDistance(HelperMethods.convertLatLng(curLatLng),HelperMethods.convertLatLng(thisPub.coordinates)));
 
             thisPub.marker = mMap.addMarker(new MarkerOptions().
-                    position(thisPub.coordinates).
+                    position(HelperMethods.convertLatLng(thisPub.coordinates)).
                     title(title));
         }
     }

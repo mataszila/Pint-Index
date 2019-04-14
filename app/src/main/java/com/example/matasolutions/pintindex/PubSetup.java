@@ -99,8 +99,8 @@ public class PubSetup implements Parcelable {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
                 //pubs = (ArrayList<Pub>) dataSnapshot.getValue();
-                ConvertSnapshot(dataSnapshot.child("list"));
-                myCallback.onPubCallback(pubs);
+                ArrayList<Pub> db_pubs = ConvertSnapshot(dataSnapshot.child("list"));
+                myCallback.onPubCallback(db_pubs);
             }
 
             @Override
