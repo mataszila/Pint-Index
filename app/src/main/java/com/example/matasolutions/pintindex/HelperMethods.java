@@ -23,6 +23,13 @@ public class HelperMethods {
 
     }
 
+    public static com.google.android.gms.maps.model.LatLng convertLatLng(com.example.matasolutions.pintindex.LatLng orig){
+
+        return new com.google.android.gms.maps.model.LatLng(orig.getLatitude(),orig.getLongitude());
+
+    }
+
+
     public static String getHoursMinutesNow(){
 
         Calendar calendar = GregorianCalendar.getInstance(); // creates a new calendar instance

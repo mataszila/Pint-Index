@@ -20,6 +20,10 @@ public class SingleOpeningHours implements Serializable {
 
     }
 
+    public SingleOpeningHours(){
+
+    }
+
    public String SingleOpeningHoursToString(){
 
         StringBuilder sb = new StringBuilder();

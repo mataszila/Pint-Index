@@ -1,6 +1,7 @@
 package com.example.matasolutions.pintindex;
 
 import java.io.Serializable;
+import java.nio.file.StandardWatchEventKinds;
 import java.util.ArrayList;
 
 public class WeekOpeningHours implements Serializable {
@@ -14,7 +15,9 @@ public class WeekOpeningHours implements Serializable {
 
     }
 
+    public WeekOpeningHours(){
 
+    }
 
     public String ContentToString() {
 

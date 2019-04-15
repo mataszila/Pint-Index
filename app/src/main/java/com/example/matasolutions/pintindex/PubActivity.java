@@ -1,5 +1,6 @@
 package com.example.matasolutions.pintindex;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
@@ -28,6 +29,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
@@ -43,6 +49,10 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
     private GoogleMap mMap;
     Pub pub;
 
+    private String pubID;
+
+    private LatLng coordinates;
+
     TextView toolbar_text_1;
     TextView toolbar_text_2;
     TextView toolbar_text_4;
@@ -56,7 +66,8 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
     RecyclerView toolbar_recyclerview;
     LinearLayoutManager layoutManager;
 
-
+    FirebaseDatabase database;
+    DatabaseReference myRef;
 
 
     @Override
@@ -64,10 +75,21 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pub);
 
-        setupPub();
-        SetupToolbar();
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("pubsList");
 
-        AddPubPageContent();
+        pubID = getIntent().getExtras().getString("pubID");
+
+        ReadSinglePub(new PubActivityCallback() {
+            @Override
+            public void onSinglePubCallBack(Pub value) {
+                setupPub(value);
+                SetupToolbar();
+                AddPubPageContent();
+
+            }
+        },pubID);
+
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -88,23 +110,18 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap = googleMap;
 
         // Add a marker in Sydney and move the camera
-        LatLng sydney = pub.coordinates;
-        mMap.addMarker(new MarkerOptions().position(sydney).title(pub.name));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(pub.coordinates.latitude,pub.coordinates.longitude), 15.0f));
-
     }
 
-    private void setupPub(){
+    private void setupPub(Pub db_pub){
 
-        pub = getIntent().getExtras().getParcelable("pub");
+        pub = db_pub;
 
-        Bundle bundle = getIntent().getParcelableExtra("bundle");
-        pub.coordinates = bundle.getParcelable("coordinates");
-        pub.name = (String) getIntent().getSerializableExtra("name");
+        LatLng sydney = pub.getCoordinates();
+        mMap.addMarker(new MarkerOptions().position(sydney).title(pub.name));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(pub.coordinates.getLatitude(),pub.coordinates.getLongitude()), 15.0f));
 
         setTitle(pub.name);
-
     }
 
     private void SetupToolbar(){
@@ -131,9 +148,10 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
                 intent.putExtra("name", pub.name);
                 intent.putExtra("pub", pub);
                 Bundle args = new Bundle();
-                args.putParcelable("coordinates", pub.coordinates);
+                args.putParcelable("coordinates", HelperMethods.convertLatLng(pub.coordinates));
                 intent.putExtra("bundle", args);
 
+                finish();
                 startActivity(intent);
             }
         });
@@ -147,7 +165,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
                     Intent intent = new Intent(getApplicationContext(),PubCompareActivity.class);
                     intent.putExtra("pub", pub);
                     Bundle args = new Bundle();
-                    args.putParcelable("coordinates", pub.coordinates);
+                    args.putParcelable("coordinates", HelperMethods.convertLatLng(pub.coordinates));
                     intent.putExtra("bundle", args);
 
                     startActivity(intent);
@@ -191,8 +209,6 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         }
 
     }
-
-
 
 
     private String ShowRatingText(){
@@ -250,7 +266,22 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
     }
 
+    private void ReadSinglePub(final PubActivityCallback myCallback, final String pubID){
 
+            myRef.child("list").addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                    Pub pub =  dataSnapshot.child(pubID).getValue(Pub.class);
+
+                    myCallback.onSinglePubCallBack(pub);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+                }
+            });
+    }
 
     private void AddPubPageContent() {
 
@@ -304,7 +335,6 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         recyclerView.setAdapter(adapter);
 
     }
-
 
     public static class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         private ArrayList<Facility> mDataset;

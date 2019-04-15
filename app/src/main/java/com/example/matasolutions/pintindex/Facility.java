@@ -23,6 +23,10 @@ class Facility implements Parcelable {
         this.name = name;
     }
 
+    public Facility(){
+
+    }
+
     protected Facility(Parcel in) {
         name = in.readString();
         type = (FacilityType) in.readValue(FacilityType.class.getClassLoader());

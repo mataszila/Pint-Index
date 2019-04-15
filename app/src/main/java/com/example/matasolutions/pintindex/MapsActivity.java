@@ -1,6 +1,7 @@
 package com.example.matasolutions.pintindex;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.solver.widgets.Helper;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
@@ -10,33 +11,18 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Bundle;
-import android.os.Parcelable;
-import android.util.Log;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationRequest;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
-import net.danlew.android.joda.JodaTimeAndroid;
-
-import java.io.Serializable;
-import java.text.DecimalFormat;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -54,8 +40,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-
         profile = new Profile();
+
+        tracker = new GPSTracker(this);
+
+        //pubSetup = new PubSetup();
+
+        pubSetup = getIntent().getParcelableExtra("pubSetup");
+
+        SetupBottomNavigationView();
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+        mapFragment.getMapAsync(this);
+
+    }
+
+    private void SetupBottomNavigationView(){
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
 
@@ -79,7 +81,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                             startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
                         }
                         else {
-                            startActivity(new Intent(getApplicationContext(), AuthenticationActivity.class));
+                            startActivity(new Intent(getApplicationContext(), StartActivity.class));
                         }
                         break;
                     case R.id.navbar_products_item:
@@ -87,27 +89,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         break;
                 }
 
-
-
-
                 return false;
             }
         });
-
-
-
-        tracker = new GPSTracker(this);
-
-
-
-
-
-
-        pubSetup = new PubSetup();
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
 
     }
 
@@ -126,10 +110,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if(tracker.checkLocationPermission() && tracker.getCurrentLocation() != null){
             mMap.setMyLocationEnabled(true);
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(
-                    new LatLng(
-                            tracker.getCurrentLocation().getLatitude(),
-                            tracker.getCurrentLocation().getLongitude()),
-                            15.0f));
+                    HelperMethods.convertLatLng(new LatLng(tracker.currentLocation.getLatitude(),tracker.currentLocation.getLongitude())),
+                    15.0f));
         }
     }
 
@@ -143,7 +125,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     tracker.updateCurrentLocation();
                     Pub thisPub = pubLookupByMarker(marker);
                     LatLng curLatLng = new LatLng(tracker.getCurrentLocation().getLatitude(),tracker.getCurrentLocation().getLongitude());
-                    marker.setTitle(formatMarkerTitle(thisPub.name, HelperMethods.CalculationByDistance(curLatLng, thisPub.coordinates)));
+                    marker.setTitle(formatMarkerTitle(thisPub.name, HelperMethods.CalculationByDistance(HelperMethods.convertLatLng(curLatLng), HelperMethods
+                            .convertLatLng(thisPub.coordinates))));
                 }
 
                 return false;
@@ -158,27 +141,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Pub thisPub = pubLookupByMarker(marker);
 
                 Intent intent = new Intent(getApplicationContext(),PubActivity.class);
-                intent.putExtra("name", thisPub.name);
-
-                // Will have to be fixed
-
-                intent.putExtra("workingHoursList", thisPub.weekOpeningHours.openingHours);
-                intent.putExtra("workingHours",thisPub.weekOpeningHours.ContentToString());
-                intent.putExtra("prices", thisPub.prices.ContentToString());
-                intent.putExtra("facilitiesList", thisPub.facilities.facilities);
-                intent.putExtra("ratings", thisPub.ratings.ContentToString());
-                intent.putExtra("ratingsList", thisPub.ratings.ratings);
-                intent.putExtra("averageRating", thisPub.ratings.globalAverageRating);
-
-
-                Bundle args = new Bundle();
-                args.putParcelable("coordinates", thisPub.coordinates);
-                intent.putExtra("bundle", args);
-
-
-                intent.putExtra("pub", thisPub);
-
-
+                intent.putExtra("pubID", thisPub.id);
                 startActivity(intent);
 
             }
@@ -207,18 +170,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         for(int i=0;i<pubSetup.pubs.size();i++){
 
-                Pub thisPub = pubSetup.pubs.get(i);
-                LatLng curLatLng = tracker.getCurrentLocation()  == null
-                        ? null
-                        : new LatLng(
-                                tracker.getCurrentLocation().getLatitude(),
-                        tracker.getCurrentLocation().getLongitude());
+            Pub thisPub = pubSetup.pubs.get(i);
+            LatLng curLatLng = tracker.getCurrentLocation()  == null
+                    ? null
+                    : new LatLng(
+                    tracker.getCurrentLocation().getLatitude(),
+                    tracker.getCurrentLocation().getLongitude());
 
-                String title = formatMarkerTitle(thisPub.name, HelperMethods.CalculationByDistance(curLatLng,thisPub.coordinates));
+            String title = formatMarkerTitle(thisPub.name, HelperMethods.CalculationByDistance(HelperMethods.convertLatLng(curLatLng),HelperMethods.convertLatLng(thisPub.coordinates)));
 
-                thisPub.marker = mMap.addMarker(new MarkerOptions().
-                        position(thisPub.coordinates).
-                        title(title));
+            thisPub.marker = mMap.addMarker(new MarkerOptions().
+                    position(HelperMethods.convertLatLng(thisPub.coordinates)).
+                    title(title));
         }
     }
 

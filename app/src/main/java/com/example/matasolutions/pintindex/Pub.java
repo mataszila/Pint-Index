@@ -4,7 +4,6 @@ package com.example.matasolutions.pintindex;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -18,7 +17,6 @@ public class Pub implements Parcelable  {
     public Marker marker;
 
     public String id;
-
 
     FirebaseDatabase database;
     DatabaseReference myRef;
@@ -36,6 +34,13 @@ public class Pub implements Parcelable  {
     public void setWeekOpeningHours(WeekOpeningHours weekOpeningHours) {
         this.weekOpeningHours = weekOpeningHours;
     }
+
+    public com.google.android.gms.maps.model.LatLng getCoordinates(){
+
+        return HelperMethods.convertLatLng(coordinates);
+
+    }
+
 
     public Prices getPrices() {
         return prices;
@@ -73,7 +78,7 @@ public class Pub implements Parcelable  {
         return id;
     }
 
-    public void setID(String ID) {
+    public void setID(String id) {
         this.id = id;
     }
 
@@ -86,7 +91,13 @@ public class Pub implements Parcelable  {
 
     public Pub(){
 
+        database = FirebaseDatabase.getInstance();
+        myRef =  database.getReference("pubsData");
+
     }
+
+
+
     protected Pub(Parcel in) {
         coordinates = (LatLng) in.readValue(LatLng.class.getClassLoader());
         name = in.readString();

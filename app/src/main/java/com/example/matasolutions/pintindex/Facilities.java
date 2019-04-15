@@ -19,6 +19,10 @@ class Facilities implements Parcelable {
 
     }
 
+    public Facilities(){
+
+    }
+
 
     protected Facilities(Parcel in) {
         if (in.readByte() == 0x01) {

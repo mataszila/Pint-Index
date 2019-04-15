@@ -1,5 +1,6 @@
 package com.example.matasolutions.pintindex;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -16,19 +17,35 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.FirebaseApp;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 public class StartActivity extends AppCompatActivity {
 
-    Button startButton;
-    Button productActivityButton;
-    Button feedbackActivityButton;
-    Button authenticationActivityButton;
+
     DrawerLayout drawer;
 
     GPSTracker tracker;
 
+    Button login_button;
+
+    FirebaseUser currentUser;
+
+    private EditText password;
+    private EditText email;
+    private FirebaseAuth mAuth;
+
+    private TextView register;
+
+    PubSetup setup;
 
 
     @Override
@@ -36,9 +53,11 @@ public class StartActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start);
 
-        tracker = new GPSTracker(this);
-        FirebaseApp.initializeApp(this);
+        setup = new PubSetup();
 
+
+
+        tracker = new GPSTracker(this);
 
         if(statusCheck() == false){
 
@@ -46,56 +65,66 @@ public class StartActivity extends AppCompatActivity {
         }
 
         setTitle("Pint Index");
+        FirebaseApp.initializeApp(this);
 
-        startButton = findViewById(R.id.startButton);
+        mAuth = FirebaseAuth.getInstance();
+        currentUser = mAuth.getCurrentUser();
 
-        startButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        email = findViewById(R.id.login_email_input);
+        password = findViewById(R.id.login_password_input);
 
-                    if(statusCheck()){
-                        Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-                        startActivity(intent);
+        login_button =  findViewById(R.id.button_login);
+        register = findViewById(R.id.textView_register);
+
+
+        if(currentUser == null){
+
+            login_button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    if (view == login_button){
+                        LoginUser();
                     }
 
-            }
-        });
+                }
+            });
 
-        productActivityButton = findViewById(R.id.productActivityButton);
+            register.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(getApplicationContext(),SignupActivity.class));
+                }
+            });
 
-        productActivityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        }
 
-                Intent intent = new Intent(getApplicationContext(), ProductActivity.class);
-                startActivity(intent);
+        else{
 
-            }
-        });
+            Toast.makeText(this, "Welcome back " + currentUser.getEmail() , Toast.LENGTH_LONG);
+            startActivity(new Intent(getApplicationContext(),WelcomeBackActivity.class));
+        }
 
-        feedbackActivityButton = findViewById(R.id.feedbackActivityButton);
+    }
 
-        feedbackActivityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(getApplicationContext(), FeedbackActivity.class);
-                startActivity(intent);
-
-            }
-        });
-
-        authenticationActivityButton = findViewById(R.id.authenticationActivityButton);
-        authenticationActivityButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                Intent intent = new Intent(getApplicationContext(), AuthenticationActivity.class);
-                startActivity(intent);
-
-            }
-        });
-
+    public void LoginUser() {
+        String Email = email.getText().toString().trim();
+        String Password = password.getText().toString().trim();
+        mAuth.signInWithEmailAndPassword(Email, Password)
+                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            currentUser = mAuth.getCurrentUser();
+                            finish();
+                            startActivity(new Intent(getApplicationContext(),
+                                    ProfileActivity.class));
+                        } else {
+                            Toast.makeText(getApplicationContext(), "couldn't login",
+                                    Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
 
     }
 

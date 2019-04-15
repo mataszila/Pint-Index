@@ -24,6 +24,10 @@ class Ratings implements PubPageContentInterface,Parcelable {
 
     }
 
+    public Ratings(){
+
+    }
+
 
     public void AddNewEntry(RatingEntry entry){
 
@@ -31,7 +35,7 @@ class Ratings implements PubPageContentInterface,Parcelable {
 
             Rating thisRating = ratings.get(i);
 
-            if(entry.ratingType == thisRating.type){
+            if(entry.ratingType.equals(thisRating.type.name())){
 
                 thisRating.ratingEntries.add(entry);
 

@@ -1,6 +1,7 @@
 package com.example.matasolutions.pintindex;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.solver.widgets.Helper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,7 +16,6 @@ import android.app.AlertDialog;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
@@ -195,7 +195,6 @@ public class PubCompareActivity extends AppCompatActivity {
 
     }
 
-
     private String FormatProductPriceTitle(Product product){
 
         StringBuilder sb = new StringBuilder();
@@ -204,9 +203,7 @@ public class PubCompareActivity extends AppCompatActivity {
         sb.append(GetBrandString(product.brand) + " ");
         sb.append("(" + GetAmountString(product.amount) + ")");
 
-
         return sb.toString();
-
     }
 
 
@@ -335,9 +332,9 @@ public class PubCompareActivity extends AppCompatActivity {
     private String formatDistanceText(Pub one){
 
         LatLng current = new LatLng(tracker.getCurrentLocation().getLatitude(), tracker.getCurrentLocation().getLongitude());
-        LatLng pub = new LatLng(one.coordinates.latitude, one.coordinates.longitude);
+        LatLng pub = new LatLng(one.coordinates.getLatitude(), one.coordinates.getLongitude());
 
-        double distance = HelperMethods.CalculationByDistance(current, pub);
+        double distance = HelperMethods.CalculationByDistance(HelperMethods.convertLatLng(current), HelperMethods.convertLatLng(pub));
 
         double rounded = Math.round(distance * 100.0) / 100.0;
 

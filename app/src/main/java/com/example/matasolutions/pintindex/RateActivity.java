@@ -1,6 +1,7 @@
 package com.example.matasolutions.pintindex;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.solver.widgets.Helper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
@@ -43,25 +45,45 @@ public class RateActivity extends AppCompatActivity {
 
     ArrayList<RatingEntry> ratingEntries;
 
+    TextView hasBeenRatedYet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate);
 
         profile = new Profile();
-
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
 
-        pub = getIntent().getExtras().getParcelable("pub");
 
-        ratingEntries = new ArrayList<>();
 
-        ratingEntries.add(new RatingEntry(RatingType.ATMOSPHERE));
-        ratingEntries.add(new RatingEntry(RatingType.HYGIENE));
-        ratingEntries.add(new RatingEntry(RatingType.SERVICE));
-        ratingEntries.add(new RatingEntry(RatingType.VALUE_FOR_PRICE));
+        profile.ReadData(new RateActivityCallback() {
+            @Override
+            public void onProfileInfoCallback(ArrayList<PubRatingEntry> value) {
 
+                pub = getIntent().getExtras().getParcelable("pub");
+
+                if(value != null){
+                    profile.pubRatingEntries = value;
+                }
+                else{
+                    profile.pubRatingEntries = new ArrayList<>();
+                }
+
+                SetupActivity();
+            }
+        });
+    }
+
+
+    private void SetupActivity(){
+
+        setTitle(pub.name);
+
+        SetRatedStatusText();
+
+        SetupRatingEntriesList();
 
         SetupRecyclerView();
 
@@ -69,7 +91,32 @@ public class RateActivity extends AppCompatActivity {
 
     }
 
-    public void SetupRecyclerView(){
+    private void SetRatedStatusText(){
+
+        hasBeenRatedYet = findViewById(R.id.hasBeenRatedYet);
+
+        if(profile.CheckIfNotRatedYet(pub.id)){
+
+            hasBeenRatedYet.setText("You have not rated this pub yet.");
+
+        }
+        else{
+            hasBeenRatedYet.setText("You have already rated this pub. You can still update your entry.");
+
+        }
+
+    }
+
+    private void SetupRatingEntriesList(){
+        ratingEntries = new ArrayList<>();
+
+        ratingEntries.add(new RatingEntry(RatingType.ATMOSPHERE));
+        ratingEntries.add(new RatingEntry(RatingType.HYGIENE));
+        ratingEntries.add(new RatingEntry(RatingType.SERVICE));
+        ratingEntries.add(new RatingEntry(RatingType.VALUE_FOR_PRICE));
+    }
+
+    private void SetupRecyclerView(){
 
         recyclerView =  findViewById(R.id.my_recycler_view);
 
@@ -79,7 +126,6 @@ public class RateActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager);
 
         mAdapter = new MyAdapter(ratingEntries);
-
 
         recyclerView.setAdapter(mAdapter);
 
@@ -93,34 +139,43 @@ public class RateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                //Retrieve ratings from ratingbar
+
+                for(RatingEntry entry : ratingEntries){
+
+                    pub.ratings.AddNewEntry(entry);
+                    profile.ratingEntries.add(entry);
+                }
+
                 if (profile.CheckIfNotRatedYet(pub.getID())) {
-
-                    for (int i = 0; i < ratingEntries.size(); i++) {
-
-                        RatingEntry thisEntry = ratingEntries.get(i);
-
-                        pub.ratings.AddNewEntry(thisEntry);
-
-                        profile.ratingEntries.add(thisEntry);
-
-                    }
 
                     profile.pubRatingEntries.add(new PubRatingEntry(pub.getID(),profile.ratingEntries));
 
-                    myRef.child("userData").child(profile.user_uID).child("ratingEntries").setValue(profile.pubRatingEntries);
-                    myRef.child("pubData").child(pub.getID()).child("ratingEntries").setValue(pub.ratings);
-
-                    Intent intent = new Intent(getApplicationContext(), PubActivity.class);
-
-                    intent.putExtra("pub", pub);
-
-                    Bundle args = new Bundle();
-                    args.putParcelable("coordinates", pub.coordinates);
-                    intent.putExtra("bundle", args);
-
-                    startActivity(intent);
+                    myRef.child("userData").child(profile.user_uID).child("pubRatingEntries").setValue(profile.pubRatingEntries);
+                    myRef.child("pubsList").child("list").child(pub.getID()).child("ratings").setValue(pub.ratings);
 
                 }
+
+                else{
+
+                    for(int i = 0; i < profile.pubRatingEntries.size(); i++){
+
+                        PubRatingEntry thisEntry = profile.pubRatingEntries.get(i);
+
+                        if(thisEntry.pubID.equals(pub.id)){
+
+                            thisEntry.ratingEntries = profile.ratingEntries;
+                            myRef.child("userData").child(profile.user_uID).child("pubRatingEntries").setValue(profile.pubRatingEntries);
+
+                        }
+                    }
+                }
+
+                Intent intent = new Intent(getApplicationContext(), PubActivity.class);
+                intent.putExtra("pubID",pub.id);
+
+                finish();
+                startActivity(intent);
             }
 
         });
@@ -142,14 +197,9 @@ public class RateActivity extends AppCompatActivity {
             return callback;
         }
 
-        public OnItemClick mCallback;
-
-
         // Provide a reference to the views for each data item
         // Complex data items may need more than one view per item, and
         // you provide access to all the views for a data item in a view holder
-
-
 
         //View Holder
 
@@ -157,12 +207,6 @@ public class RateActivity extends AppCompatActivity {
             // each data item is just a string in this case
 
             public TextView ratingType;
-
-            public ImageView star_1;
-            public ImageView star_2 ;
-            public ImageView star_3;
-            public ImageView star_4;
-            public ImageView star_5;
 
             RatingBar ratingBar;
 
@@ -209,7 +253,6 @@ public class RateActivity extends AppCompatActivity {
             TextView ratingType = holder.ratingType;
 
             final RatingBar ratingBar = holder.ratingBar;
-
 
             ratingType.setText(rating.ratingType.toString());
 

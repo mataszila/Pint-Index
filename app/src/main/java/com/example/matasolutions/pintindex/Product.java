@@ -21,6 +21,10 @@ public class Product implements Parcelable {
         amount = (Amount) in.readValue(Amount.class.getClassLoader());
     }
 
+    public Product(){
+
+    }
+
     @Override
     public int describeContents() {
         return 0;
