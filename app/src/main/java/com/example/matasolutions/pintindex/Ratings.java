@@ -35,7 +35,7 @@ class Ratings implements PubPageContentInterface,Parcelable {
 
             Rating thisRating = ratings.get(i);
 
-            if(entry.ratingType == thisRating.type){
+            if(entry.ratingType.equals(thisRating.type.name())){
 
                 thisRating.ratingEntries.add(entry);
 

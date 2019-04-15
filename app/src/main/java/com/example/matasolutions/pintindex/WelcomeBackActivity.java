@@ -17,7 +17,6 @@ import java.util.ArrayList;
 
 public class WelcomeBackActivity extends AppCompatActivity {
 
-
     TextView welcome_back_user;
     Button proceed;
     Button logout;

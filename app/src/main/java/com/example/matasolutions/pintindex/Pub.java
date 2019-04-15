@@ -35,6 +35,13 @@ public class Pub implements Parcelable  {
         this.weekOpeningHours = weekOpeningHours;
     }
 
+    public com.google.android.gms.maps.model.LatLng getCoordinates(){
+
+        return HelperMethods.convertLatLng(coordinates);
+
+    }
+
+
     public Prices getPrices() {
         return prices;
     }

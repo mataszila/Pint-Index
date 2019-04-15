@@ -55,12 +55,11 @@ public class Profile {
 
         }
 
-    public boolean CheckIfNotRatedYet(String givenID){
+     boolean CheckIfNotRatedYet(String givenID){
 
         if(pubRatingEntries == null) {
 
             return true;
-
         }
 
         if(pubRatingEntries.isEmpty()){
@@ -74,7 +73,6 @@ public class Profile {
                 if(entry.pubID.equals(givenID)){
 
                     return false;
-
                 }
             }
             return true;
@@ -82,7 +80,7 @@ public class Profile {
     }
 
 
-    public void ReadData(final RateActivityCallback myCallback){
+     void ReadData(final RateActivityCallback myCallback){
 
         myRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -98,18 +96,28 @@ public class Profile {
 
             }
         });
-
     }
 
     private ArrayList<PubRatingEntry> ConvertSnapshot(DataSnapshot dataSnapshot){
 
-        dataSnapshot = dataSnapshot.child(user_uID).child("ratingEntries");
+        dataSnapshot = dataSnapshot.child(user_uID).child("pubRatingEntries");
 
-        GenericTypeIndicator<ArrayList<PubRatingEntry>> t = new GenericTypeIndicator<ArrayList<PubRatingEntry>>() {};
+       // GenericTypeIndicator<ArrayList<PubRatingEntry>> t = new GenericTypeIndicator<ArrayList<PubRatingEntry>>() {};
 
-        ArrayList<PubRatingEntry> list2  = dataSnapshot.getValue(t);
+        //ArrayList<PubRatingEntry> list2  = dataSnapshot.getValue(t);
 
-        return list2;
+        ArrayList<PubRatingEntry> list = new ArrayList<>();
+
+        for(DataSnapshot snap : dataSnapshot.getChildren()){
+
+            PubRatingEntry entry = snap.getValue(PubRatingEntry.class);
+            list.add(entry);
+
+        }
+
+
+
+        return list;
 
     }
 

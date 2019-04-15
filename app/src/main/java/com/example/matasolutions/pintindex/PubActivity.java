@@ -78,11 +78,6 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference("pubsList");
 
-        Bundle bundle = getIntent().getParcelableExtra("bundle");
-        coordinates = bundle.getParcelable("coordinates");
-
-
-
         pubID = getIntent().getExtras().getString("pubID");
 
         ReadSinglePub(new PubActivityCallback() {
@@ -94,8 +89,6 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
             }
         },pubID);
-
-
 
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -123,13 +116,12 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         pub = db_pub;
 
-        LatLng sydney = HelperMethods.convertLatLng(pub.coordinates);
+        LatLng sydney = pub.getCoordinates();
         mMap.addMarker(new MarkerOptions().position(sydney).title(pub.name));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(pub.coordinates.getLatitude(),pub.coordinates.getLongitude()), 15.0f));
 
         setTitle(pub.name);
-
     }
 
     private void SetupToolbar(){
@@ -281,9 +273,6 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
                     Pub pub =  dataSnapshot.child(pubID).getValue(Pub.class);
 
-
-
-
                     myCallback.onSinglePubCallBack(pub);
                 }
 
@@ -292,8 +281,6 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
                 }
             });
     }
-
-
 
     private void AddPubPageContent() {
 
@@ -347,7 +334,6 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         recyclerView.setAdapter(adapter);
 
     }
-
 
     public static class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         private ArrayList<Facility> mDataset;

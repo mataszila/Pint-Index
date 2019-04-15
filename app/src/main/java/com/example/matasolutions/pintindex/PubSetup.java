@@ -27,7 +27,7 @@ public class PubSetup implements Parcelable {
     FirebaseDatabase database;
     DatabaseReference myRef;
 
-    public PubSetup(){
+    PubSetup(){
 
         pubs = new ArrayList<Pub>();
 
@@ -303,11 +303,10 @@ public class PubSetup implements Parcelable {
         pub5.setID("4");
 
 
-        pubs.add(pub3);
 
+        pubs.add(pub3);
         pubs.add(pub4);
         pubs.add(pub5);
-
 
         //myRef.child("list").setValue(pubs);
 
@@ -373,7 +372,7 @@ public class PubSetup implements Parcelable {
 
     public Pub returnPubByName(String name){
 
-        for(Pub p : pubs){
+        for(Pub p : db_pubs){
             if(name.equals(p.name)){
                 return p;
             }

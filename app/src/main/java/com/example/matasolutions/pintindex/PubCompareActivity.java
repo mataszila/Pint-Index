@@ -195,7 +195,6 @@ public class PubCompareActivity extends AppCompatActivity {
 
     }
 
-
     private String FormatProductPriceTitle(Product product){
 
         StringBuilder sb = new StringBuilder();
@@ -204,9 +203,7 @@ public class PubCompareActivity extends AppCompatActivity {
         sb.append(GetBrandString(product.brand) + " ");
         sb.append("(" + GetAmountString(product.amount) + ")");
 
-
         return sb.toString();
-
     }
 
 
