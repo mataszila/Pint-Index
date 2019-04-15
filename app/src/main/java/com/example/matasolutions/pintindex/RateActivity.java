@@ -61,6 +61,7 @@ public class RateActivity extends AppCompatActivity {
             @Override
             public void onProfileInfoCallback(ArrayList<PubRatingEntry> value) {
 
+                pub = getIntent().getExtras().getParcelable("pub");
                 profile.pubRatingEntries = value;
                 ExecuteProgram();
             }
@@ -69,8 +70,6 @@ public class RateActivity extends AppCompatActivity {
     }
 
     private void ExecuteProgram(){
-
-        pub = getIntent().getExtras().getParcelable("pub");
 
         hasBeenRatedYet = findViewById(R.id.hasBeenRatedYet);
 
