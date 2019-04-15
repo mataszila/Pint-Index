@@ -147,7 +147,7 @@ public class RateActivity extends AppCompatActivity {
                     intent.putExtra("pub", pub);
 
                     Bundle args = new Bundle();
-                    args.putParcelable("coordinates", pub.coordinates);
+                    args.putParcelable("coordinates", HelperMethods.convertLatLng(pub.coordinates));
                     intent.putExtra("bundle", args);
                     intent.putExtra("pubID",pub.id);
 
@@ -169,6 +169,23 @@ public class RateActivity extends AppCompatActivity {
 
 
                     }
+
+                    profile.pubRatingEntries.add(new PubRatingEntry(pub.getID(),profile.ratingEntries));
+
+                    myRef.child("userData").child(profile.user_uID).child("ratingEntries").setValue(profile.pubRatingEntries);
+                    myRef.child("pubsList").child("list").child(pub.getID()).child("ratings").setValue(pub.ratings);
+
+                    Intent intent = new Intent(getApplicationContext(), PubActivity.class);
+
+                    intent.putExtra("pub", pub);
+
+                    Bundle args = new Bundle();
+                    args.putParcelable("coordinates",  HelperMethods.convertLatLng(pub.coordinates));
+                    intent.putExtra("bundle", args);
+                    intent.putExtra("pubID",pub.id);
+
+                    startActivity(intent);
+
 
 
 

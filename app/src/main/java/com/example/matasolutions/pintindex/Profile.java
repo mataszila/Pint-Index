@@ -8,6 +8,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
 
 import java.lang.reflect.Array;
@@ -56,10 +57,14 @@ public class Profile {
 
     public boolean CheckIfNotRatedYet(String givenID){
 
-        if(pubRatingEntries.isEmpty()) {
+        if(pubRatingEntries == null) {
 
             return true;
 
+        }
+
+        if(pubRatingEntries.isEmpty()){
+            return true;
         }
 
         else{
@@ -83,7 +88,7 @@ public class Profile {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
 
-                pubRatingEntries = ConvertSnapshot(dataSnapshot.child(user_uID).child("ratingEntries"));
+                pubRatingEntries = ConvertSnapshot(dataSnapshot);
 
                 myCallback.onProfileInfoCallback(pubRatingEntries);
             }
@@ -98,22 +103,13 @@ public class Profile {
 
     private ArrayList<PubRatingEntry> ConvertSnapshot(DataSnapshot dataSnapshot){
 
-        ArrayList<PubRatingEntry> list = new ArrayList<>();
+        dataSnapshot = dataSnapshot.child(user_uID).child("ratingEntries");
 
-        for(DataSnapshot snap : dataSnapshot.getChildren()){
+        GenericTypeIndicator<ArrayList<PubRatingEntry>> t = new GenericTypeIndicator<ArrayList<PubRatingEntry>>() {};
 
-            PubRatingEntry entry = new PubRatingEntry();
+        ArrayList<PubRatingEntry> list2  = dataSnapshot.getValue(t);
 
-            entry.pubID = (String) snap.child("pubID").getValue();
-            entry.ratingEntries = (ArrayList<RatingEntry>) snap.child("ratingEntries").getValue();
-
-            //PubRatingEntry entry = (PubRatingEntry) snap.getValue();
-
-            list.add(entry);
-
-        }
-
-        return list;
+        return list2;
 
     }
 
