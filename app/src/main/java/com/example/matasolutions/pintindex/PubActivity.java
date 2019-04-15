@@ -151,6 +151,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
                 args.putParcelable("coordinates", HelperMethods.convertLatLng(pub.coordinates));
                 intent.putExtra("bundle", args);
 
+                finish();
                 startActivity(intent);
             }
         });

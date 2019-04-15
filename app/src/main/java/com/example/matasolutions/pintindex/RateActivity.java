@@ -165,7 +165,7 @@ public class RateActivity extends AppCompatActivity {
                         if(thisEntry.pubID.equals(pub.id)){
 
                             thisEntry.ratingEntries = profile.ratingEntries;
-                            myRef.child("userData").child(profile.user_uID).child("pubRatingEntries").setValue(thisEntry.ratingEntries);
+                            myRef.child("userData").child(profile.user_uID).child("pubRatingEntries").setValue(profile.pubRatingEntries);
 
                         }
                     }
@@ -174,6 +174,7 @@ public class RateActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), PubActivity.class);
                 intent.putExtra("pubID",pub.id);
 
+                finish();
                 startActivity(intent);
             }
 
