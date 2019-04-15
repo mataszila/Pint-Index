@@ -14,6 +14,4 @@ public class PubRatingEntry {
         this.pubID = pubID;
     }
 
-
-
 }

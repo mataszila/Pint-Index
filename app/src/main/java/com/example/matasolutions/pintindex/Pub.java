@@ -18,7 +18,6 @@ public class Pub implements Parcelable  {
 
     public String id;
 
-
     FirebaseDatabase database;
     DatabaseReference myRef;
 
@@ -85,7 +84,13 @@ public class Pub implements Parcelable  {
 
     public Pub(){
 
+        database = FirebaseDatabase.getInstance();
+        myRef =  database.getReference("pubsData");
+
     }
+
+
+
     protected Pub(Parcel in) {
         coordinates = (LatLng) in.readValue(LatLng.class.getClassLoader());
         name = in.readString();

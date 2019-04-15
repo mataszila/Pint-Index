@@ -160,22 +160,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 intent.putExtra("name", thisPub.name);
 
                 // Will have to be fixed
-
-                intent.putExtra("workingHoursList", thisPub.weekOpeningHours.openingHours);
-                intent.putExtra("workingHours",thisPub.weekOpeningHours.ContentToString());
-                intent.putExtra("prices", thisPub.prices.ContentToString());
-                intent.putExtra("facilitiesList", thisPub.facilities.facilities);
-                intent.putExtra("ratings", thisPub.ratings.ContentToString());
-                intent.putExtra("ratingsList", thisPub.ratings.ratings);
-                intent.putExtra("averageRating", thisPub.ratings.globalAverageRating);
-
-
+//
+//                intent.putExtra("workingHoursList", thisPub.weekOpeningHours.openingHours);
+//                intent.putExtra("workingHours",thisPub.weekOpeningHours.ContentToString());
+//                intent.putExtra("prices", thisPub.prices.ContentToString());
+//                intent.putExtra("facilitiesList", thisPub.facilities.facilities);
+//                intent.putExtra("ratings", thisPub.ratings.ContentToString());
+//                intent.putExtra("ratingsList", thisPub.ratings.ratings);
+//                intent.putExtra("averageRating", thisPub.ratings.globalAverageRating);
+//
+//
                 Bundle args = new Bundle();
-                args.putParcelable("coordinates", thisPub.coordinates);
-
+                args.putParcelable("coordinates", HelperMethods.convertLatLng(thisPub.coordinates));
+//
                 intent.putExtra("bundle", args);
+//
+//                intent.putExtra("pub", thisPub);
 
-                intent.putExtra("pub", thisPub);
+                intent.putExtra("pubID", thisPub.id);
 
 
                 startActivity(intent);

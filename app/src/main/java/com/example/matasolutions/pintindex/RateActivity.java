@@ -45,17 +45,47 @@ public class RateActivity extends AppCompatActivity {
 
     ArrayList<RatingEntry> ratingEntries;
 
+    TextView hasBeenRatedYet;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate);
 
         profile = new Profile();
-
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference();
 
+
+        profile.ReadData(new RateActivityCallback() {
+            @Override
+            public void onProfileInfoCallback(ArrayList<PubRatingEntry> value) {
+
+                profile.pubRatingEntries = value;
+                ExecuteProgram();
+            }
+        });
+
+    }
+
+    private void ExecuteProgram(){
+
         pub = getIntent().getExtras().getParcelable("pub");
+
+        hasBeenRatedYet = findViewById(R.id.hasBeenRatedYet);
+
+        if(profile.CheckIfNotRatedYet(pub.id)){
+
+            hasBeenRatedYet.setText("You have not rated this pub yet.");
+
+        }
+        else{
+            hasBeenRatedYet.setText("You have already rated this pub. You can still update your entry.");
+
+        }
+
+
+        setTitle(pub.name);
 
         ratingEntries = new ArrayList<>();
 
@@ -69,6 +99,8 @@ public class RateActivity extends AppCompatActivity {
         SetupSubmitButton();
 
     }
+
+
 
     public void SetupRecyclerView(){
 
@@ -94,17 +126,17 @@ public class RateActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                for (int i = 0; i < ratingEntries.size(); i++) {
+
+                    RatingEntry thisEntry = ratingEntries.get(i);
+
+                    pub.ratings.AddNewEntry(thisEntry);
+
+                    profile.ratingEntries.add(thisEntry);
+
+                }
+
                 if (profile.CheckIfNotRatedYet(pub.getID())) {
-
-                    for (int i = 0; i < ratingEntries.size(); i++) {
-
-                        RatingEntry thisEntry = ratingEntries.get(i);
-
-                        pub.ratings.AddNewEntry(thisEntry);
-
-                        profile.ratingEntries.add(thisEntry);
-
-                    }
 
                     profile.pubRatingEntries.add(new PubRatingEntry(pub.getID(),profile.ratingEntries));
 
@@ -118,12 +150,29 @@ public class RateActivity extends AppCompatActivity {
                     Bundle args = new Bundle();
                     args.putParcelable("coordinates", pub.coordinates);
                     intent.putExtra("bundle", args);
+                    intent.putExtra("pubID",pub.id);
 
                     startActivity(intent);
 
                 }
                 else{
-                    Toast.makeText(getApplicationContext(), "Sorry, you have already rated this pub",Toast.LENGTH_SHORT);
+
+                    for(int i = 0; i < profile.pubRatingEntries.size(); i++){
+
+                        PubRatingEntry thisEntry = profile.pubRatingEntries.get(i);
+
+                        if(thisEntry.pubID.equals(pub.id)){
+
+                            //thisEntry.ratingEntries = profile.ratingEntries;
+                            //myRef.child("userData").child(profile.user_uID).child("ratingEntries").setValue(thisEntry);
+                        }
+
+
+
+                    }
+
+
+
                 }
 
 
@@ -148,7 +197,6 @@ public class RateActivity extends AppCompatActivity {
             return callback;
         }
 
-        public OnItemClick mCallback;
 
 
         // Provide a reference to the views for each data item
@@ -209,7 +257,6 @@ public class RateActivity extends AppCompatActivity {
             TextView ratingType = holder.ratingType;
 
             final RatingBar ratingBar = holder.ratingBar;
-
 
             ratingType.setText(rating.ratingType.toString());
 

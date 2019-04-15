@@ -57,7 +57,7 @@ public class WelcomeBackActivity extends AppCompatActivity {
 
         welcome_back_user = findViewById(R.id.welcome_back_user_textView);
 
-        welcome_back_user.setText("Welcome back, " + currentUser.getEmail());
+        welcome_back_user.setText("Welcome, " + currentUser.getEmail());
 
 
         logout = findViewById(R.id.button_logout);
