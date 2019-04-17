@@ -20,6 +20,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -53,6 +54,8 @@ public class SearchActivity extends AppCompatActivity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.activity_search);
+
+        setTitle("");
 
         setup = getIntent().getParcelableExtra("pubSetup");
         tracker = new GPSTracker(getApplicationContext());
@@ -295,7 +298,7 @@ public class SearchActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new MyAdapter(setup.pubs,tracker);
+        mAdapter = new MyAdapter(setup.pubs,tracker,this);
         recyclerView.setAdapter(mAdapter);
 
 
@@ -305,6 +308,7 @@ public class SearchActivity extends AppCompatActivity {
     public static class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         private ArrayList<Pub> mDataset;
         private GPSTracker tracker;
+        private Context context;
 
         // Provide a reference to the views for each data item
         // Complex data items may need more than one view per item, and
@@ -317,6 +321,7 @@ public class SearchActivity extends AppCompatActivity {
             public TextView pub_rating;
             public TextView pub_openstatus;
             public TextView pub_distance;
+            public LinearLayout search_recyclerview_layout;
 
             public MyViewHolder(View v) {
                 super(v);
@@ -326,13 +331,15 @@ public class SearchActivity extends AppCompatActivity {
                 pub_rating = (TextView) v.findViewById(R.id.search_pub_rating);
                 pub_openstatus = (TextView) v.findViewById(R.id.search_pub_openstatus);
                 pub_distance = (TextView) v.findViewById(R.id.search_pub_distance);
+                search_recyclerview_layout = v.findViewById(R.id.search_recyclerview_layout);
             }
         }
 
         // Provide a suitable constructor (depends on the kind of dataset)
-        public MyAdapter(ArrayList<Pub> myDataset, GPSTracker tracker) {
+        public MyAdapter(ArrayList<Pub> myDataset, GPSTracker tracker, Context context) {
             mDataset = myDataset;
             this.tracker = tracker;
+            this.context = context;
         }
 
         // Create new views (invoked by the layout manager)
@@ -353,15 +360,27 @@ public class SearchActivity extends AppCompatActivity {
         public void onBindViewHolder(MyViewHolder holder, int position) {
             // - get element from your dataset at this position
             // - replace the contents of the view with that element
-            Pub data = mDataset.get(position);
+            final Pub data = mDataset.get(position);
 
             // Set item views based on your views and data model
 
+            LinearLayout search_recyclerview_layout = holder.search_recyclerview_layout;
             ImageView pub_image = holder.pub_image;
             TextView pub_name = holder.pub_name;
             TextView pub_rating = holder.pub_rating;
             TextView pub_openstatus = holder.pub_openstatus;
             TextView pub_distance = holder.pub_distance;
+
+            search_recyclerview_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+                    Intent intent = new Intent(context, PubActivity.class);
+                    intent.putExtra("pubID",data.id);
+                    context.startActivity(intent);
+
+                }
+            });
 
 
             Picasso.get()
