@@ -227,7 +227,7 @@ public class PubSetup implements Parcelable {
 
         singleOpeningHours2.add(new SingleOpeningHours(Day.MONDAY, "09:00", "00:00"));
         singleOpeningHours2.add(new SingleOpeningHours(Day.TUESDAY, "09:00", "01:00"));
-        singleOpeningHours2.add(new SingleOpeningHours(Day.WEDNESDAY, "09:00", "01:00"));
+        singleOpeningHours2.add(new SingleOpeningHours(Day.WEDNESDAY, "09:00", "01:30"));
         singleOpeningHours2.add(new SingleOpeningHours(Day.THURSDAY, "09:00","01:00"));
         singleOpeningHours2.add(new SingleOpeningHours(Day.FRIDAY, "09:00", "01:00"));
         singleOpeningHours2.add(new SingleOpeningHours(Day.SATURDAY, "09:00", "01:00"));
@@ -277,21 +277,21 @@ public class PubSetup implements Parcelable {
 
         ArrayList<RatingEntry> serviceEntries2 = new ArrayList<>();
 
-        serviceEntries2.add(new RatingEntry(RatingType.SERVICE,4.0));
+        serviceEntries2.add(new RatingEntry(RatingType.SERVICE,3.5));
 
         ratings2.add(new Rating(RatingType.SERVICE, serviceEntries2));
 
 
         ArrayList<RatingEntry> hygieneEntries2 = new ArrayList<>();
 
-        hygieneEntries2.add(new RatingEntry(RatingType.HYGIENE,4.0));
+        hygieneEntries2.add(new RatingEntry(RatingType.HYGIENE,3.5));
 
         ratings2.add(new Rating(RatingType.HYGIENE, hygieneEntries2));
 
 
         ArrayList<RatingEntry> valueForPriceEntries2 = new ArrayList<>();
 
-        valueForPriceEntries2.add(new RatingEntry(RatingType.VALUE_FOR_PRICE,4.0));
+        valueForPriceEntries2.add(new RatingEntry(RatingType.VALUE_FOR_PRICE,4.5));
 
         ratings2.add(new Rating(RatingType.VALUE_FOR_PRICE, valueForPriceEntries2));
 
@@ -364,21 +364,21 @@ public class PubSetup implements Parcelable {
 
         ArrayList<RatingEntry> atmosphereEntries3 = new ArrayList<>();
 
-        atmosphereEntries3.add(new RatingEntry(RatingType.ATMOSPHERE,4.5));
+        atmosphereEntries3.add(new RatingEntry(RatingType.ATMOSPHERE,3));
 
         ratings3.add(new Rating(RatingType.ATMOSPHERE, atmosphereEntries3));
 
 
         ArrayList<RatingEntry> serviceEntries3 = new ArrayList<>();
 
-        serviceEntries3.add(new RatingEntry(RatingType.SERVICE,4.0));
+        serviceEntries3.add(new RatingEntry(RatingType.SERVICE,3.5));
 
         ratings3.add(new Rating(RatingType.SERVICE, serviceEntries3));
 
 
         ArrayList<RatingEntry> hygieneEntries3 = new ArrayList<>();
 
-        hygieneEntries3.add(new RatingEntry(RatingType.HYGIENE,4.0));
+        hygieneEntries3.add(new RatingEntry(RatingType.HYGIENE,3.5));
 
         ratings3.add(new Rating(RatingType.HYGIENE, hygieneEntries3));
 
@@ -415,7 +415,7 @@ public class PubSetup implements Parcelable {
 
         singleOpeningHours4.add(new SingleOpeningHours(Day.MONDAY, "11:00", "00:00"));
         singleOpeningHours4.add(new SingleOpeningHours(Day.TUESDAY, "11:00", "01:00"));
-        singleOpeningHours4.add(new SingleOpeningHours(Day.WEDNESDAY, "11:00", "00:00"));
+        singleOpeningHours4.add(new SingleOpeningHours(Day.WEDNESDAY, "11:00", "00:30"));
         singleOpeningHours4.add(new SingleOpeningHours(Day.THURSDAY, "11:00","01:00"));
         singleOpeningHours4.add(new SingleOpeningHours(Day.FRIDAY, "11:00", "02:00"));
         singleOpeningHours4.add(new SingleOpeningHours(Day.SATURDAY, "11:00", "02:00"));
@@ -457,14 +457,14 @@ public class PubSetup implements Parcelable {
 
         ArrayList<RatingEntry> atmosphereEntries4 = new ArrayList<>();
 
-        atmosphereEntries4.add(new RatingEntry(RatingType.ATMOSPHERE,4.5));
+        atmosphereEntries4.add(new RatingEntry(RatingType.ATMOSPHERE,3.5));
 
         ratings4.add(new Rating(RatingType.ATMOSPHERE, atmosphereEntries4));
 
 
         ArrayList<RatingEntry> serviceEntries4 = new ArrayList<>();
 
-        serviceEntries4.add(new RatingEntry(RatingType.SERVICE,4.0));
+        serviceEntries4.add(new RatingEntry(RatingType.SERVICE,3));
 
         ratings4.add(new Rating(RatingType.SERVICE, serviceEntries4));
 
@@ -478,7 +478,7 @@ public class PubSetup implements Parcelable {
 
         ArrayList<RatingEntry> valueForPriceEntries4 = new ArrayList<>();
 
-        valueForPriceEntries4.add(new RatingEntry(RatingType.VALUE_FOR_PRICE,4.0));
+        valueForPriceEntries4.add(new RatingEntry(RatingType.VALUE_FOR_PRICE,5));
 
         ratings4.add(new Rating(RatingType.VALUE_FOR_PRICE, valueForPriceEntries4));
 
@@ -508,7 +508,7 @@ public class PubSetup implements Parcelable {
 
         singleOpeningHours5.add(new SingleOpeningHours(Day.MONDAY, "11:00", "00:00"));
         singleOpeningHours5.add(new SingleOpeningHours(Day.TUESDAY, "11:00", "01:00"));
-        singleOpeningHours5.add(new SingleOpeningHours(Day.WEDNESDAY, "11:00", "00:00"));
+        singleOpeningHours5.add(new SingleOpeningHours(Day.WEDNESDAY, "11:00", "23:00"));
         singleOpeningHours5.add(new SingleOpeningHours(Day.THURSDAY, "11:00","01:00"));
         singleOpeningHours5.add(new SingleOpeningHours(Day.FRIDAY, "11:00", "02:00"));
         singleOpeningHours5.add(new SingleOpeningHours(Day.SATURDAY, "11:00", "02:00"));
@@ -549,28 +549,28 @@ public class PubSetup implements Parcelable {
 
         ArrayList<RatingEntry> atmosphereEntries5 = new ArrayList<>();
 
-        atmosphereEntries5.add(new RatingEntry(RatingType.ATMOSPHERE,4.5));
+        atmosphereEntries5.add(new RatingEntry(RatingType.ATMOSPHERE,2.5));
 
         ratings5.add(new Rating(RatingType.ATMOSPHERE, atmosphereEntries5));
 
 
         ArrayList<RatingEntry> serviceEntries5 = new ArrayList<>();
 
-        serviceEntries5.add(new RatingEntry(RatingType.SERVICE,4.0));
+        serviceEntries5.add(new RatingEntry(RatingType.SERVICE,3.5));
 
         ratings5.add(new Rating(RatingType.SERVICE, serviceEntries5));
 
 
         ArrayList<RatingEntry> hygieneEntries5 = new ArrayList<>();
 
-        hygieneEntries5.add(new RatingEntry(RatingType.HYGIENE,4.0));
+        hygieneEntries5.add(new RatingEntry(RatingType.HYGIENE,4.5));
 
         ratings5.add(new Rating(RatingType.HYGIENE, hygieneEntries5));
 
 
         ArrayList<RatingEntry> valueForPriceEntries5 = new ArrayList<>();
 
-        valueForPriceEntries5.add(new RatingEntry(RatingType.VALUE_FOR_PRICE,4.0));
+        valueForPriceEntries5.add(new RatingEntry(RatingType.VALUE_FOR_PRICE,3.5));
 
         ratings5.add(new Rating(RatingType.VALUE_FOR_PRICE, valueForPriceEntries5));
 
@@ -602,7 +602,7 @@ public class PubSetup implements Parcelable {
 
         singleOpeningHours6.add(new SingleOpeningHours(Day.MONDAY, "11:00", "00:00"));
         singleOpeningHours6.add(new SingleOpeningHours(Day.TUESDAY, "11:00", "01:00"));
-        singleOpeningHours6.add(new SingleOpeningHours(Day.WEDNESDAY, "11:00", "00:00"));
+        singleOpeningHours6.add(new SingleOpeningHours(Day.WEDNESDAY, "11:00", "01:00"));
         singleOpeningHours6.add(new SingleOpeningHours(Day.THURSDAY, "11:00","01:00"));
         singleOpeningHours6.add(new SingleOpeningHours(Day.FRIDAY, "11:00", "02:00"));
         singleOpeningHours6.add(new SingleOpeningHours(Day.SATURDAY, "11:00", "02:00"));
@@ -650,14 +650,14 @@ public class PubSetup implements Parcelable {
 
         ArrayList<RatingEntry> serviceEntries6 = new ArrayList<>();
 
-        serviceEntries6.add(new RatingEntry(RatingType.SERVICE,4.0));
+        serviceEntries6.add(new RatingEntry(RatingType.SERVICE,3.5));
 
         ratings6.add(new Rating(RatingType.SERVICE, serviceEntries6));
 
 
         ArrayList<RatingEntry> hygieneEntries6 = new ArrayList<>();
 
-        hygieneEntries6.add(new RatingEntry(RatingType.HYGIENE,4.0));
+        hygieneEntries6.add(new RatingEntry(RatingType.HYGIENE,4.5));
 
         ratings6.add(new Rating(RatingType.HYGIENE, hygieneEntries6));
 
@@ -696,7 +696,7 @@ public class PubSetup implements Parcelable {
 
         singleOpeningHours7.add(new SingleOpeningHours(Day.MONDAY, "11:00", "00:00"));
         singleOpeningHours7.add(new SingleOpeningHours(Day.TUESDAY, "11:00", "01:00"));
-        singleOpeningHours7.add(new SingleOpeningHours(Day.WEDNESDAY, "11:00", "00:00"));
+        singleOpeningHours7.add(new SingleOpeningHours(Day.WEDNESDAY, "11:00", "02:00"));
         singleOpeningHours7.add(new SingleOpeningHours(Day.THURSDAY, "11:00","01:00"));
         singleOpeningHours7.add(new SingleOpeningHours(Day.FRIDAY, "11:00", "02:00"));
         singleOpeningHours7.add(new SingleOpeningHours(Day.SATURDAY, "11:00", "02:00"));
@@ -737,28 +737,28 @@ public class PubSetup implements Parcelable {
 
         ArrayList<RatingEntry> atmosphereEntries7= new ArrayList<>();
 
-        atmosphereEntries7.add(new RatingEntry(RatingType.ATMOSPHERE,4.5));
+        atmosphereEntries7.add(new RatingEntry(RatingType.ATMOSPHERE,3.5));
 
         ratings7.add(new Rating(RatingType.ATMOSPHERE, atmosphereEntries7));
 
 
         ArrayList<RatingEntry> serviceEntries7 = new ArrayList<>();
 
-        serviceEntries7.add(new RatingEntry(RatingType.SERVICE,4.0));
+        serviceEntries7.add(new RatingEntry(RatingType.SERVICE,3));
 
         ratings7.add(new Rating(RatingType.SERVICE, serviceEntries7));
 
 
         ArrayList<RatingEntry> hygieneEntries7 = new ArrayList<>();
 
-        hygieneEntries7.add(new RatingEntry(RatingType.HYGIENE,4.0));
+        hygieneEntries7.add(new RatingEntry(RatingType.HYGIENE,4.5));
 
         ratings7.add(new Rating(RatingType.HYGIENE, hygieneEntries7));
 
 
         ArrayList<RatingEntry> valueForPriceEntries7 = new ArrayList<>();
 
-        valueForPriceEntries7.add(new RatingEntry(RatingType.VALUE_FOR_PRICE,4.0));
+        valueForPriceEntries7.add(new RatingEntry(RatingType.VALUE_FOR_PRICE,3));
 
         ratings7.add(new Rating(RatingType.VALUE_FOR_PRICE, valueForPriceEntries7));
 
@@ -789,7 +789,7 @@ public class PubSetup implements Parcelable {
 
         singleOpeningHours8.add(new SingleOpeningHours(Day.MONDAY, "11:00", "00:00"));
         singleOpeningHours8.add(new SingleOpeningHours(Day.TUESDAY, "11:00", "01:00"));
-        singleOpeningHours8.add(new SingleOpeningHours(Day.WEDNESDAY, "11:00", "00:00"));
+        singleOpeningHours8.add(new SingleOpeningHours(Day.WEDNESDAY, "11:00", "01:30"));
         singleOpeningHours8.add(new SingleOpeningHours(Day.THURSDAY, "11:00","01:00"));
         singleOpeningHours8.add(new SingleOpeningHours(Day.FRIDAY, "11:00", "02:00"));
         singleOpeningHours8.add(new SingleOpeningHours(Day.SATURDAY, "11:00", "02:00"));
@@ -830,28 +830,28 @@ public class PubSetup implements Parcelable {
 
         ArrayList<RatingEntry> atmosphereEntries8= new ArrayList<>();
 
-        atmosphereEntries8.add(new RatingEntry(RatingType.ATMOSPHERE,4.5));
+        atmosphereEntries8.add(new RatingEntry(RatingType.ATMOSPHERE,4));
 
         ratings8.add(new Rating(RatingType.ATMOSPHERE, atmosphereEntries8));
 
 
         ArrayList<RatingEntry> serviceEntries8 = new ArrayList<>();
 
-        serviceEntries8.add(new RatingEntry(RatingType.SERVICE,4.0));
+        serviceEntries8.add(new RatingEntry(RatingType.SERVICE,4.5));
 
         ratings8.add(new Rating(RatingType.SERVICE, serviceEntries8));
 
 
         ArrayList<RatingEntry> hygieneEntries8 = new ArrayList<>();
 
-        hygieneEntries8.add(new RatingEntry(RatingType.HYGIENE,4.0));
+        hygieneEntries8.add(new RatingEntry(RatingType.HYGIENE,4.5));
 
         ratings8.add(new Rating(RatingType.HYGIENE, hygieneEntries8));
 
 
         ArrayList<RatingEntry> valueForPriceEntries8 = new ArrayList<>();
 
-        valueForPriceEntries8.add(new RatingEntry(RatingType.VALUE_FOR_PRICE,4.0));
+        valueForPriceEntries8.add(new RatingEntry(RatingType.VALUE_FOR_PRICE,3));
 
         ratings8.add(new Rating(RatingType.VALUE_FOR_PRICE, valueForPriceEntries8));
 
@@ -883,7 +883,7 @@ public class PubSetup implements Parcelable {
 
         singleOpeningHours9.add(new SingleOpeningHours(Day.MONDAY, "11:00", "00:00"));
         singleOpeningHours9.add(new SingleOpeningHours(Day.TUESDAY, "11:00", "01:00"));
-        singleOpeningHours9.add(new SingleOpeningHours(Day.WEDNESDAY, "11:00", "00:00"));
+        singleOpeningHours9.add(new SingleOpeningHours(Day.WEDNESDAY, "11:00", "01:15"));
         singleOpeningHours9.add(new SingleOpeningHours(Day.THURSDAY, "11:00","01:00"));
         singleOpeningHours9.add(new SingleOpeningHours(Day.FRIDAY, "11:00", "02:00"));
         singleOpeningHours9.add(new SingleOpeningHours(Day.SATURDAY, "11:00", "02:00"));
@@ -931,21 +931,21 @@ public class PubSetup implements Parcelable {
 
         ArrayList<RatingEntry> serviceEntries9 = new ArrayList<>();
 
-        serviceEntries9.add(new RatingEntry(RatingType.SERVICE,4.0));
+        serviceEntries9.add(new RatingEntry(RatingType.SERVICE,3.5));
 
         ratings9.add(new Rating(RatingType.SERVICE, serviceEntries9));
 
 
         ArrayList<RatingEntry> hygieneEntries9 = new ArrayList<>();
 
-        hygieneEntries9.add(new RatingEntry(RatingType.HYGIENE,4.0));
+        hygieneEntries9.add(new RatingEntry(RatingType.HYGIENE,3.5));
 
         ratings9.add(new Rating(RatingType.HYGIENE, hygieneEntries9));
 
 
         ArrayList<RatingEntry> valueForPriceEntries9 = new ArrayList<>();
 
-        valueForPriceEntries9.add(new RatingEntry(RatingType.VALUE_FOR_PRICE,4.0));
+        valueForPriceEntries9.add(new RatingEntry(RatingType.VALUE_FOR_PRICE,2));
 
         ratings9.add(new Rating(RatingType.VALUE_FOR_PRICE, valueForPriceEntries9));
 
@@ -976,7 +976,7 @@ public class PubSetup implements Parcelable {
 
         singleOpeningHours10.add(new SingleOpeningHours(Day.MONDAY, "11:00", "00:00"));
         singleOpeningHours10.add(new SingleOpeningHours(Day.TUESDAY, "11:00", "01:00"));
-        singleOpeningHours10.add(new SingleOpeningHours(Day.WEDNESDAY, "11:00", "00:00"));
+        singleOpeningHours10.add(new SingleOpeningHours(Day.WEDNESDAY, "11:00", "02:00"));
         singleOpeningHours10.add(new SingleOpeningHours(Day.THURSDAY, "11:00","01:00"));
         singleOpeningHours10.add(new SingleOpeningHours(Day.FRIDAY, "11:00", "02:00"));
         singleOpeningHours10.add(new SingleOpeningHours(Day.SATURDAY, "11:00", "02:00"));
@@ -1024,21 +1024,21 @@ public class PubSetup implements Parcelable {
 
         ArrayList<RatingEntry> serviceEntries10 = new ArrayList<>();
 
-        serviceEntries10.add(new RatingEntry(RatingType.SERVICE,4.0));
+        serviceEntries10.add(new RatingEntry(RatingType.SERVICE,4.5));
 
         ratings10.add(new Rating(RatingType.SERVICE, serviceEntries10));
 
 
         ArrayList<RatingEntry> hygieneEntries10 = new ArrayList<>();
 
-        hygieneEntries10.add(new RatingEntry(RatingType.HYGIENE,4.0));
+        hygieneEntries10.add(new RatingEntry(RatingType.HYGIENE,4.5));
 
         ratings10.add(new Rating(RatingType.HYGIENE, hygieneEntries10));
 
 
         ArrayList<RatingEntry> valueForPriceEntries10 = new ArrayList<>();
 
-        valueForPriceEntries10.add(new RatingEntry(RatingType.VALUE_FOR_PRICE,4.0));
+        valueForPriceEntries10.add(new RatingEntry(RatingType.VALUE_FOR_PRICE,4.5));
 
         ratings10.add(new Rating(RatingType.VALUE_FOR_PRICE, valueForPriceEntries10));
 

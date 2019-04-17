@@ -5,6 +5,7 @@ import androidx.constraintlayout.solver.widgets.Helper;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -14,6 +15,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
@@ -27,6 +29,7 @@ import com.squareup.picasso.Picasso;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.EnumSet;
@@ -47,9 +50,9 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search);
+        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
-        setTitle("Search");
+        setContentView(R.layout.activity_search);
 
         setup = getIntent().getParcelableExtra("pubSetup");
         tracker = new GPSTracker(getApplicationContext());
@@ -66,14 +69,16 @@ public class SearchActivity extends AppCompatActivity {
 
         ArrayList<String> sortByTypeList = new ArrayList<>();
 
-        sortByTypeList.add("SORT BY");
+        sortByTypeList.add("Sort by...");
         sortByTypeList.add("Distance (low to high)");
         sortByTypeList.add("Distance (high to low)");
         sortByTypeList.add("Rating (low to high)");
         sortByTypeList.add("Rating (high to low)");
-
+        sortByTypeList.add("Closing time (soonest to latest)");
+        sortByTypeList.add("Closing time (latest to soonest)");
 
         sortBySpinner.setItems(sortByTypeList);
+
 
         sortBySpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
 
@@ -83,6 +88,7 @@ public class SearchActivity extends AppCompatActivity {
                 executeSort(selectedSort);
 
             }
+
         });
 
     }
@@ -109,8 +115,80 @@ public class SearchActivity extends AppCompatActivity {
                 SortByDistance(true);
                 recyclerView.setAdapter(mAdapter);
                 break;
+            case "Closing time (soonest to latest)":
+                SortByClosingTime(false);
+                recyclerView.setAdapter(mAdapter);
+                break;
+            case "Closing time (latest to soonest)":
+                SortByClosingTime(true);
+                recyclerView.setAdapter(mAdapter);
+                break;
 
         }
+
+    }
+
+    private void SortByClosingTime(final boolean latestToSoonest){
+
+        Collections.sort(setup.pubs, new Comparator<Pub>() {
+            @Override
+            public int compare(Pub lhs, Pub rhs) {
+                // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+
+                double p1=0;
+                double p2=0;
+
+                SingleOpeningHours hoursForToday1  = lhs.weekOpeningHours.openingHours.get(HelperMethods.GetCorrectDayOfWeek()-1);
+                SingleOpeningHours hoursForToday2  = rhs.weekOpeningHours.openingHours.get(HelperMethods.GetCorrectDayOfWeek()-1);
+
+                String closing1 = hoursForToday1.closingTime;
+                String closing2 = hoursForToday2.closingTime;
+
+                String[] parts1 = closing1.split(":");
+                Calendar date1 = Calendar.getInstance();
+
+                // 23:00
+
+                date1.set(Calendar.HOUR_OF_DAY, Integer.parseInt(parts1[0]));
+                date1.set(Calendar.MINUTE, Integer.parseInt(parts1[1]));
+                date1.set(Calendar.SECOND, 0);
+
+                String[] parts2 = closing2.split(":");
+                Calendar date2 = Calendar.getInstance();
+
+                // 00:00
+
+                date2.set(Calendar.HOUR_OF_DAY, Integer.parseInt(parts2[0]));
+                date2.set(Calendar.MINUTE, Integer.parseInt(parts2[1]));
+                date2.set(Calendar.SECOND, 0);
+
+                if(date1.HOUR_OF_DAY > 12 && date1.HOUR_OF_DAY <= 23 ){
+
+                    date2.add(Calendar.DATE,5);
+                }
+                if(date2.HOUR_OF_DAY > 12 && date2.HOUR_OF_DAY <= 23){
+
+                    date1.add(Calendar.DATE,5);
+                }
+
+                if(date1.before(date2)){
+                    p1 = 0;
+                    p2 = 1;
+                }
+                else{
+                    p1 = 1;
+                    p2 = 0;
+                }
+
+                if(latestToSoonest){
+                    return p1 > p2 ? -1 : (p1 < p2) ? 1 : 0;
+                }
+
+                return p1 > p2 ? 1 : (p1 < p2) ? -1 : 0;
+
+
+            }
+        });
 
 
     }
@@ -130,7 +208,6 @@ public class SearchActivity extends AppCompatActivity {
                 }
 
                 return p1 > p2 ? 1 : (p1 < p2) ? -1 : 0;
-
 
             }
         });
@@ -159,8 +236,19 @@ public class SearchActivity extends AppCompatActivity {
     }
 
 
-
     private void SetupSearch(){
+
+        androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
+        actionBar.setDisplayHomeAsUpEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(true);
+        // actionBar.setDisplayShowTitleEnabled(false);
+        // actionBar.setIcon(R.drawable.ic_action_search);
+
+        LayoutInflater inflator = (LayoutInflater) this
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View v = inflator.inflate(R.layout.actionbar, null);
+
+        actionBar.setCustomView(v);
 
         String[] fruits = {"Apple", "Banana", "Cherry", "Date", "Grape", "Kiwi", "Mango", "Pear"};
 
@@ -175,7 +263,7 @@ public class SearchActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (this, android.R.layout.select_dialog_item, pubNames);
         //Getting the instance of AutoCompleteTextView
-        AutoCompleteTextView actv = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
+        AutoCompleteTextView actv = (AutoCompleteTextView) v.findViewById(R.id.autoCompleteTextView);
         actv.setThreshold(1);//will start working from first character
         actv.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
         actv.setTextColor(Color.RED);
@@ -315,9 +403,7 @@ public class SearchActivity extends AppCompatActivity {
 
         }
 
-
     }
-
 
 
     private static final String[] COUNTRIES = new String[] { "Belgium",
