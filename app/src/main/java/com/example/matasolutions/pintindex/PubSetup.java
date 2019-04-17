@@ -392,7 +392,7 @@ public class PubSetup implements Parcelable {
         pub3.setRatings(new Ratings(ratings3));
 
 
-        pub3.setUrl("http://www.pubsnewcastle.co.uk/strawberry3.jpg");
+        pub3.setUrl("https://9968c6ef49dc043599a5-e151928c3d69a5a4a2d07a8bf3efa90a.ssl.cf2.rackcdn.com/70700-3.jpg");
 
         pubs.add(pub3);
 
@@ -485,7 +485,7 @@ public class PubSetup implements Parcelable {
         pub4.setRatings(new Ratings(ratings4));
 
 
-        pub4.setUrl("http://i4.thejournal.co.uk/incoming/article4362676.ece/ALTERNATES/s615b/C028475A-0B26-6CF4-ADF8DA0AEAC8BA81.jpg");
+        pub4.setUrl("https://www.digitalhealth.net/wp-content/uploads/2017/01/Trent_house-newcastle.jpg");
 
         pubs.add(pub4);
 
@@ -577,7 +577,7 @@ public class PubSetup implements Parcelable {
         pub5.setRatings(new Ratings(ratings5));
 
 
-        pub5.setUrl("https://www.useyourlocal.com/imgs/pubs/800/140218-115302_img-4145.jpg");
+        pub5.setUrl("https://www.nusu.co.uk/asset/News/6013/MensBarnamechange.jpg?thumbnail_width=1336&thumbnail_height=679&resize_type=CropToFit");
 
         pubs.add(pub5);
 
@@ -671,7 +671,7 @@ public class PubSetup implements Parcelable {
         pub6.setRatings(new Ratings(ratings6));
 
 
-        pub5.setUrl("https://pubsandbeer.co.uk/picts/464a.jpeg");
+        pub5.setUrl("https://www.useyourlocal.com/imgs/pubs/800/140218-115302_img-4145.jpg");
 
         pubs.add(pub6);
 
@@ -952,7 +952,7 @@ public class PubSetup implements Parcelable {
         pub9.setRatings(new Ratings(ratings9));
 
 
-        pub9.setUrl("https://www.friendsaction.co.uk/sites/default/files/images/locations/tokyo_newcastle-bar-.jpg");
+        pub9.setUrl("https://i2.wp.com/unifresher.co.uk/wp-content/uploads/2018/06/tokyo-bar.jpg?resize=1024%2C682&ssl=1");
 
         pubs.add(pub9);
 

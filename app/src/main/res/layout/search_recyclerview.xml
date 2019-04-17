@@ -2,30 +2,75 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <ImageView
-        android:layout_width="120dp"
-        android:layout_height="90dp"
-        android:id="@+id/pub_image"
-        android:layout_weight="1"
-        android:src="@drawable/ic_sampleimage"
-        />
+    android:layout_height="wrap_content"
+    android:paddingBottom="10dp"
+    android:layout_gravity="left"
+    android:gravity="left"
+    >
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/search_pub_image"
+            android:src="@drawable/ic_sampleimage"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/pub_name"
+            android:id="@+id/search_pub_name"
             android:text="Bar Loco"
+            android:textSize="24dp"
+            android:layout_gravity="center"
             android:gravity="center"
-            
             />
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/search_pub_rating"
+            android:text="5.0"
+            android:textSize="18dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:drawableLeft="@drawable/ic_twotone_star_rate_18px"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/search_pub_facilities"
+            android:text="Facilities"
+            android:textSize="18dp"
+
+            android:layout_gravity="center"
+            android:gravity="center"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/search_pub_distance"
+            android:text="0.5 mi away"
+            android:textSize="18dp"
+
+            android:layout_gravity="center"
+            android:gravity="center"
+            />
 
     </LinearLayout>
 
