@@ -40,12 +40,11 @@ public class WelcomeBackActivity extends AppCompatActivity {
 
                 pubSetup.pubs = value;
 
-                //Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
+                Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
 
-                Intent intent = new Intent(getApplicationContext(),SearchActivity.class);
+                //Intent intent = new Intent(getApplicationContext(),SearchActivity.class);
 
                 intent.putExtra("pubSetup", pubSetup);
-
                 startActivity(intent);
 
             }
