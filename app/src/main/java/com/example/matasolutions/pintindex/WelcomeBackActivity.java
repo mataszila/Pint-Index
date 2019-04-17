@@ -38,11 +38,11 @@ public class WelcomeBackActivity extends AppCompatActivity {
             @Override
             public void onPubCallback(ArrayList<Pub> value) {
 
-                Log.i("CALLBACK_WELCOMEBACK", "LIST SIZE " + value.size());
-
                 pubSetup.pubs = value;
 
-                Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
+                //Intent intent = new Intent(getApplicationContext(),MapsActivity.class);
+
+                Intent intent = new Intent(getApplicationContext(),SearchActivity.class);
 
                 intent.putExtra("pubSetup", pubSetup);
 

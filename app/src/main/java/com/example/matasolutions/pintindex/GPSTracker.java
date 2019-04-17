@@ -38,6 +38,14 @@ public class GPSTracker {
         this.currentLocation = currentLocation;
     }
 
+    public LatLng getCurrentLatLng(){
+
+         return new LatLng(currentLocation.getLatitude(),currentLocation.getLongitude());
+
+    }
+
+
+
     public GPSTracker(Context context){
         this.context = context;
 

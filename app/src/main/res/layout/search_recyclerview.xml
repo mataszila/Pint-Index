@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="10dp"
+    android:id="@+id/search_recyclerview_layout"
+    >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:paddingLeft="10dp"
+        >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/search_pub_image"
+            android:src="@drawable/ic_sampleimage"
+            />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_gravity="center">
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/search_pub_name"
+            android:text="Bar Loco"
+            android:textSize="24dp"
+            android:layout_gravity="center"
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/search_pub_rating"
+            android:text="5.0"
+            android:textSize="18dp"
+            android:drawableLeft="@drawable/ic_twotone_star_rate_18px"
+            android:layout_gravity="center"
+
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/search_pub_openstatus"
+            android:text="Facilities"
+            android:textSize="18dp"
+            android:layout_gravity="center"
+
+
+            />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/search_pub_distance"
+            android:text="0.5 mi away"
+            android:textSize="18dp"
+            android:layout_gravity="center"
+
+            />
+
+    </LinearLayout>
+
+
+
+
+
+
+</LinearLayout>
