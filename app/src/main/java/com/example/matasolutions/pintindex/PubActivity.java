@@ -127,11 +127,10 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
     private void SetupToolbar(){
 
         toolbar_text_1 = findViewById(R.id.toolbar_text_1);
-        toolbar_text_1.setText(SetPubOpeningStatus());
+        toolbar_text_1.setText(HelperMethods.SetPubOpeningStatus(pub));
 
         toolbar_text_2 = findViewById(R.id.toolbar_text_2);
         toolbar_text_2.setText(ShowRatingText());
-
 
         toolbar_text_4 = findViewById(R.id.toolbar_text_4);
 
@@ -218,53 +217,6 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         return formatter.format(pub.ratings.globalAverageRating) + "/5";
     }
 
-
-    private SpannableString SetPubOpeningStatus(){
-
-        SingleOpeningHours hoursForToday  = pub.weekOpeningHours.openingHours.get(HelperMethods.GetCorrectDayOfWeek()-1);
-
-
-        try {
-            if(HelperMethods.isPubOpen(hoursForToday.openingTime,hoursForToday.closingTime ,HelperMethods.getHoursMinutesNow() )){
-
-
-                return FormatStatusText("OPEN NOW", "UNTIL ", hoursForToday.closingTime);
-            }
-            else{
-                return FormatStatusText("CLOSED", "OPENS ", hoursForToday.openingTime);
-            }
-
-
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-
-        return new SpannableString("N/A");
-
-    }
-
-    private SpannableString FormatStatusText(String status, String action, String actionTime) {
-
-
-        StringBuilder sb = new StringBuilder();
-
-        for(char c : actionTime.toCharArray()){
-
-            if(c != ':'){
-                sb.append(c);
-            }
-
-
-        }
-
-        String prep = status + " (" + action + actionTime + ")";
-
-        SpannableString ans = new SpannableString(prep);
-        ans.setSpan(new ForegroundColorSpan(Color.rgb(0,139,0)), status.length(), ans.length(), 0);
-
-        return ans;
-
-    }
 
     private void ReadSinglePub(final PubActivityCallback myCallback, final String pubID){
 

@@ -671,7 +671,7 @@ public class PubSetup implements Parcelable {
         pub6.setRatings(new Ratings(ratings6));
 
 
-        pub5.setUrl("https://www.useyourlocal.com/imgs/pubs/800/140218-115302_img-4145.jpg");
+        pub6.setUrl("https://whatpub.com/img/TYN/3928/hotspur-newcastle-upon-tyne/298/224");
 
         pubs.add(pub6);
 

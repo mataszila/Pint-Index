@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,25 +18,31 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.squareup.picasso.Picasso;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.EnumSet;
 
 public class SearchActivity extends AppCompatActivity {
 
     PubSetup setup;
     GPSTracker tracker;
 
+    MaterialSpinner sortBySpinner;
+
+    String selectedSort;
+
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-
-
-
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -44,14 +51,113 @@ public class SearchActivity extends AppCompatActivity {
 
         setTitle("Search");
 
-
         setup = getIntent().getParcelableExtra("pubSetup");
         tracker = new GPSTracker(getApplicationContext());
 
         SetupSearch();
         SetupRecyclerView();
+        SetupSpinner();
 
     }
+
+    private void SetupSpinner(){
+
+        sortBySpinner = findViewById(R.id.search_sortby_spinner);
+
+        ArrayList<String> sortByTypeList = new ArrayList<>();
+
+        sortByTypeList.add("SORT BY");
+        sortByTypeList.add("Distance (low to high)");
+        sortByTypeList.add("Distance (high to low)");
+        sortByTypeList.add("Rating (low to high)");
+        sortByTypeList.add("Rating (high to low)");
+
+
+        sortBySpinner.setItems(sortByTypeList);
+
+        sortBySpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener<String>() {
+
+            @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
+
+                selectedSort = item;
+                executeSort(selectedSort);
+
+            }
+        });
+
+    }
+
+
+    private void executeSort(String selectedSort){
+
+        switch (selectedSort){
+
+            case "Rating (low to high)":
+                SortByRating(false);
+                recyclerView.setAdapter(mAdapter);
+                break;
+            case "Rating (high to low)":
+                SortByRating(true);
+                recyclerView.setAdapter(mAdapter);
+                break;
+
+            case "Distance (low to high)":
+                SortByDistance(false);
+                recyclerView.setAdapter(mAdapter);
+                break;
+            case "Distance (high to low)":
+                SortByDistance(true);
+                recyclerView.setAdapter(mAdapter);
+                break;
+
+        }
+
+
+    }
+
+    private void SortByRating(final boolean highToLow){
+
+        Collections.sort(setup.pubs, new Comparator<Pub>() {
+            @Override
+            public int compare(Pub lhs, Pub rhs) {
+                // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+
+                double p1 = lhs.ratings.globalAverageRating;
+                double p2 = rhs.ratings.globalAverageRating;
+
+                if(highToLow){
+                    return p1 > p2 ? -1 : (p1 < p2) ? 1 : 0;
+                }
+
+                return p1 > p2 ? 1 : (p1 < p2) ? -1 : 0;
+
+
+            }
+        });
+    }
+
+    private void SortByDistance(final boolean highToLow){
+
+        Collections.sort(setup.pubs, new Comparator<Pub>() {
+            @Override
+            public int compare(Pub lhs, Pub rhs) {
+                // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+
+                double p1 = HelperMethods.CalculationByDistance(HelperMethods.convertLatLng(tracker.getCurrentLatLng()),lhs.getCoordinates());
+                double p2 = HelperMethods.CalculationByDistance(HelperMethods.convertLatLng(tracker.getCurrentLatLng()),rhs.getCoordinates());
+
+                if(highToLow){
+                    return p1 > p2 ? -1 : (p1 < p2) ? 1 : 0;
+                }
+
+                return p1 > p2 ? 1 : (p1 < p2) ? -1 : 0;
+
+            }
+        });
+
+
+    }
+
 
 
     private void SetupSearch(){
@@ -121,7 +227,7 @@ public class SearchActivity extends AppCompatActivity {
             public ImageView pub_image;
             public TextView pub_name;
             public TextView pub_rating;
-            public TextView pub_facilities;
+            public TextView pub_openstatus;
             public TextView pub_distance;
 
             public MyViewHolder(View v) {
@@ -130,7 +236,7 @@ public class SearchActivity extends AppCompatActivity {
                 pub_image = (ImageView) v.findViewById(R.id.search_pub_image);
                 pub_name = (TextView) v.findViewById(R.id.search_pub_name);
                 pub_rating = (TextView) v.findViewById(R.id.search_pub_rating);
-                pub_facilities = (TextView) v.findViewById(R.id.search_pub_facilities);
+                pub_openstatus = (TextView) v.findViewById(R.id.search_pub_openstatus);
                 pub_distance = (TextView) v.findViewById(R.id.search_pub_distance);
             }
         }
@@ -166,7 +272,7 @@ public class SearchActivity extends AppCompatActivity {
             ImageView pub_image = holder.pub_image;
             TextView pub_name = holder.pub_name;
             TextView pub_rating = holder.pub_rating;
-            TextView pub_facilities = holder.pub_facilities;
+            TextView pub_openstatus = holder.pub_openstatus;
             TextView pub_distance = holder.pub_distance;
 
 
@@ -178,7 +284,7 @@ public class SearchActivity extends AppCompatActivity {
 
             pub_name.setText(data.name);
             pub_rating.setText(String.valueOf(data.getRatings().globalAverageRating));
-            pub_facilities.setText("0");
+            pub_openstatus.setText(HelperMethods.SetPubOpeningStatus(data));
 
             String distance = FormatDistanceText(tracker.getCurrentLatLng(),data.coordinates);
             pub_distance.setText(distance);

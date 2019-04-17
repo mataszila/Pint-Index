@@ -1,5 +1,8 @@
 package com.example.matasolutions.pintindex;
 
+import android.graphics.Color;
+import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -200,6 +203,54 @@ public class HelperMethods {
         }
 
         return list;
+    }
+
+    public static SpannableString FormatStatusText(String status, String action, String actionTime) {
+
+
+        StringBuilder sb = new StringBuilder();
+
+        for(char c : actionTime.toCharArray()){
+
+            if(c != ':'){
+                sb.append(c);
+            }
+
+
+        }
+
+        String prep = status + " (" + action + actionTime + ")";
+
+        SpannableString ans = new SpannableString(prep);
+        ans.setSpan(new ForegroundColorSpan(Color.rgb(0,139,0)), status.length(), ans.length(), 0);
+
+        return ans;
+
+    }
+
+
+    public static SpannableString SetPubOpeningStatus(Pub pub){
+
+        SingleOpeningHours hoursForToday  = pub.weekOpeningHours.openingHours.get(HelperMethods.GetCorrectDayOfWeek()-1);
+
+
+        try {
+            if(HelperMethods.isPubOpen(hoursForToday.openingTime,hoursForToday.closingTime ,HelperMethods.getHoursMinutesNow() )){
+
+
+                return FormatStatusText("OPEN NOW", "UNTIL ", hoursForToday.closingTime);
+            }
+            else{
+                return FormatStatusText("CLOSED", "OPENS ", hoursForToday.openingTime);
+            }
+
+
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        return new SpannableString("N/A");
+
     }
 
 
