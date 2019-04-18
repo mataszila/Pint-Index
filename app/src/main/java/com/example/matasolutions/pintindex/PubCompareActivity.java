@@ -25,6 +25,7 @@ import java.util.ArrayList;
 public class PubCompareActivity extends AppCompatActivity {
 
     String pub1_name;
+    String pub2_name;
 
     Pub pub1;
     Pub pub2;
@@ -51,17 +52,17 @@ public class PubCompareActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pub_compare);
 
+        setTitle("Pub comparison");
+
         pubSetup = getIntent().getParcelableExtra("pubSetup");
 
         SetupAlertDialog();
-
 
     }
 
     public synchronized void SetupAlertDialog(){
 
         tracker = new GPSTracker(this);
-
 
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(PubCompareActivity.this);
         builderSingle.setTitle("Select A Pub:-");
@@ -79,9 +80,9 @@ public class PubCompareActivity extends AppCompatActivity {
         builderSingle.setAdapter(arrayAdapter, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                String strName = arrayAdapter.getItem(which);
-                SetupActivity(strName);
-                
+                pub2_name = arrayAdapter.getItem(which);
+                SetupActivity(pub2_name);
+
             }
         });
         builderSingle.show();
@@ -101,12 +102,13 @@ public class PubCompareActivity extends AppCompatActivity {
 
     }
 
-    private void SetupData(String name){
+    private void SetupData(String pub2_name){
 
-        pub2 = pubSetup.returnPubByName(name);
+        pub2 = pubSetup.returnPubByName(pub2_name);
         pub1_name = getIntent().getStringExtra("pubName");
 
         pub1 = pubSetup.returnPubByName(pub1_name);
+
         data = SetupCompareData();
     }
 

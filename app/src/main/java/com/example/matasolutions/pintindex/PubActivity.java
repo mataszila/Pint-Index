@@ -170,7 +170,6 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
                             pubSetup.pubs = value;
 
                             Intent intent = new Intent(getApplicationContext(),PubCompareActivity.class);
-                            intent.putExtra("pub", pub);
                             intent.putExtra("pubName",pub.name);
                             intent.putExtra("pubSetup", pubSetup);
                             startActivity(intent);
