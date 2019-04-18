@@ -15,6 +15,8 @@ import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.jaredrummler.materialspinner.MaterialSpinner;
+
 import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,6 +29,7 @@ public class ProductActivity extends MapsActivity {
     Spinner DrinkTypeSpinner;
     Spinner BrandSpinner;
     Spinner AmountSpinner;
+
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -83,7 +86,6 @@ public class ProductActivity extends MapsActivity {
         SetSpinnerListener(DrinkTypeSpinner, ProductSpinnerType.DRINKTYPE);
 
 
-
         DrinkTypeSpinner = findViewById(R.id.DrinkType_Spinner);
         BrandSpinner = findViewById(R.id.Brand_Spinner);
         AmountSpinner = findViewById(R.id.Amount_Spinner);
@@ -104,9 +106,6 @@ public class ProductActivity extends MapsActivity {
         SetSpinnerListener(DrinkTypeSpinner, ProductSpinnerType.DRINKTYPE);
         SetSpinnerListener(BrandSpinner, ProductSpinnerType.BRAND);
         SetSpinnerListener(AmountSpinner, ProductSpinnerType.AMOUNT);
-
-
-
 
 
     }
@@ -178,7 +177,6 @@ public class ProductActivity extends MapsActivity {
 
     }
 
-
     private void SetupRecyclerView(Product prod){
 
         pubsWithProduct = HelperMethods.FindPubsWithProduct(prod);
@@ -205,12 +203,12 @@ public class ProductActivity extends MapsActivity {
                 double p1 = HelperMethods.FindProductinPub(prod, lhs).price;
                 double p2 = HelperMethods.FindProductinPub(prod, rhs).price;
 
-                if(highToLow == true){
-                    return p1 > p2 ? -1 : (p1 < p2) ? 1 : 0;
+                if(highToLow){
+                    return Double.compare(p2, p1);
 
                 }
 
-                return p1 > p2 ? 1 : (p1 < p2) ? -1 : 0;
+                return Double.compare(p1, p2);
             }
         });
 
@@ -236,9 +234,9 @@ public class ProductActivity extends MapsActivity {
             public MyViewHolder(View v) {
                 super(v);
 
-                place = (TextView) v.findViewById(R.id.place);
-                brand = (TextView) v.findViewById(R.id.brand);
-                price = (TextView) v.findViewById(R.id.price);
+                place =  v.findViewById(R.id.place);
+                brand =  v.findViewById(R.id.brand);
+                price =  v.findViewById(R.id.price);
             }
         }
 
