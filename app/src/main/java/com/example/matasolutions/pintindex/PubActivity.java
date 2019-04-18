@@ -161,13 +161,23 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         compare_with_card.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                    Intent intent = new Intent(getApplicationContext(),PubCompareActivity.class);
-                    intent.putExtra("pub", pub);
-                    Bundle args = new Bundle();
-                    args.putParcelable("coordinates", HelperMethods.convertLatLng(pub.coordinates));
-                    intent.putExtra("bundle", args);
 
-                    startActivity(intent);
+                    new PubSetup().ReadData(new MyCallback() {
+                        @Override
+                        public void onPubCallback(ArrayList<Pub> value) {
+
+                            PubSetup pubSetup = new PubSetup();
+                            pubSetup.pubs = value;
+
+                            Intent intent = new Intent(getApplicationContext(),PubCompareActivity.class);
+                            intent.putExtra("pub", pub);
+                            intent.putExtra("pubName",pub.name);
+                            intent.putExtra("pubSetup", pubSetup);
+                            startActivity(intent);
+
+                        }
+                    });
+
             }
         });
 

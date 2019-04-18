@@ -56,7 +56,6 @@ public class ProfileActivity extends MapsActivity {
 
         user = mAuth.getCurrentUser();
 
-
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference().child("userData");
         String id = profile.user_uID;

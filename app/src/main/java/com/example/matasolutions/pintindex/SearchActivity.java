@@ -41,8 +41,6 @@ public class SearchActivity extends AppCompatActivity {
 
     ArrayList<String> pubNames;
 
-    String selectedSort;
-
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -93,8 +91,6 @@ public class SearchActivity extends AppCompatActivity {
         });
 
     }
-
-
     private void executeSort(String selectedSort){
 
         switch (selectedSort){

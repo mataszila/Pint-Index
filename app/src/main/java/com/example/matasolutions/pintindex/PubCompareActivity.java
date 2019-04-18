@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,18 +43,25 @@ public class PubCompareActivity extends AppCompatActivity {
 
     private GPSTracker tracker;
 
+    private PubSetup pubSetup;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pub_compare);
 
+        pubSetup = getIntent().getParcelableExtra("pubSetup");
+
         SetupAlertDialog();
 
-        tracker = new GPSTracker(this);
 
     }
 
     public synchronized void SetupAlertDialog(){
+
+        tracker = new GPSTracker(this);
+
 
         AlertDialog.Builder builderSingle = new AlertDialog.Builder(PubCompareActivity.this);
         builderSingle.setTitle("Select A Pub:-");
@@ -73,19 +81,7 @@ public class PubCompareActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 String strName = arrayAdapter.getItem(which);
                 SetupActivity(strName);
-
-
-                AlertDialog.Builder builderInner = new AlertDialog.Builder(PubCompareActivity.this);
-                builderInner.setMessage(strName);
-                builderInner.setTitle("Your Selected Item is");
-                builderInner.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog,int which) {
-
-                        dialog.dismiss();
-                    }
-                });
-                builderInner.show();
+                
             }
         });
         builderSingle.show();
@@ -106,12 +102,11 @@ public class PubCompareActivity extends AppCompatActivity {
     }
 
     private void SetupData(String name){
-        PubSetup setup = new PubSetup();
 
-        pub2 = setup.returnPubByName(name);
+        pub2 = pubSetup.returnPubByName(name);
         pub1_name = getIntent().getStringExtra("pubName");
 
-        pub1 = setup.returnPubByName(pub1_name);
+        pub1 = pubSetup.returnPubByName(pub1_name);
         data = SetupCompareData();
     }
 

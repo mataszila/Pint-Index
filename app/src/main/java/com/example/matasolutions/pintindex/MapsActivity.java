@@ -152,6 +152,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Pub thisPub = pubLookupByMarker(marker);
 
                 Intent intent = new Intent(getApplicationContext(),PubActivity.class);
+                intent.putExtra("pubSetup",pubSetup);
                 intent.putExtra("pubID", thisPub.id);
                 startActivity(intent);
 
