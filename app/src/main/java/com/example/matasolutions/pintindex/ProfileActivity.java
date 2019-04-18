@@ -56,7 +56,6 @@ public class ProfileActivity extends MapsActivity {
 
         user = mAuth.getCurrentUser();
 
-
         database = FirebaseDatabase.getInstance();
         myRef = database.getReference().child("userData");
         String id = profile.user_uID;
@@ -68,21 +67,6 @@ public class ProfileActivity extends MapsActivity {
             String uid = user.getUid();
             Email.setText(email);
             Uid.setText(uid);
-            StringBuilder sb = new StringBuilder();
-
-            if(!profile.ratingEntries.isEmpty()){
-
-
-                for(RatingEntry i : profile.ratingEntries){
-
-                    sb.append(i.ratingType);
-                    sb.append(i.input_rating);
-
-                    sb.append("\n");
-                }
-                ratedPubs.setText(sb.toString());
-
-            }
 
         }
 

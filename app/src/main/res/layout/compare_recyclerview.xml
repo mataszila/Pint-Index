@@ -77,6 +77,12 @@
             </LinearLayout>
 
         </androidx.cardview.widget.CardView>
+
+        <View
+            android:layout_width="0.1dp"
+            android:layout_height="fill_parent"
+            android:background="#808080" />
+
         <androidx.cardview.widget.CardView
             android:id="@+id/pub_compare_card3"
             android:layout_width="match_parent"

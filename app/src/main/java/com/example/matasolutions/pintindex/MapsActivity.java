@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.constraintlayout.solver.widgets.Helper;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.core.content.pm.PermissionInfoCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
@@ -70,22 +71,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 switch(menuId){
 
                     case R.id.navbar_home_item:
-                        finish();
                         startActivity(new Intent(getApplicationContext(),MapsActivity.class));
                         break;
                     case R.id.navbar_search_item:
+                        Intent intent = new Intent(getApplicationContext(),SearchActivity.class);
+                        intent.putExtra("pubSetup",pubSetup);
+                        startActivity(intent);
                         break;
                     case R.id.navbar_profile_item:
 
                         if(profile != null){
-                            startActivity(new Intent(getApplicationContext(),ProfileActivity.class));
+                            Intent profileIntent = new Intent(getApplicationContext(),ProfileActivity.class);
+                            profileIntent.putExtra("pubSetup",pubSetup);
+                            startActivity(profileIntent);
                         }
                         else {
-                            startActivity(new Intent(getApplicationContext(), StartActivity.class));
+                            Intent startIntent = new Intent(getApplicationContext(),StartActivity.class);
+                            startIntent.putExtra("pubSetup",pubSetup);
+                            startActivity(startIntent);
                         }
                         break;
                     case R.id.navbar_products_item:
-                        startActivity(new Intent(getApplicationContext(),ProductActivity.class));
+
+                        Intent productsIntent = new Intent(getApplicationContext(),ProductActivity.class);
+                        productsIntent.putExtra("pubSetup",pubSetup);
+
+                        startActivity(productsIntent);
                         break;
                 }
 
@@ -141,6 +152,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Pub thisPub = pubLookupByMarker(marker);
 
                 Intent intent = new Intent(getApplicationContext(),PubActivity.class);
+                intent.putExtra("pubSetup",pubSetup);
                 intent.putExtra("pubID", thisPub.id);
                 startActivity(intent);
 
