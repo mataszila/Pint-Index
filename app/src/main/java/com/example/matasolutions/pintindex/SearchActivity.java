@@ -21,19 +21,16 @@ import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.squareup.picasso.Picasso;
 
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.EnumSet;
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -41,6 +38,8 @@ public class SearchActivity extends AppCompatActivity {
     GPSTracker tracker;
 
     MaterialSpinner sortBySpinner;
+
+    ArrayList<String> pubNames;
 
     String selectedSort;
 
@@ -54,14 +53,15 @@ public class SearchActivity extends AppCompatActivity {
         this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         setContentView(R.layout.activity_search);
-
         setTitle("");
 
         setup = getIntent().getParcelableExtra("pubSetup");
         tracker = new GPSTracker(getApplicationContext());
 
         SetupSearch();
+
         SetupRecyclerView();
+
         SetupSpinner();
 
     }
@@ -87,9 +87,7 @@ public class SearchActivity extends AppCompatActivity {
 
             @Override public void onItemSelected(MaterialSpinner view, int position, long id, String item) {
 
-                selectedSort = item;
-                executeSort(selectedSort);
-
+                executeSort(item);
             }
 
         });
@@ -102,20 +100,20 @@ public class SearchActivity extends AppCompatActivity {
         switch (selectedSort){
 
             case "Rating (low to high)":
-                SortByRating(false);
+                SortByRatingOrDistance(SortByType.RATING_AVERAGE,false);
                 recyclerView.setAdapter(mAdapter);
                 break;
             case "Rating (high to low)":
-                SortByRating(true);
+                SortByRatingOrDistance(SortByType.RATING_AVERAGE,true);
                 recyclerView.setAdapter(mAdapter);
                 break;
 
             case "Distance (low to high)":
-                SortByDistance(false);
+                SortByRatingOrDistance(SortByType.DISTANCE,false);
                 recyclerView.setAdapter(mAdapter);
                 break;
             case "Distance (high to low)":
-                SortByDistance(true);
+                SortByRatingOrDistance(SortByType.DISTANCE,true);
                 recyclerView.setAdapter(mAdapter);
                 break;
             case "Closing time (soonest to latest)":
@@ -196,44 +194,29 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
-    private void SortByRating(final boolean highToLow){
+    private void SortByRatingOrDistance(final SortByType sortType, final boolean highToLow){
 
         Collections.sort(setup.pubs, new Comparator<Pub>() {
-            @Override
-            public int compare(Pub lhs, Pub rhs) {
-                // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+        @Override
+        public int compare(Pub lhs, Pub rhs) {
+            // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
 
-                double p1 = lhs.ratings.globalAverageRating;
-                double p2 = rhs.ratings.globalAverageRating;
+            double p1 = 0;
+            double p2 = 0;
+            if(sortType == SortByType.DISTANCE){
 
-                if(highToLow){
-                    return p1 > p2 ? -1 : (p1 < p2) ? 1 : 0;
-                }
-
-                return p1 > p2 ? 1 : (p1 < p2) ? -1 : 0;
-
+                p1 = HelperMethods.CalculationByDistance(HelperMethods.convertLatLng(tracker.getCurrentLatLng()),lhs.getCoordinates());
+                p2 = HelperMethods.CalculationByDistance(HelperMethods.convertLatLng(tracker.getCurrentLatLng()),rhs.getCoordinates());
             }
-        });
-    }
-
-    private void SortByDistance(final boolean highToLow){
-
-        Collections.sort(setup.pubs, new Comparator<Pub>() {
-            @Override
-            public int compare(Pub lhs, Pub rhs) {
-                // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
-
-                double p1 = HelperMethods.CalculationByDistance(HelperMethods.convertLatLng(tracker.getCurrentLatLng()),lhs.getCoordinates());
-                double p2 = HelperMethods.CalculationByDistance(HelperMethods.convertLatLng(tracker.getCurrentLatLng()),rhs.getCoordinates());
-
-                if(highToLow){
-                    return p1 > p2 ? -1 : (p1 < p2) ? 1 : 0;
-                }
-
-                return p1 > p2 ? 1 : (p1 < p2) ? -1 : 0;
-
+            if(sortType == SortByType.RATING_AVERAGE){
+                 p1 = lhs.ratings.globalAverageRating;
+                 p2 = rhs.ratings.globalAverageRating;
             }
-        });
+
+            return highToLow  ? Double.compare(p2, p1) : Double.compare(p1, p2);
+
+        }
+    });
 
 
     }
@@ -244,32 +227,27 @@ public class SearchActivity extends AppCompatActivity {
         androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setDisplayShowCustomEnabled(true);
-        // actionBar.setDisplayShowTitleEnabled(false);
-        // actionBar.setIcon(R.drawable.ic_action_search);
+        actionBar.setDisplayShowTitleEnabled(false);
+        actionBar.setIcon(R.drawable.ic_baseline_search_24px);
 
         LayoutInflater inflator = (LayoutInflater) this
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+
+
         View v = inflator.inflate(R.layout.actionbar, null);
 
         actionBar.setCustomView(v);
 
-        String[] fruits = {"Apple", "Banana", "Cherry", "Date", "Grape", "Kiwi", "Mango", "Pear"};
-
-        ArrayList<String> pubNames = new ArrayList<>();
-
-        for(Pub pub : setup.pubs){
-
-            pubNames.add(pub.name);
-
-        }
+        SetupPubNames();
 
         ArrayAdapter<String> adapter = new ArrayAdapter<String>
                 (this, android.R.layout.select_dialog_item, pubNames);
-        //Getting the instance of AutoCompleteTextView
-        AutoCompleteTextView actv = (AutoCompleteTextView) v.findViewById(R.id.autoCompleteTextView);
-        actv.setThreshold(1);//will start working from first character
+
+        AutoCompleteTextView actv =  v.findViewById(R.id.autoCompleteTextView);
+        actv.setThreshold(1); //will start working from first character
         actv.setAdapter(adapter);//setting the adapter data into the AutoCompleteTextView
-        actv.setTextColor(Color.RED);
+        actv.setTextColor(Color.BLACK);
 
         actv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -287,6 +265,16 @@ public class SearchActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void SetupPubNames(){
+
+        pubNames = new ArrayList<>();
+
+        for(Pub pub : setup.pubs){
+
+            pubNames.add(pub.name);
+        }
     }
 
     private void SetupRecyclerView(){
@@ -412,8 +400,6 @@ public class SearchActivity extends AppCompatActivity {
                     HelperMethods.convertLatLng(pubLatLng));;
 
             double rounded = Math.round(distance * 100.0) / 100.0;
-
-
 
 
             String sb = String.valueOf(rounded) + " km";
