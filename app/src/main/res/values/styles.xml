@@ -37,9 +37,11 @@
 
     <style name="RobotoButtonStyle" parent="android:Widget.Holo.Button">
         <item name="android:fontFamily">sans-serif-light</item>
-        <item name="android:background">@drawable/defaultbuttonshape</item>
         <item name="android:textColor">@color/colorSecondary</item>
         <item name="android:textAllCaps">true</item>
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:height">15dp</item>
+        <item name="android:width">90dp</item>
         <item name="android:radius">14dp</item>
 
     </style>

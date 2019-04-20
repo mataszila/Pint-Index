@@ -46,6 +46,7 @@ public class WelcomeBackActivity extends AppCompatActivity {
 
                 intent.putExtra("pubSetup", pubSetup);
                 startActivity(intent);
+                findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
             }
         });

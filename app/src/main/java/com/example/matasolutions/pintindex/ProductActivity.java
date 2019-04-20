@@ -1,20 +1,26 @@
 package com.example.matasolutions.pintindex;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 
 import java.lang.reflect.Array;
@@ -34,6 +40,9 @@ public class ProductActivity extends MapsActivity {
     MaterialSpinner brandSpinner;
     MaterialSpinner amountSpinner;
 
+    private BottomNavigationView bottomNavigationView;
+
+
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
@@ -43,18 +52,50 @@ public class ProductActivity extends MapsActivity {
     Amount amount;
 
     ArrayList<Pub> pubsWithProduct;
-
+    LinearLayout recyclerViewHeader;
     Button actionButton;
-
-    Button sort_high_to_low;
-    Button sort_low_to_high;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product);
 
+        setTitle("Product price comparison");
+
+        bottomNavigationView = findViewById(R.id.product_bottom_navigation);
+
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+
+                final Product prod = new Product(brand, drinkType, amount);
+
+                if(isProductInitialized(prod)) {
+
+                    int menuId = menuItem.getItemId();
+
+                    switch (menuId) {
+
+                        case R.id.navbar_sort_up_item:
+                            SortByPrice(false, prod);
+                            break;
+                        case R.id.navbar_sort_down_item:
+                            SortByPrice(true, prod);
+                            break;
+                    }
+                }
+
+                else{
+                    Toast.makeText(getApplicationContext(),"Please select your product first!",Toast.LENGTH_SHORT);
+                }
+
+
+                return false;
+
+
+
+            }
+        });
 
         SetupSpinners();
 
@@ -71,28 +112,31 @@ public class ProductActivity extends MapsActivity {
             }
         });
 
+        final Product prod = new Product(brand, drinkType, amount);
+
+        SetupRecyclerView(prod);
+
     }
 
+    private boolean isProductInitialized(Product prod){
+
+        if(prod.amount != null && prod.brand != null && prod.type != null) {
+
+            return true;
+        }
+
+        return false;
+
+    }
+
+
     private void SetupSpinners(){
-
-        //DrinkTypeSpinner = findViewById(R.id.DrinkType_Spinner);
-
-       ArrayList<DrinkType> drinkTypeList = new ArrayList<DrinkType>(EnumSet.allOf(DrinkType.class));
-
-        //final ArrayAdapter<DrinkType> drinkTypeAdapter = new ArrayAdapter<DrinkType>
-         //       (getApplicationContext(),android.R.layout.simple_spinner_dropdown_item,drinkTypeList);
-
-        //drinkTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        //DrinkTypeSpinner.setAdapter(drinkTypeAdapter);
-
-//        SetSpinnerListener(DrinkTypeSpinner, ProductSpinnerType.DRINKTYPE);
 
         drinkTypeSpinner = findViewById(R.id.DrinkType_Spinner);
         brandSpinner = findViewById(R.id.Brand_Spinner);
         amountSpinner = findViewById(R.id.Amount_Spinner);
 
-
+        ArrayList<DrinkType> drinkTypeList = new ArrayList<DrinkType>(EnumSet.allOf(DrinkType.class));
         ArrayList<Brand> brandList = new ArrayList<Brand>(EnumSet.allOf(Brand.class));
         ArrayList<Amount> amountList = new ArrayList<Amount>(EnumSet.allOf(Amount.class));
 
@@ -100,32 +144,13 @@ public class ProductActivity extends MapsActivity {
         brandSpinner.setItems(brandList);
         amountSpinner.setItems(amountList);
 
-        drinkTypeSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
-
-
-            }
-        });
-
-
-        final ArrayAdapter<Brand> brandAdapter = new ArrayAdapter<Brand>(getApplicationContext(),android.R.layout.simple_spinner_dropdown_item,brandList);
-        brandAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-        final ArrayAdapter<Amount> amountAdapter = new ArrayAdapter<Amount>(getApplicationContext(),android.R.layout.simple_spinner_dropdown_item,amountList);
-        brandAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-
-
-
-
-        //DrinkTypeSpinner.setAdapter(drinkTypeAdapter);
-        //BrandSpinner.setAdapter(brandAdapter);
-        //AmountSpinner.setAdapter(amountAdapter);
-
         SetSpinnerListener(drinkTypeSpinner, ProductSpinnerType.DRINKTYPE);
         SetSpinnerListener(brandSpinner, ProductSpinnerType.BRAND);
         SetSpinnerListener(amountSpinner, ProductSpinnerType.AMOUNT);
 
+        drinkType = drinkTypeList.get(0);
+        brand = brandList.get(0);
+        amount = amountList.get(0);
 
     }
 
@@ -150,8 +175,8 @@ public class ProductActivity extends MapsActivity {
                         break;
                 }
 
-
             }
+
         });
 
 
@@ -163,40 +188,14 @@ public class ProductActivity extends MapsActivity {
         final Product prod = new Product(brand, drinkType, amount);
 
         SetupRecyclerView(prod);
-        SetupSorts(prod);
 
    }
-
-    private void SetupSorts(final Product prod){
-        sort_high_to_low = findViewById(R.id.sort_high_to_low);
-        sort_low_to_high = findViewById(R.id.sort_low_to_high);
-
-        sort_high_to_low.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                SortByPrice(true, prod);
-                recyclerView.setAdapter(mAdapter);
-
-            }
-        });
-
-        sort_low_to_high.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                SortByPrice(false, prod);
-                recyclerView.setAdapter(mAdapter);
-
-            }
-        });
-
-
-
-    }
 
     private void SetupRecyclerView(Product prod){
 
         pubsWithProduct = HelperMethods.FindPubsWithProduct(prod);
+
+        recyclerViewHeader=  findViewById(R.id.product_recycler_view_header);
 
         recyclerView =  findViewById(R.id.my_recycler_view);
 
@@ -207,6 +206,10 @@ public class ProductActivity extends MapsActivity {
 
         mAdapter = new MyAdapter(prod,pubsWithProduct);
         recyclerView.setAdapter(mAdapter);
+
+        recyclerViewHeader.setVisibility(View.VISIBLE);
+
+
     }
 
 
@@ -228,6 +231,9 @@ public class ProductActivity extends MapsActivity {
                 return Double.compare(p1, p2);
             }
         });
+
+        recyclerView.setAdapter(mAdapter);
+
 
     }
 

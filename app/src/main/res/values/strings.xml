@@ -110,5 +110,9 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="product_activity_please_select">Please select a product by choosing a drink type, brand, and amount to compare the prices amongst different pubs.</string>
+    <string name="product_navbar_up">SORT (0-9)</string>
+    <string name="product_navbar_down">SORT (9-0)</string>
+
 
 </resources>
