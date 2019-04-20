@@ -23,6 +23,7 @@
         android:gravity="center"
         android:text="Pub1"
         android:textStyle="bold"
+        android:textColor="#000"
         android:textSize="24dp"/>
 
     <TextView
@@ -33,6 +34,7 @@
         android:gravity="center"
         android:layout_gravity="center"
         android:text="Pub2"
+        android:textColor="#000"
         android:textStyle="bold"
         android:textSize="24dp"
         />

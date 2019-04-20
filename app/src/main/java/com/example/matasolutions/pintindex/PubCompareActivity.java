@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +54,8 @@ public class PubCompareActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pub_compare);
 
         setTitle("Pub comparison");
+
+        getSupportActionBar().setTitle(Html.fromHtml("<font color='#ffcc00'>Pub Comparison </font>"));
 
         pubSetup = getIntent().getParcelableExtra("pubSetup");
 

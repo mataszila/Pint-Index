@@ -14,6 +14,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
@@ -122,7 +123,17 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(pub.coordinates.getLatitude(),pub.coordinates.getLongitude()), 15.0f));
 
         setTitle(pub.name);
+        getSupportActionBar().setTitle(Html.fromHtml(getTitleString(pub.name)));
+
+
     }
+
+    private String getTitleString(String title){
+
+        return "<font color='#ffcc00'>" + pub.name + "</font>";
+
+    }
+
 
     private void SetupToolbar(){
 
@@ -179,8 +190,6 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
             }
         });
-
-
 
 
 
