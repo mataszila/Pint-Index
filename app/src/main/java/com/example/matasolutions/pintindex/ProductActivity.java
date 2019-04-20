@@ -30,6 +30,9 @@ public class ProductActivity extends MapsActivity {
     Spinner BrandSpinner;
     Spinner AmountSpinner;
 
+    MaterialSpinner drinkTypeSpinner;
+    MaterialSpinner brandSpinner;
+    MaterialSpinner amountSpinner;
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -72,26 +75,39 @@ public class ProductActivity extends MapsActivity {
 
     private void SetupSpinners(){
 
-        DrinkTypeSpinner = findViewById(R.id.DrinkType_Spinner);
+        //DrinkTypeSpinner = findViewById(R.id.DrinkType_Spinner);
 
-        ArrayList<DrinkType> drinkTypeList = new ArrayList<DrinkType>(EnumSet.allOf(DrinkType.class));
+       ArrayList<DrinkType> drinkTypeList = new ArrayList<DrinkType>(EnumSet.allOf(DrinkType.class));
 
-        final ArrayAdapter<DrinkType> drinkTypeAdapter = new ArrayAdapter<DrinkType>
-                (getApplicationContext(),android.R.layout.simple_spinner_dropdown_item,drinkTypeList);
+        //final ArrayAdapter<DrinkType> drinkTypeAdapter = new ArrayAdapter<DrinkType>
+         //       (getApplicationContext(),android.R.layout.simple_spinner_dropdown_item,drinkTypeList);
 
-        drinkTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //drinkTypeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        DrinkTypeSpinner.setAdapter(drinkTypeAdapter);
+        //DrinkTypeSpinner.setAdapter(drinkTypeAdapter);
 
-        SetSpinnerListener(DrinkTypeSpinner, ProductSpinnerType.DRINKTYPE);
+//        SetSpinnerListener(DrinkTypeSpinner, ProductSpinnerType.DRINKTYPE);
 
+        drinkTypeSpinner = findViewById(R.id.DrinkType_Spinner);
+        brandSpinner = findViewById(R.id.Brand_Spinner);
+        amountSpinner = findViewById(R.id.Amount_Spinner);
 
-        DrinkTypeSpinner = findViewById(R.id.DrinkType_Spinner);
-        BrandSpinner = findViewById(R.id.Brand_Spinner);
-        AmountSpinner = findViewById(R.id.Amount_Spinner);
 
         ArrayList<Brand> brandList = new ArrayList<Brand>(EnumSet.allOf(Brand.class));
         ArrayList<Amount> amountList = new ArrayList<Amount>(EnumSet.allOf(Amount.class));
+
+        drinkTypeSpinner.setItems(drinkTypeList);
+        brandSpinner.setItems(brandList);
+        amountSpinner.setItems(amountList);
+
+        drinkTypeSpinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+
+
+            }
+        });
+
 
         final ArrayAdapter<Brand> brandAdapter = new ArrayAdapter<Brand>(getApplicationContext(),android.R.layout.simple_spinner_dropdown_item,brandList);
         brandAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -99,44 +115,45 @@ public class ProductActivity extends MapsActivity {
         final ArrayAdapter<Amount> amountAdapter = new ArrayAdapter<Amount>(getApplicationContext(),android.R.layout.simple_spinner_dropdown_item,amountList);
         brandAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-        DrinkTypeSpinner.setAdapter(drinkTypeAdapter);
-        BrandSpinner.setAdapter(brandAdapter);
-        AmountSpinner.setAdapter(amountAdapter);
 
-        SetSpinnerListener(DrinkTypeSpinner, ProductSpinnerType.DRINKTYPE);
-        SetSpinnerListener(BrandSpinner, ProductSpinnerType.BRAND);
-        SetSpinnerListener(AmountSpinner, ProductSpinnerType.AMOUNT);
+
+
+        //DrinkTypeSpinner.setAdapter(drinkTypeAdapter);
+        //BrandSpinner.setAdapter(brandAdapter);
+        //AmountSpinner.setAdapter(amountAdapter);
+
+        SetSpinnerListener(drinkTypeSpinner, ProductSpinnerType.DRINKTYPE);
+        SetSpinnerListener(brandSpinner, ProductSpinnerType.BRAND);
+        SetSpinnerListener(amountSpinner, ProductSpinnerType.AMOUNT);
 
 
     }
 
 
-    private void SetSpinnerListener(Spinner spinner, final ProductSpinnerType type ){
+    private void SetSpinnerListener(MaterialSpinner spinner, final ProductSpinnerType type ){
 
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener(){
-
+        spinner.setOnItemSelectedListener(new MaterialSpinner.OnItemSelectedListener() {
             @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemSelected(MaterialSpinner view, int position, long id, Object item) {
+
 
                 switch (type){
 
                     case BRAND:
-                        brand = (Brand) adapterView.getItemAtPosition(i);
+                        brand = (Brand) item;
                         break;
                     case AMOUNT:
-                        amount = (Amount) adapterView.getItemAtPosition(i);
+                        amount = (Amount) item;
                         break;
                     case DRINKTYPE:
-                        drinkType = (DrinkType) adapterView.getItemAtPosition(i);
+                        drinkType = (DrinkType) item;
                         break;
                 }
-            }
 
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
 
             }
         });
+
 
     }
 
