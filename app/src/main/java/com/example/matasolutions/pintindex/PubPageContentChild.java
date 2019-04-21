@@ -6,21 +6,25 @@ import android.widget.ImageView;
 
 public class PubPageContentChild implements Parcelable {
 
-    public final String name;
+    public  String name;
     public PubPageCategory type;
+
+    Pub pub;
 
     public Facility facility;
 
 
-    public PubPageContentChild(String name) {
-        this.name = name;
+    public PubPageContentChild(Pub pub ,PubPageCategory type) {
+
+        this.pub = pub;
+        this.type = type;
     }
 
-    public PubPageContentChild(String name,PubPageCategory type, Facility facility){
+    public PubPageContentChild(String name,PubPageCategory type, Facility facility, Pub pub){
 
         this.facility = facility;
         this.type = type;
-        this.name = name;
+        this.pub = pub;
     }
 
 

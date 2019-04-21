@@ -1085,30 +1085,6 @@ public class PubSetup implements Parcelable {
     }
 
 
-    public static ArrayList<PubPageContentChild> AddToChildList (ArrayList<Facility> facilities){
-
-        if(facilities != null) {
-
-
-            ArrayList<PubPageContentChild> childList = new ArrayList<>();
-
-            for (int i = 0; i < facilities.size(); i++) {
-
-                Facility current = facilities.get(i);
-
-                childList.add(new PubPageContentChild(current.name, PubPageCategory.FACILITIES, current));
-
-            }
-
-            return childList;
-
-        }
-
-        return null;
-
-
-    }
-
     public Pub returnPubByName(String name){
 
         for(Pub p : pubs){

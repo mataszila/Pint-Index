@@ -130,7 +130,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private String getTitleString(String title){
 
-        return "<font color='#ffcc00'>" + pub.name + "</font>";
+        return "<font color='#ffcc00'>" + title + "</font>";
 
     }
 
@@ -265,7 +265,9 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         ArrayList<PubPageContentChild> openingHoursChild = new ArrayList<PubPageContentChild>();
 
-        openingHoursChild.add(new PubPageContentChild(pub.weekOpeningHours.ContentToString()));
+        //    public PubPageContentChild(Pub pub ,PubPageCategory type) {
+
+        openingHoursChild.add(new PubPageContentChild(pub,PubPageCategory.OPENING_HOURS));
 
         parentList.add(new PubPageContentParent("Opening Hours", openingHoursChild));
 
@@ -273,7 +275,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         ArrayList<PubPageContentChild> pricesChild = new ArrayList<PubPageContentChild>();
 
-        pricesChild.add(new PubPageContentChild(pub.prices.ContentToString()));
+        pricesChild.add(new PubPageContentChild(pub,PubPageCategory.PRICES));
 
         parentList.add(new PubPageContentParent("Prices", pricesChild));
 
@@ -281,13 +283,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         ArrayList<PubPageContentChild> facilitiesChild = new ArrayList<PubPageContentChild>();
 
-        for(int i=0;i<pub.facilities.facilities.size();i++){
-
-            Facility current = pub.facilities.facilities.get(i);
-
-            facilitiesChild.add(new PubPageContentChild(current.name,current.category,current));
-
-        }
+        facilitiesChild.add(new PubPageContentChild(pub,PubPageCategory.FACILITIES));
 
         parentList.add(new PubPageContentParent("Facilities", facilitiesChild));
 
@@ -295,13 +291,15 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         ArrayList<PubPageContentChild> ratingsChild = new ArrayList<PubPageContentChild>();
 
-        ratingsChild.add(new PubPageContentChild(pub.ratings.ContentToString()));
+        ratingsChild.add(new PubPageContentChild(pub,PubPageCategory.RATINGS));
 
         parentList.add(new PubPageContentParent("Ratings", ratingsChild));
 
         //Adapter
 
         ChildAdapter adapter = new ChildAdapter(parentList);
+
+
         recyclerView.setAdapter(adapter);
 
     }
