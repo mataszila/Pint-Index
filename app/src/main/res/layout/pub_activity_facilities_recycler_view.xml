@@ -1,23 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/pub_activity_facilities_image"
-        android:layout_weight="1"
-        />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/toolbar_card_4"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/pub_activity_facilities_text"
-        android:text="Car parking"
+        app:cardElevation="8dp"
         android:layout_weight="1"
+        android:layout_marginBottom="2dp"
 
-        />
+        android:background="@drawable/cardviewborder">
+        >
+
+        <LinearLayout
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/pub_activity_facilities_image"
+                android:layout_weight="1"
+                />
+
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/pub_activity_facilities_text"
+                android:text="Car parking"
+                android:textColor="#000"
+                android:layout_weight="1"
+
+                />
+
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
 
 
 </LinearLayout>
