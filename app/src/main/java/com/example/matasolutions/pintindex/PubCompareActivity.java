@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.app.AlertDialog;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -47,6 +48,9 @@ public class PubCompareActivity extends AppCompatActivity {
 
     private PubSetup pubSetup;
 
+    LinearLayout layout;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,8 +58,6 @@ public class PubCompareActivity extends AppCompatActivity {
         setContentView(R.layout.activity_pub_compare);
 
         setTitle("Pub comparison");
-
-        getSupportActionBar().setTitle(Html.fromHtml("<font color='#ffcc00'>Pub Comparison </font>"));
 
         pubSetup = getIntent().getParcelableExtra("pubSetup");
 
@@ -93,6 +95,11 @@ public class PubCompareActivity extends AppCompatActivity {
 
 
     private void SetupActivity(String pub2name){
+
+        layout = findViewById(R.id.pubcompare_activity_layout);
+        layout.setVisibility(View.VISIBLE);
+        findViewById(R.id.loadingPanel_pub_Compare).setVisibility(View.GONE);
+
 
         try {
             SetupData(pub2name);

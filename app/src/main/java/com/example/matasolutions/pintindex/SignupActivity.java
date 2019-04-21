@@ -105,7 +105,7 @@ public class SignupActivity extends AppCompatActivity {
 
 
                                 finish();
-                                startActivity(new Intent(getApplicationContext(), ProfileActivity.class));
+                                startActivity(new Intent(getApplicationContext(), WelcomeBackActivity.class));
                             }else{
                                 Toast.makeText(SignupActivity.this, "Couldn't register, try again",
                                         Toast.LENGTH_LONG).show();

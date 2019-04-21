@@ -13,6 +13,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 
@@ -44,8 +45,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         profile = new Profile();
 
         tracker = new GPSTracker(this);
-
-        //pubSetup = new PubSetup();
 
         pubSetup = getIntent().getParcelableExtra("pubSetup");
 
@@ -110,9 +109,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
+
+        Log.d("TAG", "IS TOOLBAR ENABLED: " + mMap.getUiSettings().isMapToolbarEnabled());
         setupMap();
         setupMarkers();
         setupListeners();
+
     }
 
     private void setupMap() {
@@ -139,7 +141,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     marker.setTitle(formatMarkerTitle(thisPub.name, HelperMethods.CalculationByDistance(HelperMethods.convertLatLng(curLatLng), HelperMethods
                             .convertLatLng(thisPub.coordinates))));
                 }
-
+                mMap.getUiSettings().setMapToolbarEnabled(true);
                 return false;
             }
         });
@@ -194,6 +196,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             thisPub.marker = mMap.addMarker(new MarkerOptions().
                     position(HelperMethods.convertLatLng(thisPub.coordinates)).
                     title(title));
+
         }
     }
 

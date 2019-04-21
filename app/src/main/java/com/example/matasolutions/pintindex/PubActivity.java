@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
@@ -29,6 +30,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -70,6 +72,9 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
     FirebaseDatabase database;
     DatabaseReference myRef;
 
+    LinearLayout mainLayout;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +89,12 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         ReadSinglePub(new PubActivityCallback() {
             @Override
             public void onSinglePubCallBack(Pub value) {
+
+                mainLayout = findViewById(R.id.pub_activity_layout);
+                mainLayout.setVisibility(View.VISIBLE);
+
+                findViewById(R.id.loadingPanel_pub).setVisibility(View.GONE);
+
                 setupPub(value);
                 SetupToolbar();
                 AddPubPageContent();
@@ -118,20 +129,13 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         pub = db_pub;
 
         LatLng sydney = pub.getCoordinates();
+
         mMap.addMarker(new MarkerOptions().position(sydney).title(pub.name));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(pub.coordinates.getLatitude(),pub.coordinates.getLongitude()), 15.0f));
 
+
         setTitle(pub.name);
-        getSupportActionBar().setTitle(Html.fromHtml(getTitleString(pub.name)));
-
-
-    }
-
-    private String getTitleString(String title){
-
-        return "<font color='#ffcc00'>" + title + "</font>";
-
     }
 
 
@@ -190,40 +194,6 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
             }
         });
-
-
-
-        SetupFacilityLogos();
-
-        //SetupRecyclerView();
-
-    }
-
-    private void SetupRecyclerView(){
-
-        layoutManager= new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false);
-
-        toolbar_recyclerview = findViewById(R.id.toolbar_recyclerview);
-
-        toolbar_recyclerview.setLayoutManager(layoutManager);
-        RecyclerView.Adapter mAdapter = new MyAdapter(pub.facilities.facilities);
-        toolbar_recyclerview.setAdapter(mAdapter);
-
-    }
-
-
-    private void SetupFacilityLogos(){
-
-        facilityLogos = new ArrayList<ImageView>();
-        for(int i=0;i<pub.facilities.facilities.size();i++){
-
-            Facility thisFacility = pub.facilities.facilities.get(i);
-            ImageView imageView = new ImageView(this);
-
-            imageView.setImageResource(PubSetup.ReturnResourceID(thisFacility));
-
-            facilityLogos.add(imageView);
-        }
 
     }
 

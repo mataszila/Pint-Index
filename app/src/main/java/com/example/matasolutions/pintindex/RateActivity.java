@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -47,6 +48,8 @@ public class RateActivity extends AppCompatActivity {
 
     TextView hasBeenRatedYet;
 
+    LinearLayout layout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,6 +73,12 @@ public class RateActivity extends AppCompatActivity {
                 else{
                     profile.pubRatingEntries = new ArrayList<>();
                 }
+
+
+                layout = findViewById(R.id.rate_activity_layout);
+                layout.setVisibility(View.VISIBLE);
+
+                findViewById(R.id.loadingPanel_rate).setVisibility(View.GONE);
 
                 SetupActivity();
             }

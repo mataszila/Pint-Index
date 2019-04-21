@@ -16,11 +16,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/child_prices_recyclerView">
-
-
         </androidx.recyclerview.widget.RecyclerView>
-
-
 
     </LinearLayout>
 
@@ -34,11 +30,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/child_facilities_recyclerView">
-
-
         </androidx.recyclerview.widget.RecyclerView>
-
-
 
     </LinearLayout>
 
@@ -53,11 +45,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/child_ratings_recyclerView">
-
-
         </androidx.recyclerview.widget.RecyclerView>
-
-
 
     </LinearLayout>
 
@@ -71,11 +59,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/child_openinghours_recyclerView">
-
-
         </androidx.recyclerview.widget.RecyclerView>
-
-
 
     </LinearLayout>
 
