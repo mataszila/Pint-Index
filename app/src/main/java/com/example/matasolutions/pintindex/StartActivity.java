@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,7 +30,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class StartActivity extends AppCompatActivity {
-
 
     DrawerLayout drawer;
 
@@ -45,8 +45,9 @@ public class StartActivity extends AppCompatActivity {
 
     private TextView register;
 
-    PubSetup setup;
+    LinearLayout layout;
 
+    PubSetup setup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,11 +56,9 @@ public class StartActivity extends AppCompatActivity {
 
         setup = new PubSetup();
 
-
-
         tracker = new GPSTracker(this);
 
-        if(statusCheck() == false){
+        if(!statusCheck()){
 
             buildAlertMessageNoGps();
         }
@@ -105,6 +104,9 @@ public class StartActivity extends AppCompatActivity {
             startActivity(new Intent(getApplicationContext(),WelcomeBackActivity.class));
         }
 
+        layout = findViewById(R.id.start_activity_layout);
+        layout.setVisibility(View.VISIBLE);
+
     }
 
     public void LoginUser() {
@@ -118,7 +120,7 @@ public class StartActivity extends AppCompatActivity {
                             currentUser = mAuth.getCurrentUser();
                             finish();
                             startActivity(new Intent(getApplicationContext(),
-                                    ProfileActivity.class));
+                                    WelcomeBackActivity.class));
                         } else {
                             Toast.makeText(getApplicationContext(), "couldn't login",
                                     Toast.LENGTH_SHORT).show();

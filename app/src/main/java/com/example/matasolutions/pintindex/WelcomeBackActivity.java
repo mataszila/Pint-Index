@@ -8,6 +8,7 @@ import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -27,6 +28,8 @@ public class WelcomeBackActivity extends AppCompatActivity {
 
     PubSetup pubSetup;
 
+    LinearLayout layout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,14 +47,28 @@ public class WelcomeBackActivity extends AppCompatActivity {
 
                 //Intent intent = new Intent(getApplicationContext(),SearchActivity.class);
 
-                intent.putExtra("pubSetup", pubSetup);
-                startActivity(intent);
+                SetupViews();
+
+//                intent.putExtra("pubSetup", pubSetup);
+//                startActivity(intent);
 
             }
         });
 
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+
+    }
+
+
+    private void SetupViews(){
+
+        layout = findViewById(R.id.welcome_back_activity_layout);
+        layout.setVisibility(View.VISIBLE);
+        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+
+
+
 
         welcome_back_user = findViewById(R.id.welcome_back_user_textView);
 
@@ -64,6 +81,7 @@ public class WelcomeBackActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                mAuth.signOut();
                 startActivity(new Intent(getApplicationContext(),StartActivity.class));
             }
         });
@@ -82,6 +100,10 @@ public class WelcomeBackActivity extends AppCompatActivity {
 
             }
         });
+
+
+
+
 
     }
 }

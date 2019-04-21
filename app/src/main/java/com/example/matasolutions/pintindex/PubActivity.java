@@ -14,12 +14,14 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.media.Image;
 import android.os.Bundle;
+import android.text.Html;
 import android.text.SpannableString;
 import android.text.style.ForegroundColorSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toolbar;
 
@@ -28,6 +30,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -69,6 +72,9 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
     FirebaseDatabase database;
     DatabaseReference myRef;
 
+    LinearLayout mainLayout;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +89,12 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         ReadSinglePub(new PubActivityCallback() {
             @Override
             public void onSinglePubCallBack(Pub value) {
+
+                mainLayout = findViewById(R.id.pub_activity_layout);
+                mainLayout.setVisibility(View.VISIBLE);
+
+                findViewById(R.id.loadingPanel_pub).setVisibility(View.GONE);
+
                 setupPub(value);
                 SetupToolbar();
                 AddPubPageContent();
@@ -117,12 +129,15 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
         pub = db_pub;
 
         LatLng sydney = pub.getCoordinates();
+
         mMap.addMarker(new MarkerOptions().position(sydney).title(pub.name));
         mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
         mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(pub.coordinates.getLatitude(),pub.coordinates.getLongitude()), 15.0f));
 
+
         setTitle(pub.name);
     }
+
 
     private void SetupToolbar(){
 
@@ -180,42 +195,6 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
             }
         });
 
-
-
-
-
-        SetupFacilityLogos();
-
-        //SetupRecyclerView();
-
-    }
-
-    private void SetupRecyclerView(){
-
-        layoutManager= new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL, false);
-
-        toolbar_recyclerview = findViewById(R.id.toolbar_recyclerview);
-
-        toolbar_recyclerview.setLayoutManager(layoutManager);
-        RecyclerView.Adapter mAdapter = new MyAdapter(pub.facilities.facilities);
-        toolbar_recyclerview.setAdapter(mAdapter);
-
-    }
-
-
-    private void SetupFacilityLogos(){
-
-        facilityLogos = new ArrayList<ImageView>();
-        for(int i=0;i<pub.facilities.facilities.size();i++){
-
-            Facility thisFacility = pub.facilities.facilities.get(i);
-            ImageView imageView = new ImageView(this);
-
-            imageView.setImageResource(PubSetup.ReturnResourceID(thisFacility));
-
-            facilityLogos.add(imageView);
-        }
-
     }
 
 
@@ -256,7 +235,9 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         ArrayList<PubPageContentChild> openingHoursChild = new ArrayList<PubPageContentChild>();
 
-        openingHoursChild.add(new PubPageContentChild(pub.weekOpeningHours.ContentToString()));
+        //    public PubPageContentChild(Pub pub ,PubPageCategory type) {
+
+        openingHoursChild.add(new PubPageContentChild(pub,PubPageCategory.OPENING_HOURS));
 
         parentList.add(new PubPageContentParent("Opening Hours", openingHoursChild));
 
@@ -264,7 +245,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         ArrayList<PubPageContentChild> pricesChild = new ArrayList<PubPageContentChild>();
 
-        pricesChild.add(new PubPageContentChild(pub.prices.ContentToString()));
+        pricesChild.add(new PubPageContentChild(pub,PubPageCategory.PRICES));
 
         parentList.add(new PubPageContentParent("Prices", pricesChild));
 
@@ -272,13 +253,7 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         ArrayList<PubPageContentChild> facilitiesChild = new ArrayList<PubPageContentChild>();
 
-        for(int i=0;i<pub.facilities.facilities.size();i++){
-
-            Facility current = pub.facilities.facilities.get(i);
-
-            facilitiesChild.add(new PubPageContentChild(current.name,current.category,current));
-
-        }
+        facilitiesChild.add(new PubPageContentChild(pub,PubPageCategory.FACILITIES));
 
         parentList.add(new PubPageContentParent("Facilities", facilitiesChild));
 
@@ -286,13 +261,15 @@ public class PubActivity extends AppCompatActivity implements OnMapReadyCallback
 
         ArrayList<PubPageContentChild> ratingsChild = new ArrayList<PubPageContentChild>();
 
-        ratingsChild.add(new PubPageContentChild(pub.ratings.ContentToString()));
+        ratingsChild.add(new PubPageContentChild(pub,PubPageCategory.RATINGS));
 
         parentList.add(new PubPageContentParent("Ratings", ratingsChild));
 
         //Adapter
 
         ChildAdapter adapter = new ChildAdapter(parentList);
+
+
         recyclerView.setAdapter(adapter);
 
     }

@@ -39,6 +39,7 @@ public class SearchActivity extends AppCompatActivity {
 
     MaterialSpinner sortBySpinner;
 
+
     ArrayList<String> pubNames;
 
     private RecyclerView recyclerView;

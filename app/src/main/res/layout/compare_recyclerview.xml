@@ -11,6 +11,7 @@
         android:id="@+id/pub_compare_card1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+
         app:cardElevation="8dp">
 
         <LinearLayout
@@ -18,7 +19,6 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal|center_vertical"
             android:paddingTop="5dp"
-
             android:background="@drawable/cardviewborder"
             android:orientation="vertical">
 
@@ -28,6 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Ratings"
+                android:textColor="#000"
                 android:textAlignment="center"
                 android:textSize="22sp"
                 android:textStyle="bold"
@@ -69,8 +70,8 @@
                     android:layout_height="wrap_content"
                     android:text="4.4"
                     android:textAlignment="center"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
+                    android:textSize="22sp"
+                    android:textColor="#000"
                     />
 
 
@@ -104,9 +105,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="4.7"
+                    android:textColor="#000"
                     android:textAlignment="center"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
+                    android:textSize="22sp"
                     android:layout_weight="1"
                     />
 

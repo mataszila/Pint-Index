@@ -9,12 +9,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.app.AlertDialog;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -45,6 +47,9 @@ public class PubCompareActivity extends AppCompatActivity {
     private GPSTracker tracker;
 
     private PubSetup pubSetup;
+
+    LinearLayout layout;
+
 
 
     @Override
@@ -90,6 +95,11 @@ public class PubCompareActivity extends AppCompatActivity {
 
 
     private void SetupActivity(String pub2name){
+
+        layout = findViewById(R.id.pubcompare_activity_layout);
+        layout.setVisibility(View.VISIBLE);
+        findViewById(R.id.loadingPanel_pub_Compare).setVisibility(View.GONE);
+
 
         try {
             SetupData(pub2name);

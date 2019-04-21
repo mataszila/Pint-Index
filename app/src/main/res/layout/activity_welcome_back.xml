@@ -7,29 +7,63 @@
     tools:context=".WelcomeBackActivity"
     android:orientation="vertical">
 
+    <LinearLayout
+        android:id="@+id/welcome_back_activity_layout"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:context=".WelcomeBackActivity"
+        android:visibility="gone"
+        android:orientation="vertical">
+
+
     <TextView
+        android:layout_marginTop="150dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:text="Welcome back"
+        android:textSize="24dp"
         android:id="@+id/welcome_back_user_textView"
 
         />
 
     <Button
+        android:layout_marginTop="250dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button_proceed"
-        android:text="Proceed"
+        android:text="Continue"
         android:layout_gravity="center"
         />
 
     <Button
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/button_logout"
         android:text="Logout"
         android:layout_gravity="center"
         />
+
+    <RelativeLayout
+        android:id="@+id/loadingPanel"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center" >
+
+        <ProgressBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"/>
+
+    </RelativeLayout>
+
+</LinearLayout>
 
 </LinearLayout>
