@@ -4,66 +4,67 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 import androidx.recyclerview.widget.RecyclerView;
 
-public  class MyPricesAdapter extends RecyclerView.Adapter<MyPricesAdapter.MyPricesViewHolder> {
-    private ArrayList<Price> mDataset;
 
+public class MyFacilitiesAdapter extends RecyclerView.Adapter<MyFacilitiesAdapter.MyFacilitiesViewHolder> {
+    private ArrayList<Facility> mDataset;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
     // you provide access to all the views for a data item in a view holder
-    public static class MyPricesViewHolder extends RecyclerView.ViewHolder {
+    public static class MyFacilitiesViewHolder extends RecyclerView.ViewHolder {
         // each data item is just a string in this case
 
-        public TextView brand;
-        public TextView price;
+        public ImageView image;
+        public TextView text;
 
 
-        public MyPricesViewHolder(View v) {
+        public MyFacilitiesViewHolder(View v) {
             super(v);
 
-            brand =  v.findViewById(R.id.pub_activity_prices_brand);
-            price =  v.findViewById(R.id.pub_activity_prices_price);
+            image =  v.findViewById(R.id.pub_activity_facilities_image);
+            text =  v.findViewById(R.id.pub_activity_facilities_text);
         }
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyPricesAdapter(ArrayList<Price> myDataset) {
+    public MyFacilitiesAdapter(ArrayList<Facility> myDataset) {
         mDataset = myDataset;
     }
 
     // Create new views (invoked by the layout manager)
     @Override
-    public MyPricesAdapter.MyPricesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyFacilitiesAdapter.MyFacilitiesViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // create a new view
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
 
-        View v = inflater.inflate(R.layout.pub_activity_prices_recycler_view, parent, false);
+        View v = inflater.inflate(R.layout.pub_activity_facilities_recycler_view, parent, false);
 
-        MyPricesAdapter.MyPricesViewHolder vh = new MyPricesAdapter.MyPricesViewHolder(v);
+        MyFacilitiesAdapter.MyFacilitiesViewHolder vh = new MyFacilitiesAdapter.MyFacilitiesViewHolder(v);
         return vh;
     }
 
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyPricesAdapter.MyPricesViewHolder holder, int position) {
+    public void onBindViewHolder(MyFacilitiesAdapter.MyFacilitiesViewHolder holder, int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
-        Price thisPrice = mDataset.get(position);
+        Facility thisFacility = mDataset.get(position);
 
         // Set item views based on your views and data model
-        TextView brand = holder.brand;
-        TextView price  = holder.price;
+        ImageView image = holder.image;
+        TextView text  = holder.text;
 
-        brand.setText(String.valueOf(thisPrice.product.brand));
-        price.setText(String.valueOf(thisPrice.price));
+        image.setImageResource(PubSetup.ReturnResourceID(thisFacility));
+        text.setText(thisFacility.name);
 
     }
 

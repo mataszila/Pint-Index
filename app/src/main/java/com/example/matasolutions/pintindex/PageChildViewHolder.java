@@ -25,6 +25,11 @@ public class PageChildViewHolder extends ChildViewHolder {
     private RecyclerView.Adapter prices_mAdapter;
     private RecyclerView.LayoutManager prices_layoutManager;
 
+    private LinearLayout facilitiesLinearLayout;
+
+    private RecyclerView facilities_recyclerView;
+    private RecyclerView.Adapter facilities_mAdapter;
+    private RecyclerView.LayoutManager facilities_layoutManager;
 
 
     public PageChildViewHolder(View itemView) {
@@ -33,17 +38,17 @@ public class PageChildViewHolder extends ChildViewHolder {
         mTextView = itemView.findViewById(R.id.childTextView);
     }
 
-    public void bind(final PubPageContentChild child){
+    public void bind(final PubPageContentChild child) {
         mTextView.setText(child.name);
         mImageView = itemView.findViewById(R.id.facilityLogo);
 
 
-        if(child.type == PubPageCategory.PRICES){
+        if (child.type == PubPageCategory.PRICES) {
 
             pricesLinearLayout = itemView.findViewById(R.id.child_prices);
             pricesLinearLayout.setVisibility(View.VISIBLE);
 
-            prices_recyclerView =  itemView.findViewById(R.id.child_prices_recyclerView);
+            prices_recyclerView = itemView.findViewById(R.id.child_prices_recyclerView);
 
             prices_recyclerView.setHasFixedSize(true);
 
@@ -53,29 +58,21 @@ public class PageChildViewHolder extends ChildViewHolder {
             prices_mAdapter = new MyPricesAdapter(child.pub.prices.priceList);
             prices_recyclerView.setAdapter(prices_mAdapter);
 
-        }
+        } else if (child.type == PubPageCategory.FACILITIES) {
 
+            facilitiesLinearLayout = itemView.findViewById(R.id.child_facilities);
+            facilitiesLinearLayout.setVisibility(View.VISIBLE);
 
+            facilities_recyclerView = itemView.findViewById(R.id.child_facilities_recyclerView);
 
+            facilities_recyclerView.setHasFixedSize(true);
 
-        if(child.type == PubPageCategory.FACILITIES){
+            facilities_layoutManager = new LinearLayoutManager(itemView.getContext());
+            facilities_recyclerView.setLayoutManager(facilities_layoutManager);
 
-            mImageView.setImageResource(PubSetup.ReturnResourceID(child.facility));
-            mImageView.setVisibility(View.VISIBLE);
-            mTextView.setVisibility(View.GONE);
+            facilities_mAdapter = new MyFacilitiesAdapter(child.pub.facilities.facilities);
+            facilities_recyclerView.setAdapter(facilities_mAdapter);
 
-            mImageView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-
-                    mTextView.setVisibility(View.VISIBLE);
-                }
-            });
-
-
-        }
-        else{
-            mImageView.setVisibility(View.GONE);
         }
 
     }
