@@ -24,6 +24,36 @@ class Facilities implements Parcelable {
     }
 
 
+    public static int ReturnResourceID(Facility current){
+
+        int answer = 0;
+
+        switch(current.type){
+
+            case CAR_PARKING:
+                answer = R.drawable.ic_baseline_local_parking_24px;
+                break;
+            case LIVE_SPORTS:
+                answer = R.drawable.ic_baseline_directions_run_24px;
+                break;
+            case FOOD_SNACKS:
+                answer = R.drawable.ic_baseline_fastfood_24px;
+                break;
+            case FREE_WIFI:
+                answer = R.drawable.ic_baseline_network_wifi_24px;
+                break;
+            case LIVE_MUSIC:
+                answer = R.drawable.ic_baseline_music_note_24px;
+                break;
+            default:
+                answer = 0;
+        }
+
+        return answer;
+
+    }
+
+
     protected Facilities(Parcel in) {
         if (in.readByte() == 0x01) {
             facilities = new ArrayList<Facility>();

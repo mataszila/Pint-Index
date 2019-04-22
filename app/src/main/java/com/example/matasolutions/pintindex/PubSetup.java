@@ -31,13 +31,26 @@ public class PubSetup implements Parcelable {
 
         pubs = new ArrayList<Pub>();
 
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("pubsList");
+        SetupDatabase();
 
         db_pubs = new ArrayList<Pub>();
 
         AddPubs();
 
+    }
+
+    PubSetup(boolean testing){
+
+        pubs = new ArrayList<Pub>();
+        AddPubs();
+
+    }
+
+
+    private void SetupDatabase(){
+
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("pubsList");
     }
 
     protected PubSetup(Parcel in) {
