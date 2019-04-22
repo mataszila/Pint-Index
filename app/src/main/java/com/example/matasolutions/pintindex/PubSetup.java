@@ -1049,7 +1049,7 @@ public class PubSetup implements Parcelable {
 
         pubs.add(pub10);
 
-        myRef.child("list").setValue(pubs);
+       // myRef.child("list").setValue(pubs);
 
     }
 

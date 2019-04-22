@@ -45,6 +45,7 @@ public class PageChildViewHolder extends ChildViewHolder {
     private RecyclerView.Adapter openinghours_mAdapter;
     private RecyclerView.LayoutManager openinghours_layoutManager;
 
+    private Context context;
 
 
 
@@ -52,6 +53,7 @@ public class PageChildViewHolder extends ChildViewHolder {
 
         super(itemView);
         mTextView = itemView.findViewById(R.id.childTextView);
+        this.context = itemView.getContext();
     }
 
     public void bind(final PubPageContentChild child) {
@@ -81,7 +83,7 @@ public class PageChildViewHolder extends ChildViewHolder {
                 prices_layoutManager = new LinearLayoutManager(itemView.getContext());
                 prices_recyclerView.setLayoutManager(prices_layoutManager);
 
-                prices_mAdapter = new MyPricesAdapter(child.pub.prices.priceList);
+                prices_mAdapter = new MyPricesAdapter(child.pub.prices.priceList,child.pub.id,context);
                 prices_recyclerView.setAdapter(prices_mAdapter);
 
 
@@ -122,7 +124,7 @@ public class PageChildViewHolder extends ChildViewHolder {
                 ratings_layoutManager = new LinearLayoutManager(itemView.getContext());
                 ratings_recyclerView.setLayoutManager(ratings_layoutManager);
 
-                ratings_mAdapter = new MyRatingsAdapter(child.pub.ratings.ratings);
+                ratings_mAdapter = new MyRatingsAdapter(child.pub.ratings.ratings,child.pub.id);
                 ratings_recyclerView.setAdapter(ratings_mAdapter);
                 break;
             case OPENING_HOURS:

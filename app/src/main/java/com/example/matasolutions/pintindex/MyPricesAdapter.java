@@ -1,10 +1,17 @@
 package com.example.matasolutions.pintindex;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
@@ -12,7 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public  class MyPricesAdapter extends RecyclerView.Adapter<MyPricesAdapter.MyPricesViewHolder> {
     private ArrayList<Price> mDataset;
-
+    private String pubID;
+    private Context context;
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -33,8 +41,10 @@ public  class MyPricesAdapter extends RecyclerView.Adapter<MyPricesAdapter.MyPri
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyPricesAdapter(ArrayList<Price> myDataset) {
+    public MyPricesAdapter(ArrayList<Price> myDataset, String pubID,Context context) {
         mDataset = myDataset;
+        this.pubID = pubID;
+        this.context = context;
     }
 
     // Create new views (invoked by the layout manager)
@@ -60,12 +70,55 @@ public  class MyPricesAdapter extends RecyclerView.Adapter<MyPricesAdapter.MyPri
 
         // Set item views based on your views and data model
         TextView brand = holder.brand;
-        TextView price  = holder.price;
+        final TextView price  = holder.price;
+
+
+        final int arrPos = position;
 
         brand.setText(String.valueOf(thisPrice.product.brand));
         price.setText(String.valueOf(thisPrice.price));
 
+
+        price.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                final  DatabaseReference myRef = database.getReference("pubsList");
+                AlertDialog.Builder builder = new AlertDialog.Builder(context);
+                builder.setTitle("Please enter a new price for selected product");
+
+                final EditText input = new EditText(context);
+
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                builder.setView(input);
+
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String newPrice = input.getText().toString();
+                        myRef.child("list").child(pubID).child("prices").child("priceList").child(String.valueOf(arrPos)).child("price").setValue(Double.parseDouble(newPrice));
+                        price.setText(newPrice);
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+
+
+            }
+        });
+
+
+
     }
+
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
