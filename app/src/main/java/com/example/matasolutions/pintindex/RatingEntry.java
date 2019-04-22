@@ -12,8 +12,8 @@ import java.io.Serializable;
 
 public class RatingEntry implements Parcelable {
 
-    String ratingType;
-    double input_rating;
+    public String ratingType;
+    public double input_rating;
 
 
     RatingEntry(RatingType ratingType,double rating){

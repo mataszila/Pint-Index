@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 class Facilities implements Parcelable {
 
-    ArrayList<Facility> facilities;
+    public  ArrayList<Facility> facilities;
     public PubPageCategory category = PubPageCategory.FACILITIES;
 
 

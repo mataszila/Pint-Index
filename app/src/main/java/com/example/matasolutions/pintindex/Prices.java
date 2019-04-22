@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 class Prices implements PubPageContentInterface,Parcelable {
 
-    ArrayList<Price> priceList;
+    public ArrayList<Price> priceList;
     public PubPageCategory category = PubPageCategory.PRICES;
 
 
