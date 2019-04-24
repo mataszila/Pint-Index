@@ -7,8 +7,8 @@ import java.util.ArrayList;
 
 public class PubRatingEntry implements Parcelable {
 
-    ArrayList<RatingEntry> ratingEntries;
-    String pubID;
+    public ArrayList<RatingEntry> ratingEntries;
+    public String pubID;
 
     public PubRatingEntry(){}
 

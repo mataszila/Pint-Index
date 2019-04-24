@@ -97,28 +97,28 @@ public class SearchActivity extends AppCompatActivity {
         switch (selectedSort){
 
             case "Rating (low to high)":
-                SortByRatingOrDistance(SortByType.RATING_AVERAGE,false);
+                HelperMethods.SortByRatingOrDistance(setup.pubs,SortByType.RATING_AVERAGE,false,HelperMethods.convertLatLng(tracker.getCurrentLatLng()));
                 recyclerView.setAdapter(mAdapter);
                 break;
             case "Rating (high to low)":
-                SortByRatingOrDistance(SortByType.RATING_AVERAGE,true);
+                HelperMethods.SortByRatingOrDistance(setup.pubs,SortByType.RATING_AVERAGE,true,HelperMethods.convertLatLng(tracker.getCurrentLatLng()));
                 recyclerView.setAdapter(mAdapter);
                 break;
 
             case "Distance (low to high)":
-                SortByRatingOrDistance(SortByType.DISTANCE,false);
+                HelperMethods.SortByRatingOrDistance(setup.pubs,SortByType.DISTANCE,false,HelperMethods.convertLatLng(tracker.getCurrentLatLng()));
                 recyclerView.setAdapter(mAdapter);
                 break;
             case "Distance (high to low)":
-                SortByRatingOrDistance(SortByType.DISTANCE,true);
+                HelperMethods.SortByRatingOrDistance(setup.pubs,SortByType.DISTANCE,true,HelperMethods.convertLatLng(tracker.getCurrentLatLng()));
                 recyclerView.setAdapter(mAdapter);
                 break;
             case "Closing time (soonest to latest)":
-                SortByClosingTime(false);
+                HelperMethods.SortByClosingTime(setup.pubs,false);
                 recyclerView.setAdapter(mAdapter);
                 break;
             case "Closing time (latest to soonest)":
-                SortByClosingTime(true);
+                HelperMethods.SortByClosingTime(setup.pubs,true);
                 recyclerView.setAdapter(mAdapter);
                 break;
 
@@ -126,97 +126,7 @@ public class SearchActivity extends AppCompatActivity {
 
     }
 
-    private void SortByClosingTime(final boolean latestToSoonest){
 
-        Collections.sort(setup.pubs, new Comparator<Pub>() {
-            @Override
-            public int compare(Pub lhs, Pub rhs) {
-                // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
-
-                double p1=0;
-                double p2=0;
-
-                SingleOpeningHours hoursForToday1  = lhs.weekOpeningHours.openingHours.get(HelperMethods.GetCorrectDayOfWeek()-1);
-                SingleOpeningHours hoursForToday2  = rhs.weekOpeningHours.openingHours.get(HelperMethods.GetCorrectDayOfWeek()-1);
-
-                String closing1 = hoursForToday1.closingTime;
-                String closing2 = hoursForToday2.closingTime;
-
-                String[] parts1 = closing1.split(":");
-                Calendar date1 = Calendar.getInstance();
-
-                // 23:00
-
-                date1.set(Calendar.HOUR_OF_DAY, Integer.parseInt(parts1[0]));
-                date1.set(Calendar.MINUTE, Integer.parseInt(parts1[1]));
-                date1.set(Calendar.SECOND, 0);
-
-                String[] parts2 = closing2.split(":");
-                Calendar date2 = Calendar.getInstance();
-
-                // 00:00
-
-                date2.set(Calendar.HOUR_OF_DAY, Integer.parseInt(parts2[0]));
-                date2.set(Calendar.MINUTE, Integer.parseInt(parts2[1]));
-                date2.set(Calendar.SECOND, 0);
-
-                if(date1.HOUR_OF_DAY > 12 && date1.HOUR_OF_DAY <= 23 ){
-
-                    date2.add(Calendar.DATE,5);
-                }
-                if(date2.HOUR_OF_DAY > 12 && date2.HOUR_OF_DAY <= 23){
-
-                    date1.add(Calendar.DATE,5);
-                }
-
-                if(date1.before(date2)){
-                    p1 = 0;
-                    p2 = 1;
-                }
-                else{
-                    p1 = 1;
-                    p2 = 0;
-                }
-
-                if(latestToSoonest){
-                    return p1 > p2 ? -1 : (p1 < p2) ? 1 : 0;
-                }
-
-                return p1 > p2 ? 1 : (p1 < p2) ? -1 : 0;
-
-
-            }
-        });
-
-
-    }
-
-    private void SortByRatingOrDistance(final SortByType sortType, final boolean highToLow){
-
-        Collections.sort(setup.pubs, new Comparator<Pub>() {
-        @Override
-        public int compare(Pub lhs, Pub rhs) {
-            // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
-
-            double p1 = 0;
-            double p2 = 0;
-            if(sortType == SortByType.DISTANCE){
-
-                p1 = HelperMethods.CalculationByDistance(HelperMethods.convertLatLng(tracker.getCurrentLatLng()),lhs.getCoordinates());
-                p2 = HelperMethods.CalculationByDistance(HelperMethods.convertLatLng(tracker.getCurrentLatLng()),rhs.getCoordinates());
-            }
-            if(sortType == SortByType.RATING_AVERAGE){
-                 p1 = lhs.ratings.globalAverageRating;
-                 p2 = rhs.ratings.globalAverageRating;
-            }
-
-            return highToLow  ? Double.compare(p2, p1) : Double.compare(p1, p2);
-
-        }
-    });
-
-
-    }
 
 
     private void SetupSearch(){
