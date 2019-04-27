@@ -27,20 +27,22 @@
             android:textColor="#000"
             android:textSize="30sp" />
 
-        <EditText
-            android:padding="10dp"
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+        android:padding="10dp"
             android:layout_margin="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="email"
+            android:hint="E-mail address"
             android:id="@+id/login_email_input"
             android:inputType="textEmailAddress"/>
-        <EditText
-            android:padding="10dp"
+        <com.rengwuxian.materialedittext.MaterialEditText
+
+        android:padding="10dp"
             android:layout_margin="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="password"
+            android:hint="Password"
             android:id="@+id/login_password_input"
             android:inputType="textPassword"/>
 

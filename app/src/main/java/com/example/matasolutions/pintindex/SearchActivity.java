@@ -26,11 +26,8 @@ import android.widget.TextView;
 import com.jaredrummler.materialspinner.MaterialSpinner;
 import com.squareup.picasso.Picasso;
 
-
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
+
 
 public class SearchActivity extends AppCompatActivity {
 
@@ -128,7 +125,6 @@ public class SearchActivity extends AppCompatActivity {
 
 
 
-
     private void SetupSearch(){
 
         androidx.appcompat.app.ActionBar actionBar = getSupportActionBar();
@@ -221,11 +217,11 @@ public class SearchActivity extends AppCompatActivity {
             public MyViewHolder(View v) {
                 super(v);
 
-                pub_image = (ImageView) v.findViewById(R.id.search_pub_image);
-                pub_name = (TextView) v.findViewById(R.id.search_pub_name);
-                pub_rating = (TextView) v.findViewById(R.id.search_pub_rating);
-                pub_openstatus = (TextView) v.findViewById(R.id.search_pub_openstatus);
-                pub_distance = (TextView) v.findViewById(R.id.search_pub_distance);
+                pub_image =  v.findViewById(R.id.search_pub_image);
+                pub_name =  v.findViewById(R.id.search_pub_name);
+                pub_rating =  v.findViewById(R.id.search_pub_rating);
+                pub_openstatus =  v.findViewById(R.id.search_pub_openstatus);
+                pub_distance =  v.findViewById(R.id.search_pub_distance);
                 search_recyclerview_layout = v.findViewById(R.id.search_recyclerview_layout);
             }
         }

@@ -64,14 +64,12 @@ public  class MyPricesAdapter extends RecyclerView.Adapter<MyPricesAdapter.MyPri
     // Replace the contents of a view (invoked by the layout manager)
     @Override
     public void onBindViewHolder(MyPricesAdapter.MyPricesViewHolder holder, int position) {
-        // - get element from your dataset at this position
-        // - replace the contents of the view with that element
-        Price thisPrice = mDataset.get(position);
 
-        // Set item views based on your views and data model
+        final Price thisPrice = mDataset.get(position);
+
+
         TextView brand = holder.brand;
         final TextView price  = holder.price;
-
 
         final int arrPos = position;
 
@@ -83,16 +81,22 @@ public  class MyPricesAdapter extends RecyclerView.Adapter<MyPricesAdapter.MyPri
             @Override
             public void onClick(View v) {
 
-
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 final  DatabaseReference myRef = database.getReference("pubsList");
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
-                builder.setTitle("Please enter a new price for selected product");
+
+                TextView titleView = new TextView(context);
+                titleView.setText(FormatProductTitle(thisPrice));
+                titleView.setTextSize(18);
+                titleView.setTextAlignment(View.TEXT_ALIGNMENT_CENTER);
+                builder.setCustomTitle(titleView);
+
 
                 final EditText input = new EditText(context);
-
+                input.setHint("new price");
                 input.setInputType(InputType.TYPE_CLASS_TEXT);
                 builder.setView(input);
+
 
                 builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     @Override
@@ -117,6 +121,21 @@ public  class MyPricesAdapter extends RecyclerView.Adapter<MyPricesAdapter.MyPri
 
 
 
+    }
+
+    private String FormatProductTitle(Price price){
+
+        Product prod = price.product;
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("Please enter a new price for: " + "\n");
+        sb.append("\n");
+        sb.append("Type: " + prod.type.name() + "\n");
+        sb.append("Brand: " + prod.brand.name() + "\n");
+        sb.append("Quantity: " + prod.amount.name() + "\n");
+        sb.append("Current price: " + price.price);
+
+        return sb.toString();
     }
 
 

@@ -32,10 +32,6 @@ import java.util.Set;
 
 public class ProductActivity extends AppCompatActivity {
 
-    Spinner DrinkTypeSpinner;
-    Spinner BrandSpinner;
-    Spinner AmountSpinner;
-
     MaterialSpinner drinkTypeSpinner;
     MaterialSpinner brandSpinner;
     MaterialSpinner amountSpinner;
@@ -204,7 +200,7 @@ public class ProductActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
 
-        mAdapter = new MyAdapter(prod,pubsWithProduct);
+        mAdapter = new MyAdapter(prod,pubsWithProduct,getApplicationContext());
         recyclerView.setAdapter(mAdapter);
 
         recyclerViewHeader.setVisibility(View.VISIBLE);
@@ -241,6 +237,7 @@ public class ProductActivity extends AppCompatActivity {
     public static class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder> {
         private ArrayList<Pub> mDataset;
         private Product product;
+        private Context context;
 
 
         // Provide a reference to the views for each data item
@@ -252,6 +249,8 @@ public class ProductActivity extends AppCompatActivity {
             public TextView place;
             public TextView brand;
             public TextView price;
+            public LinearLayout layout;
+
 
 
             public MyViewHolder(View v) {
@@ -260,13 +259,16 @@ public class ProductActivity extends AppCompatActivity {
                 place =  v.findViewById(R.id.place);
                 brand =  v.findViewById(R.id.brand);
                 price =  v.findViewById(R.id.price);
+                layout = v.findViewById(R.id.productprice_recyclerview_layout);
+
             }
         }
 
         // Provide a suitable constructor (depends on the kind of dataset)
-        public MyAdapter(Product prod,ArrayList<Pub> myDataset) {
+        public MyAdapter(Product prod,ArrayList<Pub> myDataset, Context context) {
             mDataset = myDataset;
             product = prod;
+            this.context = context;
         }
 
         // Create new views (invoked by the layout manager)
@@ -287,16 +289,31 @@ public class ProductActivity extends AppCompatActivity {
         public void onBindViewHolder(MyAdapter.MyViewHolder holder, int position) {
             // - get element from your dataset at this position
             // - replace the contents of the view with that element
-            Pub thisPub = mDataset.get(position);
+            final Pub thisPub = mDataset.get(position);
 
             // Set item views based on your views and data model
             TextView place = holder.place;
             TextView brand = holder.brand;
             TextView price  = holder.price;
+            LinearLayout layout = holder.layout;
 
             place.setText(String.valueOf(position+1));
             brand.setText(thisPub.name);
             price.setText(String.valueOf(HelperMethods.LookupProductPrice(product, thisPub)));
+
+            layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+
+
+                    Intent intent = new Intent(context,PubActivity.class);
+                    intent.putExtra("pubID",thisPub.id);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    context.startActivity(intent);
+
+                }
+            });
 
 
         }

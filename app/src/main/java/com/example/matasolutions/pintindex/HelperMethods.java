@@ -67,7 +67,7 @@ public class HelperMethods {
         return Radius*c;
     }
 
-    public static boolean isPubOpen(String argStartTime,
+     static boolean isPubOpen(String argStartTime,
                                     String argEndTime, String argCurrentTime) throws ParseException, ParseException {
         String reg = "^([0-1][0-9]|2[0-3]):([0-5][0-9])$";
         //
