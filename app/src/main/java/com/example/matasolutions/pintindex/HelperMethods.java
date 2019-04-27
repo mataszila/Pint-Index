@@ -144,7 +144,7 @@ public class HelperMethods {
     }
 
 
-    public static String LookupProductPrice(Product product, Pub pub){
+     static String LookupProductPrice(Product product, Pub pub){
 
         String ans = "N/A";
 
@@ -158,16 +158,13 @@ public class HelperMethods {
         return ans;
     }
 
-    public static  boolean DoProductsMatch(Product one, Product two){
+     static boolean DoProductsMatch(Product one, Product two){
 
-        if(one.brand == two.brand && one.type == two.type && one.amount == two.amount ){
-            return true;
-        }
-        return false;
+         return one.brand == two.brand && one.type == two.type && one.amount == two.amount;
 
-    }
+     }
 
-    public static Price FindProductinPub(Product prod, Pub pub){
+     static Price FindProductinPub(Product prod, Pub pub){
 
         Price ans = null;
 
@@ -183,7 +180,7 @@ public class HelperMethods {
         return ans;
     }
 
-    public static ArrayList<Pub> FindPubsWithProduct(Product prod){
+     static ArrayList<Pub> FindPubsWithProduct(Product prod){
 
         ArrayList<Pub> list = new ArrayList<Pub>();
 
@@ -207,7 +204,7 @@ public class HelperMethods {
         return list;
     }
 
-    public static SpannableString FormatStatusText(String status, String action, String actionTime) {
+     static SpannableString FormatStatusText(String status, String action, String actionTime) {
 
 
         StringBuilder sb = new StringBuilder();
@@ -231,7 +228,7 @@ public class HelperMethods {
     }
 
 
-    public static SpannableString SetPubOpeningStatus(Pub pub){
+     static SpannableString SetPubOpeningStatus(Pub pub){
 
         SingleOpeningHours hoursForToday  = pub.weekOpeningHours.openingHours.get(HelperMethods.GetCorrectDayOfWeek()-1);
 
@@ -255,7 +252,7 @@ public class HelperMethods {
 
     }
 
-    public static ArrayList<Pub> SortByClosingTime(ArrayList<Pub> initList,final boolean latestToSoonest){
+     static ArrayList<Pub> SortByClosingTime(ArrayList<Pub> initList,final boolean latestToSoonest){
 
         Collections.sort(initList, new Comparator<Pub>() {
             @Override
@@ -322,7 +319,7 @@ public class HelperMethods {
     }
 
 
-    public static ArrayList<Pub> SortByRatingOrDistance(ArrayList<Pub> initList, final SortByType sortType, final boolean highToLow, final LatLng currentLatLng){
+     static ArrayList<Pub> SortByRatingOrDistance(ArrayList<Pub> initList, final SortByType sortType, final boolean highToLow, final LatLng currentLatLng){
 
         Collections.sort(initList, new Comparator<Pub>() {
             @Override
