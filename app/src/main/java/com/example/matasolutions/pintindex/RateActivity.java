@@ -34,9 +34,6 @@ public class RateActivity extends AppCompatActivity {
     private RecyclerView.LayoutManager layoutManager;
 
     Brand brand;
-    Button sort_high_to_low;
-    Button sort_low_to_high;
-
     FirebaseDatabase database;
     DatabaseReference myRef;
 
