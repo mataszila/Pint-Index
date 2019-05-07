@@ -22,11 +22,11 @@ import com.google.firebase.database.FirebaseDatabase;
 public class SignupActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
-    private EditText password;
-    private EditText confirm_password;
 
+    private com.rengwuxian.materialedittext.MaterialEditText email;
+    private com.rengwuxian.materialedittext.MaterialEditText password;
+    private com.rengwuxian.materialedittext.MaterialEditText confirm_password;
 
-    private EditText email;
     private Button button_register;
 
     private FirebaseDatabase database;
@@ -37,10 +37,10 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        email = (EditText) findViewById(R.id.signup_email_input);
+        email =  findViewById(R.id.signup_email_input);
         password = findViewById(R.id.signup_password_input);
         confirm_password = findViewById(R.id.signup_password_confirm_input);
-        button_register = (Button)findViewById(R.id.button_register);
+        button_register = findViewById(R.id.button_register);
         FirebaseApp.initializeApp(this);
         mAuth = FirebaseAuth.getInstance();
 
@@ -70,7 +70,7 @@ public class SignupActivity extends AppCompatActivity {
         String comp_password = password.getText().toString().trim();
         String comp_confirm = confirm_password.getText().toString().trim();
 
-        return comp_password.equals(comp_confirm) ? true : false;
+        return comp_password.equals(comp_confirm);
 
     }
 

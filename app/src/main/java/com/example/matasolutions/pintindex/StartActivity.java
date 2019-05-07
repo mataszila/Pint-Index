@@ -39,8 +39,9 @@ public class StartActivity extends AppCompatActivity {
 
     FirebaseUser currentUser;
 
-    private EditText password;
-    private EditText email;
+    private com.rengwuxian.materialedittext.MaterialEditText email;
+    private com.rengwuxian.materialedittext.MaterialEditText password;
+
     private FirebaseAuth mAuth;
 
     private TextView register;

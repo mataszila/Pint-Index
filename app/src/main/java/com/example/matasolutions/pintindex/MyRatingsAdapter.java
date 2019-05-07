@@ -7,12 +7,17 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.ArrayList;
 
 import androidx.recyclerview.widget.RecyclerView;
 
 public class MyRatingsAdapter extends RecyclerView.Adapter<MyRatingsAdapter.MyRatingsViewHolder> {
     private ArrayList<Rating> mDataset;
+    private String pubID;
+
 
     // Provide a reference to the views for each data item
     // Complex data items may need more than one view per item, and
@@ -33,8 +38,9 @@ public class MyRatingsAdapter extends RecyclerView.Adapter<MyRatingsAdapter.MyRa
     }
 
     // Provide a suitable constructor (depends on the kind of dataset)
-    public MyRatingsAdapter(ArrayList<Rating> myDataset) {
+    public MyRatingsAdapter(ArrayList<Rating> myDataset, String pubID) {
         mDataset = myDataset;
+        this.pubID = pubID;
     }
 
     // Create new views (invoked by the layout manager)
@@ -53,17 +59,19 @@ public class MyRatingsAdapter extends RecyclerView.Adapter<MyRatingsAdapter.MyRa
 
     // Replace the contents of a view (invoked by the layout manager)
     @Override
-    public void onBindViewHolder(MyRatingsAdapter.MyRatingsViewHolder holder, int position) {
+    public void onBindViewHolder(MyRatingsAdapter.MyRatingsViewHolder holder, final int position) {
         // - get element from your dataset at this position
         // - replace the contents of the view with that element
         Rating thisRating = mDataset.get(position);
 
+
         // Set item views based on your views and data model
         TextView category = holder.category;
-        TextView rating  = holder.rating;
+        final TextView rating  = holder.rating;
 
         category.setText(String.valueOf(thisRating.type));
         rating.setText(String.valueOf(thisRating.averageRating));
+
 
     }
 

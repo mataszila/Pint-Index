@@ -87,12 +87,11 @@ public class Pub implements Parcelable  {
         this.name = name;
 
 
+
     }
 
     public Pub(){
 
-        database = FirebaseDatabase.getInstance();
-        myRef =  database.getReference("pubsData");
 
     }
 

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:weightSum="100"
+    android:id="@+id/productprice_recyclerview_layout"
     >
 
     <androidx.cardview.widget.CardView

@@ -31,13 +31,26 @@ public class PubSetup implements Parcelable {
 
         pubs = new ArrayList<Pub>();
 
-        database = FirebaseDatabase.getInstance();
-        myRef = database.getReference("pubsList");
+        SetupDatabase();
 
         db_pubs = new ArrayList<Pub>();
 
         AddPubs();
 
+    }
+
+    PubSetup(boolean testing){
+
+        pubs = new ArrayList<Pub>();
+        AddPubs();
+
+    }
+
+
+    private void SetupDatabase(){
+
+        database = FirebaseDatabase.getInstance();
+        myRef = database.getReference("pubsList");
     }
 
     protected PubSetup(Parcel in) {
@@ -167,6 +180,8 @@ public class PubSetup implements Parcelable {
         ArrayList<Facility>  facilityInitList = new ArrayList<Facility>();
         facilityInitList.add(new Facility(FacilityType.CAR_PARKING,"Car Parking"));
         facilityInitList.add(new Facility(FacilityType.LIVE_SPORTS,"Live Sports"));
+        facilityInitList.add(new Facility(FacilityType.FREE_WIFI,"Free Wi-Fi"));
+        facilityInitList.add(new Facility(FacilityType.LIVE_MUSIC,"Live Music"));
 
         pub1.setFacilities(new Facilities(facilityInitList));
 
@@ -1009,7 +1024,7 @@ public class PubSetup implements Parcelable {
         facilityInitList10.add(new Facility(FacilityType.CAR_PARKING,"Car Parking"));
         facilityInitList10.add(new Facility(FacilityType.LIVE_SPORTS,"Live Sports"));
 
-        pub9.setFacilities(new Facilities(facilityInitList9));
+        pub10.setFacilities(new Facilities(facilityInitList9));
 
         // Ratings;
 
@@ -1049,7 +1064,7 @@ public class PubSetup implements Parcelable {
 
         pubs.add(pub10);
 
-        //myRef.child("list").setValue(pubs);
+       //myRef.child("list").setValue(pubs);
 
     }
 

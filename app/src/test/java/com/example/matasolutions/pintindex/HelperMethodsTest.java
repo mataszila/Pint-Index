@@ -4,14 +4,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 
 import org.junit.Test;
+import static org.junit.Assert.*;
 
 import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.util.ArrayList;
 
-import androidx.constraintlayout.solver.widgets.Helper;
-
-import static org.junit.Assert.*;
 
 public class HelperMethodsTest {
 

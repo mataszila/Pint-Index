@@ -12,6 +12,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.GregorianCalendar;
 
 public class HelperMethods {
@@ -65,7 +67,7 @@ public class HelperMethods {
         return Radius*c;
     }
 
-    public static boolean isPubOpen(String argStartTime,
+     static boolean isPubOpen(String argStartTime,
                                     String argEndTime, String argCurrentTime) throws ParseException, ParseException {
         String reg = "^([0-1][0-9]|2[0-3]):([0-5][0-9])$";
         //
@@ -142,7 +144,7 @@ public class HelperMethods {
     }
 
 
-    public static String LookupProductPrice(Product product, Pub pub){
+     static String LookupProductPrice(Product product, Pub pub){
 
         String ans = "N/A";
 
@@ -156,16 +158,13 @@ public class HelperMethods {
         return ans;
     }
 
-    public static  boolean DoProductsMatch(Product one, Product two){
+     static boolean DoProductsMatch(Product one, Product two){
 
-        if(one.brand == two.brand && one.type == two.type && one.amount == two.amount ){
-            return true;
-        }
-        return false;
+         return one.brand == two.brand && one.type == two.type && one.amount == two.amount;
 
-    }
+     }
 
-    public static Price FindProductinPub(Product prod, Pub pub){
+     static Price FindProductinPub(Product prod, Pub pub){
 
         Price ans = null;
 
@@ -181,7 +180,7 @@ public class HelperMethods {
         return ans;
     }
 
-    public static ArrayList<Pub> FindPubsWithProduct(Product prod){
+     static ArrayList<Pub> FindPubsWithProduct(Product prod){
 
         ArrayList<Pub> list = new ArrayList<Pub>();
 
@@ -205,7 +204,7 @@ public class HelperMethods {
         return list;
     }
 
-    public static SpannableString FormatStatusText(String status, String action, String actionTime) {
+     static SpannableString FormatStatusText(String status, String action, String actionTime) {
 
 
         StringBuilder sb = new StringBuilder();
@@ -229,7 +228,7 @@ public class HelperMethods {
     }
 
 
-    public static SpannableString SetPubOpeningStatus(Pub pub){
+     static SpannableString SetPubOpeningStatus(Pub pub){
 
         SingleOpeningHours hoursForToday  = pub.weekOpeningHours.openingHours.get(HelperMethods.GetCorrectDayOfWeek()-1);
 
@@ -252,6 +251,103 @@ public class HelperMethods {
         return new SpannableString("N/A");
 
     }
+
+     static ArrayList<Pub> SortByClosingTime(ArrayList<Pub> initList,final boolean latestToSoonest){
+
+        Collections.sort(initList, new Comparator<Pub>() {
+            @Override
+            public int compare(Pub lhs, Pub rhs) {
+                // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+
+                double p1=0;
+                double p2=0;
+
+                SingleOpeningHours hoursForToday1  = lhs.weekOpeningHours.openingHours.get(HelperMethods.GetCorrectDayOfWeek()-1);
+                SingleOpeningHours hoursForToday2  = rhs.weekOpeningHours.openingHours.get(HelperMethods.GetCorrectDayOfWeek()-1);
+
+                String closing1 = hoursForToday1.closingTime;
+                String closing2 = hoursForToday2.closingTime;
+
+                String[] parts1 = closing1.split(":");
+                Calendar date1 = Calendar.getInstance();
+
+                // 23:00
+
+                date1.set(Calendar.HOUR_OF_DAY, Integer.parseInt(parts1[0]));
+                date1.set(Calendar.MINUTE, Integer.parseInt(parts1[1]));
+                date1.set(Calendar.SECOND, 0);
+
+                String[] parts2 = closing2.split(":");
+                Calendar date2 = Calendar.getInstance();
+
+                // 00:00
+
+                date2.set(Calendar.HOUR_OF_DAY, Integer.parseInt(parts2[0]));
+                date2.set(Calendar.MINUTE, Integer.parseInt(parts2[1]));
+                date2.set(Calendar.SECOND, 0);
+
+                if(date1.HOUR_OF_DAY > 12 && date1.HOUR_OF_DAY <= 23 ){
+
+                    date2.add(Calendar.DATE,5);
+                }
+                if(date2.HOUR_OF_DAY > 12 && date2.HOUR_OF_DAY <= 23){
+
+                    date1.add(Calendar.DATE,5);
+                }
+
+                if(date1.before(date2)){
+                    p1 = 0;
+                    p2 = 1;
+                }
+                else{
+                    p1 = 1;
+                    p2 = 0;
+                }
+
+                if(latestToSoonest){
+                    return Double.compare(p2, p1);
+                }
+
+                return Double.compare(p1, p2);
+
+
+            }
+        });
+
+        return initList;
+
+    }
+
+
+     static ArrayList<Pub> SortByRatingOrDistance(ArrayList<Pub> initList, final SortByType sortType, final boolean highToLow, final LatLng currentLatLng){
+
+        Collections.sort(initList, new Comparator<Pub>() {
+            @Override
+            public int compare(Pub lhs, Pub rhs) {
+                // -1 - less than, 1 - greater than, 0 - equal, all inversed for descending
+
+                double p1 = 0;
+                double p2 = 0;
+                if(sortType == SortByType.DISTANCE){
+
+                    p1 = HelperMethods.CalculationByDistance(currentLatLng,lhs.getCoordinates());
+                    p2 = HelperMethods.CalculationByDistance(currentLatLng,rhs.getCoordinates());
+                }
+                if(sortType == SortByType.RATING_AVERAGE){
+                    p1 = lhs.ratings.globalAverageRating;
+                    p2 = rhs.ratings.globalAverageRating;
+                }
+
+                return highToLow  ? Double.compare(p2, p1) : Double.compare(p1, p2);
+
+            }
+        });
+
+        return initList;
+
+
+    }
+
 
 
 

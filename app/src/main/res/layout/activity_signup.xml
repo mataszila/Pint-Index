@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AuthenticationActivity">
+    tools:context=".SignupActivity">
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -21,29 +21,29 @@
             android:textSize="30sp"
             android:text="Sign up"
             android:textColor="#000"/>
-        <EditText
+        <com.rengwuxian.materialedittext.MaterialEditText
             android:padding="10dp"
             android:layout_margin="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="email"
+            android:hint="E-mail address"
             android:id="@+id/signup_email_input"
             android:inputType="textEmailAddress"/>
-        <EditText
+        <com.rengwuxian.materialedittext.MaterialEditText
             android:padding="10dp"
             android:layout_margin="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="password"
+            android:hint="Password"
             android:id="@+id/signup_password_input"
             android:inputType="textPassword"/>
 
-        <EditText
+        <com.rengwuxian.materialedittext.MaterialEditText
             android:padding="10dp"
             android:layout_margin="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="password"
+            android:hint="Confirm password"
             android:id="@+id/signup_password_confirm_input"
             android:inputType="textPassword"/>
 

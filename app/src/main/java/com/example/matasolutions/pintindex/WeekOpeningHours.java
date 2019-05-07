@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 public class WeekOpeningHours implements Serializable {
 
-    ArrayList<SingleOpeningHours> openingHours;
+    public ArrayList<SingleOpeningHours> openingHours;
     public final PubPageCategory category = PubPageCategory.OPENING_HOURS;
 
     public WeekOpeningHours(ArrayList<SingleOpeningHours> openingHours){
