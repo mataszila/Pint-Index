@@ -180,6 +180,8 @@ public class PubSetup implements Parcelable {
         ArrayList<Facility>  facilityInitList = new ArrayList<Facility>();
         facilityInitList.add(new Facility(FacilityType.CAR_PARKING,"Car Parking"));
         facilityInitList.add(new Facility(FacilityType.LIVE_SPORTS,"Live Sports"));
+        facilityInitList.add(new Facility(FacilityType.FREE_WIFI,"Free Wi-Fi"));
+        facilityInitList.add(new Facility(FacilityType.LIVE_MUSIC,"Live Music"));
 
         pub1.setFacilities(new Facilities(facilityInitList));
 
@@ -1062,7 +1064,7 @@ public class PubSetup implements Parcelable {
 
         pubs.add(pub10);
 
-       // myRef.child("list").setValue(pubs);
+       //myRef.child("list").setValue(pubs);
 
     }
 
